@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import {NgxLoginComponent} from '../@theme/components/auth/login/login.component'
 import {
   NbActionsModule,
   NbCardModule,
@@ -54,7 +55,8 @@ const NB_MODULES = [
   NbPopoverModule,
   NbContextMenuModule,
   NgbModule,
-  NbSecurityModule, // *nbIsGranted directive
+  NbSecurityModule, // *nbIsGranted directive,
+
 ];
 
 const COMPONENTS = [

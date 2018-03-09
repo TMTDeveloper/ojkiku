@@ -1,8 +1,9 @@
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NbAuthModule, NbDummyAuthProvider } from '@nebular/auth';
+import { NbAuthModule, NbDummyAuthProvider,NbEmailPassAuthProvider } from '@nebular/auth';
 import { NbSecurityModule, NbRoleProvider } from '@nebular/security';
 import { of as observableOf } from 'rxjs/observable/of';
+import {NgxLoginComponent} from '../@theme/components/auth/login/login.component';
 
 import { throwIfAlreadyLoaded } from './module-import-guard';
 import { DataModule } from './data/data.module';
@@ -33,7 +34,7 @@ const NB_CORE_PROVIDERS = [
       email: {
         service: NbDummyAuthProvider,
         config: {
-          delay: 3000,
+          delay: 1,
           login: {
             rememberMe: true,
           },
@@ -42,10 +43,9 @@ const NB_CORE_PROVIDERS = [
     },
     forms: {
       login: {
-        socialLinks: socialLinks,
+        
       },
       register: {
-        socialLinks: socialLinks,
       },
     },
   }).providers,
