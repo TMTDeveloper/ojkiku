@@ -100,7 +100,7 @@ const PIPES = [
 const NB_THEME_PROVIDERS = [
   ...NbThemeModule.forRoot({
     name: 'default',
-  }, [DEFAULT_THEME, COSMIC_THEME], ).providers,
+  }, [DEFAULT_THEME, COSMIC_THEME]).providers,
   ...NbSidebarModule.forRoot().providers,
   ...NbMenuModule.forRoot().providers,
 ];

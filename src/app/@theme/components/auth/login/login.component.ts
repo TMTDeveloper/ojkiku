@@ -5,10 +5,10 @@
  */
 import {
   Component,
-  Inject
+  Inject,
 } from '@angular/core';
 import {
-  Router
+  Router,
 } from '@angular/router';
 import {
   NB_AUTH_OPTIONS,
