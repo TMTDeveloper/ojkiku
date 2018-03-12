@@ -1,9 +1,17 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-import {NgxLoginComponent} from '../@theme/components/auth/login/login.component'
+import {
+  ModuleWithProviders,
+  NgModule
+} from '@angular/core';
+import {
+  CommonModule
+} from '@angular/common';
+import {
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
+import {
+  NgbModule
+} from '@ng-bootstrap/ng-bootstrap';
 import {
   NbActionsModule,
   NbCardModule,
@@ -20,7 +28,9 @@ import {
   NbContextMenuModule,
 } from '@nebular/theme';
 
-import { NbSecurityModule } from '@nebular/security';
+import {
+  NbSecurityModule
+} from '@nebular/security';
 
 import {
   FooterComponent,
@@ -29,15 +39,24 @@ import {
   ThemeSettingsComponent,
   ThemeSwitcherComponent,
 } from './components';
-import { CapitalizePipe, PluralPipe, RoundPipe, TimingPipe } from './pipes';
+import {
+  CapitalizePipe,
+  PluralPipe,
+  RoundPipe,
+  TimingPipe
+} from './pipes';
 import {
   OneColumnLayoutComponent,
   SampleLayoutComponent,
   ThreeColumnsLayoutComponent,
   TwoColumnsLayoutComponent,
 } from './layouts';
-import { DEFAULT_THEME } from './styles/theme.default';
-import { COSMIC_THEME } from './styles/theme.cosmic';
+import {
+  DEFAULT_THEME
+} from './styles/theme.default';
+import {
+  COSMIC_THEME
+} from './styles/theme.cosmic';
 
 const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
 
@@ -79,12 +98,9 @@ const PIPES = [
 ];
 
 const NB_THEME_PROVIDERS = [
-  ...NbThemeModule.forRoot(
-    {
-      name: 'default',
-    },
-    [DEFAULT_THEME, COSMIC_THEME],
-  ).providers,
+  ...NbThemeModule.forRoot({
+    name: 'default',
+  }, [DEFAULT_THEME, COSMIC_THEME], ).providers,
   ...NbSidebarModule.forRoot().providers,
   ...NbMenuModule.forRoot().providers,
 ];
@@ -96,7 +112,7 @@ const NB_THEME_PROVIDERS = [
 })
 export class ThemeModule {
   static forRoot(): ModuleWithProviders {
-    return <ModuleWithProviders>{
+    return <ModuleWithProviders > {
       ngModule: ThemeModule,
       providers: [...NB_THEME_PROVIDERS],
     };

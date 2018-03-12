@@ -9,11 +9,11 @@ import {RbbComponent} from './iku.header/iku.header.component'
   imports: [
     ThemeModule,
     Ng2SmartTableModule,
-    IkuRouterModule
+    IkuRouterModule,
   ],
   declarations: [
     ...routedComponents,
-    RbbComponent
+    RbbComponent,
   ],
   entryComponents: [
     RbbComponent,

@@ -1,10 +1,9 @@
 import {
   Component,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import {
-  FormsModule,
-  NgForm
+  NgForm,
 } from '@angular/forms';
 import {
   NgbActiveModal
@@ -12,46 +11,6 @@ import {
 import {
   NgbModal
 } from '@ng-bootstrap/ng-bootstrap';
-
-@Component({
-  selector: 'ngx-iku-header',
-  templateUrl: './iku.header.component.html',
-  styles: [`
-    nb-card {
-      transform: translate3d(0, 0, 0);
- 
-    },
-  
-  `],
-})
-export class IkuHeaderComponent {
-  private count = 1;
-  yearPeriode: string = '2018';
-  ikuIds: number[] = [1];
-  @ViewChild('myForm')
-  private myForm: NgForm;
-
-  constructor(private modalService: NgbModal) {}
-
-  showLargeModal() {
-    const activeModal = this.modalService.open(RbbComponent, {
-      windowClass: "xlModal",
-      container: 'nb-layout'
-    });
-
-    activeModal.componentInstance.modalHeader = 'Large Modal';
-  }
-  remove(i: number) {
-    this.ikuIds.splice(i, 1);
-  }
-
-  add() {
-    this.ikuIds.push(++this.count);
-  }
-
-
-}
-
 
 @Component({
   selector: 'ngx-modal',
@@ -62,8 +21,8 @@ export class RbbComponent {
 
   modalHeader: string;
   modalContent = `Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy
-    nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis
-    nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.`;
+      nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis
+      nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.`;
 
   constructor(private activeModal: NgbActiveModal) {}
 
@@ -79,7 +38,7 @@ export class RbbComponent {
     actions: {
       add: false,
       edit: false,
-      delete: false
+      delete: false,
     },
     pager: {
       display: false,
@@ -163,4 +122,44 @@ export class RbbComponent {
   //     return this.source;
   //   }    
   // }
+}
+
+
+@Component({
+  selector: 'ngx-iku-header',
+  templateUrl: './iku.header.component.html',
+  styles: [`
+    nb-card {
+      transform: translate3d(0, 0, 0);
+ 
+    },
+  
+  `],
+})
+export class IkuHeaderComponent {
+  private count = 1;
+  yearPeriode: string = '2018';
+  ikuIds: number[] = [1];
+//   @ViewChild('myForm')
+//   private myForm: NgForm;
+
+  constructor(private modalService: NgbModal) {}
+
+  showLargeModal() {
+    const activeModal = this.modalService.open(RbbComponent, {
+      windowClass: "xlModal",
+      container: 'nb-layout'
+    });
+
+    activeModal.componentInstance.modalHeader = 'Large Modal';
+  }
+  remove(i: number) {
+    this.ikuIds.splice(i, 1);
+  }
+
+  add() {
+    this.ikuIds.push(++this.count);
+  }
+
+
 }

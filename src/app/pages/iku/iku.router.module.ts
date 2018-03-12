@@ -1,16 +1,16 @@
 import {
-  NgModule
+  NgModule,
 } from '@angular/core';
 import {
   Routes,
-  RouterModule
+  RouterModule,
 } from '@angular/router';
 
 import {
-  IkuComponent
+  IkuComponent,
 } from './iku.component';
 import {
-  IkuHeaderComponent
+  IkuHeaderComponent,
 } from './iku.header/iku.header.component'
 const routes: Routes = [{
   path: '',
@@ -29,5 +29,5 @@ export class IkuRouterModule {}
 
 export const routedComponents = [
   IkuHeaderComponent,
-  IkuComponent
+  IkuComponent,
 ];

@@ -3,16 +3,30 @@
  * Copyright Akveo. All Rights Reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
-import { Component, Inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { NB_AUTH_OPTIONS, NbAuthSocialLink } from '@nebular/auth/auth.options';
-import { getDeepFromObject } from '@nebular/auth/helpers';
+import {
+  Component,
+  Inject
+} from '@angular/core';
+import {
+  Router
+} from '@angular/router';
+import {
+  NB_AUTH_OPTIONS,
+  NbAuthSocialLink
+} from '@nebular/auth/auth.options';
+import {
+  getDeepFromObject
+} from '@nebular/auth/helpers';
 
-import { NbAuthService } from '@nebular/auth/services/auth.service';
-import { NbAuthResult } from '@nebular/auth/services/auth-result';
+import {
+  NbAuthService
+} from '@nebular/auth/services/auth.service';
+import {
+  NbAuthResult
+} from '@nebular/auth/services/auth-result';
 
 @Component({
-  selector: 'nb-login',
+  selector: 'ngx-login',
   template: `
     <nb-auth-block>
       <h2 class="title">Sign In</h2>
@@ -109,8 +123,8 @@ export class NgxLoginComponent {
   socialLinks: NbAuthSocialLink[] = [];
 
   constructor(protected service: NbAuthService,
-              @Inject(NB_AUTH_OPTIONS) protected config = {},
-              protected router: Router) {
+    @Inject(NB_AUTH_OPTIONS) protected config = {},
+    protected router: Router) {
 
     this.redirectDelay = this.getConfigValue('forms.login.redirectDelay');
     this.showMessages = this.getConfigValue('forms.login.showMessages');
@@ -123,9 +137,7 @@ export class NgxLoginComponent {
     this.submitted = true;
 
     this.service.authenticate(this.provider, this.user).subscribe((result: NbAuthResult) => {
-      
       this.submitted = false;
-
       if (result.isSuccess()) {
         this.messages = result.getMessages();
       } else {

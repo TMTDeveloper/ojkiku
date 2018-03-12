@@ -1,31 +1,52 @@
-import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NbAuthModule, NbDummyAuthProvider,NbEmailPassAuthProvider } from '@nebular/auth';
-import { NbSecurityModule, NbRoleProvider } from '@nebular/security';
-import { of as observableOf } from 'rxjs/observable/of';
-import {NgxLoginComponent} from '../@theme/components/auth/login/login.component';
+import {
+  ModuleWithProviders,
+  NgModule,
+  Optional,
+  SkipSelf
+} from '@angular/core';
+import {
+  CommonModule
+} from '@angular/common';
+import {
+  NbAuthModule,
+  NbEmailPassAuthProvider
+} from '@nebular/auth';
+import {
+  NbSecurityModule,
+  NbRoleProvider
+} from '@nebular/security';
+import { of as observableOf
+} from 'rxjs/observable/of';
+import {
+  NgxLoginComponent
+} from '../@theme/components/auth/login/login.component';
 
-import { throwIfAlreadyLoaded } from './module-import-guard';
-import { DataModule } from './data/data.module';
-import { AnalyticsService } from './utils/analytics.service';
+import {
+  throwIfAlreadyLoaded
+} from './module-import-guard';
+import {
+  DataModule
+} from './data/data.module';
+import {
+  AnalyticsService
+} from './utils/analytics.service';
 
-const socialLinks = [
-  {
-    url: 'https://github.com/akveo/nebular',
-    target: '_blank',
-    icon: 'socicon-github',
-  },
-  {
-    url: 'https://www.facebook.com/akveo/',
-    target: '_blank',
-    icon: 'socicon-facebook',
-  },
-  {
-    url: 'https://twitter.com/akveo_inc',
-    target: '_blank',
-    icon: 'socicon-twitter',
-  },
-];
+// const socialLinks = [{
+//     url: 'https://github.com/akveo/nebular',
+//     target: '_blank',
+//     icon: 'socicon-github',
+//   },
+//   {
+//     url: 'https://www.facebook.com/akveo/',
+//     target: '_blank',
+//     icon: 'socicon-facebook',
+//   },
+//   {
+//     url: 'https://twitter.com/akveo_inc',
+//     target: '_blank',
+//     icon: 'socicon-twitter',
+//   },
+// ];
 
 const NB_CORE_PROVIDERS = [
   ...DataModule.forRoot().providers,
@@ -53,10 +74,9 @@ const NB_CORE_PROVIDERS = [
     },
     forms: {
       login: {
-        provider:'email'
+        provider: 'email',
       },
-      register: {
-      },
+      register: {},
     },
   }).providers,
   NbSecurityModule.forRoot({
@@ -98,7 +118,7 @@ export class CoreModule {
   }
 
   static forRoot(): ModuleWithProviders {
-    return <ModuleWithProviders>{
+    return <ModuleWithProviders > {
       ngModule: CoreModule,
       providers: [
         ...NB_CORE_PROVIDERS,
