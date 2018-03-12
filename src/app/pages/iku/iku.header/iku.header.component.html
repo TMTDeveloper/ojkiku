@@ -1,0 +1,73 @@
+<nb-card>
+  <nb-card-header>Input New Periode</nb-card-header>
+  <nb-card-body>
+    <form #myForm="ngForm">
+      <div class="form-group">
+        <label>Periode</label>
+        <input type="text" class="form-control" name="yearPeriode" placeholder="2018" disabled>
+      </div>
+      <!-- <div class="form-group">
+          <input type="text" maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'');" class="form-control" name="noiku" ngModel placeholder="Number of IKU" >
+        </div> -->
+      <div ngModelGroup="iku">
+        <div *ngFor="let ikuId of ikuIds; let i=index;">
+          <div ngModelGroup="iku[{{ikuId}}]">
+            <div class="row">
+              <div class="col-sm-6">
+
+                <div class="form-group">
+                  <label>IKU {{i + 1}}</label>
+                  <select class="form-control" name="iku.type" #iku="ngModel" ngModel required>
+                    <option>Realisasi Kredit</option>
+                    <option>CAR</option>
+                    <option>Kredit Produktif</option>
+                    <option>Kredit Perikanan</option>
+                    <option>Kredit Infrastruktur</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label>Percentage IKU {{i + 1}}</label>
+                  <div class="input-group">
+                    <span class="input-group-addon">%</span>
+                    <input type="text" maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'');" class="form-control" name="iku.percentage"
+                      #iku="ngModel" ngModel required placeholder="Percentage">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-auto mt-1 pt-4 pb-4 mb-1">
+                    <div class="form-group">
+                      <button type="button" class="btn btn-success btn-demo" (click)="showLargeModal()">Input RBB</button>
+                    </div>
+              </div>
+                    <div class="col-sm-auto mt-1 pt-4 pb-4 mb-1 ">
+                <div class="form-group">
+                  <button type="button" class="btn btn-danger btn-demo" (click)="remove(i); myForm.control.markAsTouched()">remove</button>
+                </div>
+              </div>
+      
+              <!-- <show-errors [control]="phoneNumber"></show-errors> -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-1">
+          <div class="form-group">
+            <button type="button" class="btn btn-primary btn-demo" (click)="add(); myForm.control.markAsTouched()">Add IKU</button>
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <div class="form-group">
+            <button type="submit" class="btn btn-success ">Submit</button>
+          </div>
+        </div>
+      </div>
+      <pre>{{myForm.value | json}}</pre>
+    </form>
+  </nb-card-body>
+
+</nb-card>

@@ -1,0 +1,17 @@
+<nb-card>
+  <nb-card-header>
+    Input IKU
+  </nb-card-header>
+
+  <nb-card-body>
+<div class="holdertable">
+    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
+    </ng2-smart-table>
+  </div>
+  <div class="container-btn mt-2">
+    <button class="btn btn-success btn-demo" [routerLink]="['./iku-header']" routerLinkActive="active">Input New Period</button>
+  </div>
+  </nb-card-body>
+</nb-card>
+
+<router-outlet></router-outlet>

@@ -32,18 +32,28 @@ const NB_CORE_PROVIDERS = [
   ...NbAuthModule.forRoot({
     providers: {
       email: {
-        service: NbDummyAuthProvider,
+        service: NbEmailPassAuthProvider,
         config: {
+          baseEndpoint: 'http://172.20.10.4:3000/api',
           delay: 1,
           login: {
+            alwaysFail: false,
             rememberMe: true,
+            endpoint: '/LOGIN_IKUs/login',
+            method: 'post',
+            redirect: {
+              success: '/pages',
+              failure: null,
+            },
+            defaultErrors: ['Login/Email combination is not correct, please try again.'],
+            defaultMessages: ['You have been successfully logged in.'],
           },
         },
       },
     },
     forms: {
       login: {
-        
+        provider:'email'
       },
       register: {
       },

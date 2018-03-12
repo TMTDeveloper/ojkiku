@@ -123,6 +123,7 @@ export class NgxLoginComponent {
     this.submitted = true;
 
     this.service.authenticate(this.provider, this.user).subscribe((result: NbAuthResult) => {
+      
       this.submitted = false;
 
       if (result.isSuccess()) {

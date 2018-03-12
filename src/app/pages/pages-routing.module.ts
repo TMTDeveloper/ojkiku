@@ -13,6 +13,10 @@ const routes: Routes = [{
       component: DashboardComponent,
     },
     {
+      path: 'iku',
+      loadChildren: './iku/iku.module#IkuModule',
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',
