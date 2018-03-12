@@ -1,6 +1,6 @@
 import {
   Component,
-//   ViewChild,
+  //   ViewChild,
 } from '@angular/core';
 // import {
 //   NgForm,
@@ -140,14 +140,14 @@ export class IkuHeaderComponent {
   private count = 1;
   yearPeriode: string = '2018';
   ikuIds: number[] = [1];
-//   @ViewChild('myForm')
-//   private myForm: NgForm;
+  //   @ViewChild('myForm')
+  //   private myForm: NgForm;
 
   constructor(private modalService: NgbModal) {}
 
   showLargeModal() {
     const activeModal = this.modalService.open(RbbComponent, {
-      windowClass: "xlModal",
+      windowClass: 'xlModal',
       container: 'nb-layout'
     });
 

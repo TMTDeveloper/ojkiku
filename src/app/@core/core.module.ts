@@ -18,10 +18,6 @@ import {
 import { of as observableOf
 } from 'rxjs/observable/of';
 import {
-  NgxLoginComponent
-} from '../@theme/components/auth/login/login.component';
-
-import {
   throwIfAlreadyLoaded
 } from './module-import-guard';
 import {
