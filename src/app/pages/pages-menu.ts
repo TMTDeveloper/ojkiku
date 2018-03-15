@@ -1,29 +1,28 @@
-import { NbMenuItem } from '@nebular/theme';
+import { NbMenuItem } from "@nebular/theme";
 
 export const MENU_ITEMS: NbMenuItem[] = [
   {
-    title: 'Dashboard',
-    icon: 'nb-home',
-    link: '/pages/dashboard',
-    home: true,
+    title: "Dashboard",
+    icon: "nb-home",
+    link: "/pages/dashboard",
+    home: true
   },
   {
-    title: 'Input IKU',
-    icon: 'nb-locked',
-    link: '/pages/iku',
+    title: "Input IKU",
+    icon: "nb-locked",
+    link: "/pages/iku"
   },
   {
-    title: 'Input Realisasi',
-    icon: 'nb-compose',
-    link: '/pages/iku',
+    title: "Input Realisasi",
+    icon: "nb-compose",
+    link: "/pages/iku"
   },
   {
-    title: 'Reporting',
-    icon: 'nb-bar-chart',
-    link: '/pages/iku',
-  },
+    title: "Reporting",
+    icon: "nb-bar-chart",
+    link: "/pages/iku"
+  }
 ];
-
 
 // {
 //   title: 'FEATURES',
