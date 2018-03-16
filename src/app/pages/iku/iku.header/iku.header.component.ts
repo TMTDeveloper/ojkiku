@@ -52,9 +52,9 @@ export class RbbComponent {
             year: this.modalData.year,
             no_iku: this.modalData.no_iku
           })
-          .subscribe(response => {
-            const iku = response;
-            console.log(JSON.stringify(response));
+          .subscribe(res => {
+            const iku = res;
+            console.log(JSON.stringify(res));
 
             for (let data in bank) {
               let LST_YEAR_TW3 = () => {

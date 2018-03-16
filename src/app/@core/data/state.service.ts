@@ -1,43 +1,42 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/observable/of';
+import { Observable } from "rxjs/Observable";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import "rxjs/add/observable/of";
 
 @Injectable()
 export class StateService {
-
   protected layouts: any = [
     {
-      name: 'One Column',
-      icon: 'nb-layout-default',
-      id: 'one-column',
-      selected: true,
+      name: "One Column",
+      icon: "nb-layout-default",
+      id: "one-column",
+      selected: true
     },
     {
-      name: 'Two Column',
-      icon: 'nb-layout-two-column',
-      id: 'two-column',
+      name: "Two Column",
+      icon: "nb-layout-two-column",
+      id: "two-column"
     },
     {
-      name: 'Center Column',
-      icon: 'nb-layout-centre',
-      id: 'center-column',
-    },
+      name: "Center Column",
+      icon: "nb-layout-centre",
+      id: "center-column"
+    }
   ];
 
   protected sidebars: any = [
     {
-      name: 'Left Sidebar',
-      icon: 'nb-layout-sidebar-left',
-      id: 'left',
-      selected: true,
+      name: "Left Sidebar",
+      icon: "nb-layout-sidebar-left",
+      id: "left",
+      selected: true
     },
     {
-      name: 'Right Sidebar',
-      icon: 'nb-layout-sidebar-right',
-      id: 'right',
-    },
+      name: "Right Sidebar",
+      icon: "nb-layout-sidebar-right",
+      id: "right"
+    }
   ];
 
   protected layoutState$ = new BehaviorSubject(this.layouts[0]);

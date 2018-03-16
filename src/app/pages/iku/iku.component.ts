@@ -1,8 +1,9 @@
-import { DataModule } from "../../@core/data/data.module";
 import { Component } from "@angular/core";
-import { BackendService } from "../../@core/data/backend.service";
-import { LocalDataSource } from "ng2-smart-table";
 import * as moment from "moment";
+import { LocalDataSource } from "ng2-smart-table";
+
+import { BackendService } from "../../@core/data/backend.service";
+
 @Component({
   selector: "ngx-iku",
   templateUrl: "./iku.component.html"

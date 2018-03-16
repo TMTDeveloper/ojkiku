@@ -1,17 +1,7 @@
-import {
-  ModuleWithProviders,
-  NgModule
-} from '@angular/core';
-import {
-  CommonModule
-} from '@angular/common';
-import {
-  FormsModule,
-  ReactiveFormsModule
-} from '@angular/forms';
-import {
-  NgbModule
-} from '@ng-bootstrap/ng-bootstrap';
+import { ModuleWithProviders, NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import {
   NbActionsModule,
   NbCardModule,
@@ -25,38 +15,27 @@ import {
   NbUserModule,
   NbCheckboxModule,
   NbPopoverModule,
-  NbContextMenuModule,
-} from '@nebular/theme';
+  NbContextMenuModule
+} from "@nebular/theme";
 
-import {
-  NbSecurityModule
-} from '@nebular/security';
+import { NbSecurityModule } from "@nebular/security";
 
 import {
   FooterComponent,
   HeaderComponent,
   SearchInputComponent,
   ThemeSettingsComponent,
-  ThemeSwitcherComponent,
-} from './components';
-import {
-  CapitalizePipe,
-  PluralPipe,
-  RoundPipe,
-  TimingPipe
-} from './pipes';
+  ThemeSwitcherComponent
+} from "./components";
+import { CapitalizePipe, PluralPipe, RoundPipe, TimingPipe } from "./pipes";
 import {
   OneColumnLayoutComponent,
   SampleLayoutComponent,
   ThreeColumnsLayoutComponent,
-  TwoColumnsLayoutComponent,
-} from './layouts';
-import {
-  DEFAULT_THEME
-} from './styles/theme.default';
-import {
-  COSMIC_THEME
-} from './styles/theme.cosmic';
+  TwoColumnsLayoutComponent
+} from "./layouts";
+import { DEFAULT_THEME } from "./styles/theme.default";
+import { COSMIC_THEME } from "./styles/theme.cosmic";
 
 const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
 
@@ -74,8 +53,7 @@ const NB_MODULES = [
   NbPopoverModule,
   NbContextMenuModule,
   NgbModule,
-  NbSecurityModule, // *nbIsGranted directive,
-
+  NbSecurityModule // *nbIsGranted directive,
 ];
 
 const COMPONENTS = [
@@ -87,34 +65,32 @@ const COMPONENTS = [
   OneColumnLayoutComponent,
   SampleLayoutComponent,
   ThreeColumnsLayoutComponent,
-  TwoColumnsLayoutComponent,
+  TwoColumnsLayoutComponent
 ];
 
-const PIPES = [
-  CapitalizePipe,
-  PluralPipe,
-  RoundPipe,
-  TimingPipe,
-];
+const PIPES = [CapitalizePipe, PluralPipe, RoundPipe, TimingPipe];
 
 const NB_THEME_PROVIDERS = [
-  ...NbThemeModule.forRoot({
-    name: 'default',
-  }, [DEFAULT_THEME, COSMIC_THEME]).providers,
+  ...NbThemeModule.forRoot(
+    {
+      name: "default"
+    },
+    [DEFAULT_THEME, COSMIC_THEME]
+  ).providers,
   ...NbSidebarModule.forRoot().providers,
-  ...NbMenuModule.forRoot().providers,
+  ...NbMenuModule.forRoot().providers
 ];
 
 @NgModule({
   imports: [...BASE_MODULES, ...NB_MODULES],
   exports: [...BASE_MODULES, ...NB_MODULES, ...COMPONENTS, ...PIPES],
-  declarations: [...COMPONENTS, ...PIPES],
+  declarations: [...COMPONENTS, ...PIPES]
 })
 export class ThemeModule {
   static forRoot(): ModuleWithProviders {
-    return <ModuleWithProviders > {
+    return <ModuleWithProviders>{
       ngModule: ThemeModule,
-      providers: [...NB_THEME_PROVIDERS],
+      providers: [...NB_THEME_PROVIDERS]
     };
   }
 }

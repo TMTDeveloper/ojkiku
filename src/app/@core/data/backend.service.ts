@@ -4,7 +4,7 @@ import { Http, Headers, RequestOptions } from "@angular/http";
 // import { Observable } from 'rxjs/Rx';
 @Injectable()
 export class BackendService {
-  //baseurlxpay:string='http://202.158.20.141:5001/xpay-service/api/'
+  // baseurlxpay:string='http://202.158.20.141:5001/xpay-service/api/'
 
   baseurl: string = "http://localhost:3000/api/";
 

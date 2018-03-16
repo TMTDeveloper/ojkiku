@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
-import { StateService } from '../../../@core/data/state.service';
+import { StateService } from "../../../@core/data/state.service";
 
 @Component({
-  selector: 'ngx-theme-settings',
-  styleUrls: ['./theme-settings.component.scss'],
+  selector: "ngx-theme-settings",
+  styleUrls: ["./theme-settings.component.scss"],
   template: `
     <h6>LAYOUTS</h6>
     <div class="settings-row">
@@ -26,19 +26,20 @@ import { StateService } from '../../../@core/data/state.service';
         <i [attr.class]="sidebar.icon"></i>
       </a>
     </div>
-  `,
+  `
 })
 export class ThemeSettingsComponent {
-
   layouts = [];
   sidebars = [];
 
   constructor(protected stateService: StateService) {
-    this.stateService.getLayoutStates()
-      .subscribe((layouts: any[]) => this.layouts = layouts);
+    this.stateService
+      .getLayoutStates()
+      .subscribe((layouts: any[]) => (this.layouts = layouts));
 
-    this.stateService.getSidebarStates()
-      .subscribe((sidebars: any[]) => this.sidebars = sidebars);
+    this.stateService
+      .getSidebarStates()
+      .subscribe((sidebars: any[]) => (this.sidebars = sidebars));
   }
 
   layoutSelect(layout: any): boolean {

@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 // TODO: move layouts into the framework
 @Component({
-  selector: 'ngx-two-columns-layout',
-  styleUrls: ['./two-columns.layout.scss'],
+  selector: "ngx-two-columns-layout",
+  styleUrls: ["./two-columns.layout.scss"],
   template: `
     <nb-layout>
       <nb-layout-header fixed>
@@ -31,7 +31,6 @@ import { Component } from '@angular/core';
       </nb-layout-footer>
 
     </nb-layout>
-  `,
+  `
 })
-export class TwoColumnsLayoutComponent {
-}
+export class TwoColumnsLayoutComponent {}

@@ -3,29 +3,14 @@ import {
   NgModule,
   Optional,
   SkipSelf
-} from '@angular/core';
-import {
-  CommonModule
-} from '@angular/common';
-import {
-  NbAuthModule,
-  NbEmailPassAuthProvider
-} from '@nebular/auth';
-import {
-  NbSecurityModule,
-  NbRoleProvider
-} from '@nebular/security';
-import { of as observableOf
-} from 'rxjs/observable/of';
-import {
-  throwIfAlreadyLoaded
-} from './module-import-guard';
-import {
-  DataModule
-} from './data/data.module';
-import {
-  AnalyticsService
-} from './utils/analytics.service';
+} from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { NbAuthModule, NbEmailPassAuthProvider } from "@nebular/auth";
+import { NbSecurityModule, NbRoleProvider } from "@nebular/security";
+import { of as observableOf } from "rxjs/observable/of";
+import { throwIfAlreadyLoaded } from "./module-import-guard";
+import { DataModule } from "./data/data.module";
+import { AnalyticsService } from "./utils/analytics.service";
 
 // const socialLinks = [{
 //     url: 'https://github.com/akveo/nebular',
@@ -51,74 +36,74 @@ const NB_CORE_PROVIDERS = [
       email: {
         service: NbEmailPassAuthProvider,
         config: {
-          baseEndpoint: 'http://172.20.10.4:3000/api',
+          baseEndpoint: "http://172.20.10.4:3000/api",
           delay: 1,
           login: {
             alwaysFail: false,
             rememberMe: true,
-            endpoint: '/LOGIN_IKUs/login',
-            method: 'post',
+            endpoint: "/LOGIN_IKUs/login",
+            method: "post",
             redirect: {
-              success: '/pages',
-              failure: null,
+              success: "/pages",
+              failure: null
             },
-            defaultErrors: ['Login/Email combination is not correct, please try again.'],
-            defaultMessages: ['You have been successfully logged in.'],
-          },
-        },
-      },
+            defaultErrors: [
+              "Login/Email combination is not correct, please try again."
+            ],
+            defaultMessages: ["You have been successfully logged in."]
+          }
+        }
+      }
     },
     forms: {
       login: {
-        provider: 'email',
+        provider: "email"
       },
-      register: {},
-    },
+      register: {}
+    }
   }).providers,
   NbSecurityModule.forRoot({
     accessControl: {
       guest: {
-        view: '*',
+        view: "*"
       },
       user: {
-        parent: 'guest',
-        create: '*',
-        edit: '*',
-        remove: '*',
-      },
-    },
+        parent: "guest",
+        create: "*",
+        edit: "*",
+        remove: "*"
+      }
+    }
   }).providers,
   {
     provide: NbRoleProvider,
     useValue: {
       getRole: () => {
-        return observableOf('guest'); // here you could provide any role based on any auth flow
-      },
-    },
+        return observableOf("guest"); // here you could provide any role based on any auth flow
+      }
+    }
   },
-  AnalyticsService,
+  AnalyticsService
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
-  exports: [
-    NbAuthModule,
-  ],
-  declarations: [],
+  imports: [CommonModule],
+  exports: [NbAuthModule],
+  declarations: []
 })
 export class CoreModule {
-  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
-    throwIfAlreadyLoaded(parentModule, 'CoreModule');
+  constructor(
+    @Optional()
+    @SkipSelf()
+    parentModule: CoreModule
+  ) {
+    throwIfAlreadyLoaded(parentModule, "CoreModule");
   }
 
   static forRoot(): ModuleWithProviders {
-    return <ModuleWithProviders > {
+    return <ModuleWithProviders>{
       ngModule: CoreModule,
-      providers: [
-        ...NB_CORE_PROVIDERS,
-      ],
+      providers: [...NB_CORE_PROVIDERS]
     };
   }
 }
