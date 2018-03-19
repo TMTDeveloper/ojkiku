@@ -5,6 +5,9 @@ import * as moment from "moment";
 import { BackendService } from "../../../@core/data/backend.service";
 import { LocalDataSource } from "ng2-smart-table";
 import { Subject } from "rxjs/Subject";
+import { isNullOrUndefined } from "util";
+import { Location } from "@angular/common";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "ngx-modal",
@@ -15,6 +18,8 @@ export class RbbComponent {
   modalData: any;
   source: LocalDataSource = new LocalDataSource();
   tableData: any[];
+  ikuNo: any;
+  resume: boolean;
   constructor(
     private activeModal: NgbActiveModal,
     public service: BackendService
@@ -23,10 +28,10 @@ export class RbbComponent {
   }
 
   closeModal() {
-    this.activeModal.close();
+    this.activeModal.close(this.tableData);
   }
 
-  settings:any ={
+  settings: any = {
     mode: "inline",
     sort: true,
     hideSubHeader: true,
@@ -38,8 +43,8 @@ export class RbbComponent {
     pager: {
       display: false,
       perPage: 30
-    },
-  }
+    }
+  };
 
   loadData() {
     this.service.getreq("M_BANKS").subscribe(
@@ -74,6 +79,7 @@ export class RbbComponent {
               };
 
               let tempData = {
+                NO_IKU: this.ikuNo,
                 NO: Number(data) + 1,
                 BANK: bank[data].DESCRIPTION,
                 BANK_NO: bank[data].BANK_NO,
@@ -88,9 +94,9 @@ export class RbbComponent {
               };
 
               tempTable.push(tempData);
-              this.tableData = tempTable;
+              this.resume ? null : (this.tableData = tempTable);
             }
-            this.settings={
+            this.settings = {
               mode: "inline",
               sort: true,
               hideSubHeader: true,
@@ -117,7 +123,7 @@ export class RbbComponent {
                   editable: false
                 },
                 LST_YEAR_TW3: {
-                  title: "TW 3 "+(Number(this.modalData.year)-1).toString(),
+                  title: "TW 3 " + (Number(this.modalData.year) - 1).toString(),
                   type: "number",
                   filter: false,
                   editable: false,
@@ -125,12 +131,14 @@ export class RbbComponent {
                     if (isNaN(value)) {
                       return 0;
                     } else {
-                      return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                      return value
+                        .toString()
+                        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                     }
                   }
                 },
                 LST_YEAR_TW4: {
-                  title: "TW 4 "+(Number(this.modalData.year)-1).toString(),
+                  title: "TW 4 " + (Number(this.modalData.year) - 1).toString(),
                   type: "number",
                   filter: false,
                   editable: false,
@@ -138,7 +146,9 @@ export class RbbComponent {
                     if (isNaN(value)) {
                       return 0;
                     } else {
-                      return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                      return value
+                        .toString()
+                        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                     }
                   }
                 },
@@ -211,7 +221,9 @@ export class RbbComponent {
                     if (isNaN(value)) {
                       return 0;
                     } else {
-                      return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                      return value
+                        .toString()
+                        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                     }
                   }
                 },
@@ -224,13 +236,15 @@ export class RbbComponent {
                     if (isNaN(value)) {
                       return 0;
                     } else {
-                      return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                      return value
+                        .toString()
+                        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                     }
                   }
                 }
               }
             };
-            
+
             this.source.load(this.tableData);
           });
       },
@@ -292,8 +306,15 @@ export class IkuHeaderComponent {
   ikuIds: number[] = [1];
   @ViewChild("myForm") private myForm: NgForm;
   ikuData: any;
+  detailData: any;
+  activeModal: any;
+  tableData: Array<any> = new Array();
 
-  constructor(private modalService: NgbModal, public service: BackendService) {
+  constructor(
+    private modalService: NgbModal,
+    public service: BackendService,
+    public route: Router
+  ) {
     this.loadData();
   }
 
@@ -308,15 +329,14 @@ export class IkuHeaderComponent {
   }
 
   showLargeModal(no_iku) {
-  
-
     const data = {
       year: this.yearPeriode,
-      no_iku: this.myForm.value.iku[no_iku].type,
+      no_iku: this.myForm.value.iku[no_iku].type
     };
-    const activeModal = this.modalService.open(RbbComponent, {
+    this.activeModal = this.modalService.open(RbbComponent, {
       windowClass: "xlModal",
-      container: "nb-layout"
+      container: "nb-layout",
+      backdrop: "static"
     });
 
     var a = {
@@ -332,8 +352,34 @@ export class IkuHeaderComponent {
       }
     };
 
-    activeModal.componentInstance.modalHeader = "Large Modal";
-    activeModal.componentInstance.modalData = data;
+    this.tableData.forEach((data, i) => {
+      if (data[0].NO_IKU == this.myForm.value.iku[no_iku].type) {
+        this.activeModal.componentInstance.resume = true;
+        this.activeModal.componentInstance.tableData = this.tableData[i];
+      }
+    });
+
+    this.activeModal.componentInstance.modalHeader = "Large Modal";
+    this.activeModal.componentInstance.modalData = data;
+    this.activeModal.componentInstance.ikuNo = this.myForm.value.iku[
+      no_iku
+    ].type;
+    this.activeModal.result.then(async response => {
+      console.log("ini no" + response[0].NO_IKU);
+
+      if (response[0].NO_IKU !== "") {
+        await this.tableData.forEach((element, i) => {
+          if (
+            element[0].NO_IKU == response[0].NO_IKU ||
+            element[0].NO_IKU == ""
+          ) {
+            this.tableData.splice(i, 1);
+          }
+        });
+        await this.tableData.push(response);
+      }
+      console.log(JSON.stringify(this.tableData));
+    });
   }
   remove(i: number) {
     this.ikuIds.splice(i, 1);
@@ -343,8 +389,85 @@ export class IkuHeaderComponent {
     this.ikuIds.push(++this.count);
   }
 
-  register(myForm: NgForm) {
-    console.log("Registration successful.");
-    console.log(myForm.value);
+  async register(myForm: NgForm) {
+    let a = [];
+    let lengthData = 0;
+
+    for (let data in this.myForm.value.iku) {
+      if (this.myForm.value.iku[data].type !== "") {
+        console.log(this.myForm.value.iku[data]);
+        lengthData++;
+        a.push(this.myForm.value.iku[data].type);
+
+        let trnHdTargetPost = {
+          YEAR: this.yearPeriode,
+          IKU_TYPE: this.myForm.value.iku[data].type,
+          PERCENTAGE: Number(this.myForm.value.iku[data].percentage),
+          DATE_CREATED: moment(),
+          DATE_MODIFIED: moment()
+        };
+        await this.service
+          .postreq("trn_iku_hd_targets/posttarget", trnHdTargetPost)
+          .subscribe(
+            response => {
+              console.log(JSON.stringify(response));
+            },
+            error => {
+              console.log(error);
+            }
+          );
+      }
+    }
+
+    console.log(a);
+    console.log(this.tableData);
+    let trnHdPost = {
+      YEAR: this.yearPeriode,
+      NO_IKU: lengthData,
+      INPUT: 0,
+      REV: 0,
+      DATE_CREATED: moment(),
+      DATE_MODIFIED: moment()
+    };
+    await this.service
+      .postreq("trn_iku_hds/replaceorcreate", trnHdPost)
+      .subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+        },
+        error => {
+          console.log(error);
+        }
+      );
+
+    await this.tableData.forEach((data, i) => {
+      if (a.find(item => item === data[0].NO_IKU)) {
+        data.forEach((item, i) => {
+          let dataPost = {
+            YEAR: this.yearPeriode,
+            NO_IKU: item.NO_IKU,
+            BANK: item.BANK_NO,
+            TW1: Number(item.TW1),
+            TW2: Number(item.TW2),
+            TW3: Number(item.TW3),
+            TW4: Number(item.TW4),
+            DATE_CREATED: moment(),
+            DATE_MODIFIED: moment()
+          };
+
+          console.log(dataPost);
+
+          this.service.postreq("trn_iku_dts/postdt", dataPost).subscribe(
+            response => {
+              console.log(JSON.stringify(response));
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        });
+      }
+    });
+    await this.route.navigateByUrl("../../pages/iku");
   }
 }

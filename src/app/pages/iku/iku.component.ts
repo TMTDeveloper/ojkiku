@@ -9,6 +9,7 @@ import { BackendService } from "../../@core/data/backend.service";
   templateUrl: "./iku.component.html"
 })
 export class IkuComponent {
+  disableInput: boolean;
   settings = {
     sort: true,
     hideSubHeader: true,
@@ -69,8 +70,14 @@ export class IkuComponent {
   loadData() {
     this.service.getreq("TRN_IKU_HDs").subscribe(response => {
       const data = response;
+      for (let item in data) {
+        data[item].YEAR == moment().format("YYYY")
+          ? (this.disableInput = true)
+          : (this.disableInput = false);
+      }
       console.log(JSON.stringify(data));
       this.source.load(data);
+
       error => {
         console.log(error);
       };

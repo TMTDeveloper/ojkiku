@@ -8,9 +8,11 @@
       <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
       </ng2-smart-table>
     </div>
+
     <div class="container-btn mt-2">
-      <button class="btn btn-success btn-demo" [routerLink]="['./iku-header']" routerLinkActive="active">Input New Period</button>
+      <button class="btn btn-success btn-demo" [routerLink]="['./iku-header']" routerLinkActive="disableInput" [disabled]="disableInput">Input New Period</button>
     </div>
+
   </nb-card-body>
 </nb-card>
 

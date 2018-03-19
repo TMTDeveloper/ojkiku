@@ -31,4 +31,16 @@ export class BackendService {
       .post(this.baseurl + url, body, options)
       .map(res => res.json());
   }
+
+  patchreq(url: string, body) {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    const options = new RequestOptions({
+      headers: headers
+    });
+    return this.http
+      .patch(this.baseurl + url, body, options)
+      .map(res => res.json());
+  }
 }

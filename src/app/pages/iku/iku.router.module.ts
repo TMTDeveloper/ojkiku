@@ -10,7 +10,7 @@ const routes: Routes = [
     children: [
       {
         path: "iku-header",
-        component: IkuHeaderComponent
+        component: IkuHeaderComponent,
       }
     ]
   }

@@ -1,7 +1,7 @@
 <nb-card>
   <nb-card-header>Input New Periode</nb-card-header>
   <nb-card-body>
-    <form #myForm="ngForm">
+    <form #myForm="ngForm" (ngSubmit)="register(myForm)">
       <div class="form-group">
         <label>Periode</label>
         <input type="text" class="form-control" name="yearPeriode" placeholder="2018" disabled>
@@ -63,6 +63,7 @@
         </div>
       </div>
       <pre>{{myForm.value | json}}</pre>
+      <pre> {{tableData | json}}</pre>
     </form>
   </nb-card-body>
 
