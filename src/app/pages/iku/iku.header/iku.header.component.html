@@ -18,7 +18,7 @@
                 <div class="form-group">
                   <label>IKU {{i + 1}}</label>
                   <select class="form-control" name="type" #iku="ngModel" ngModel required>
-                          <option *ngFor="let data of ikuData" value="{{data.NO_IKU}}">{{data.DESCRIPTION}}</option>                
+                    <option *ngFor="let data of ikuData" value="{{data.NO_IKU}}">{{data.DESCRIPTION}}</option>
                   </select>
                 </div>
               </div>
@@ -62,8 +62,7 @@
           </div>
         </div>
       </div>
-      <pre>{{myForm.value | json}}</pre>
-      <pre> {{tableData | json}}</pre>
+
     </form>
   </nb-card-body>
 

@@ -15,7 +15,7 @@ import { NbAuthService } from "@nebular/auth/services/auth.service";
   template: `
     <nb-auth-block>
       <h2 class="title">Sign In</h2>
-      <small class="form-text sub-title">Hello! Sign in with your username or email</small>
+      <small class="form-text sub-title">Hello! Sign in with your user ID</small>
       <form (ngSubmit)="login()" #form="ngForm" autocomplete="nope">
         <div *ngIf="showMessages.error && errors && errors.length > 0 && !submitted"
              class="alert alert-danger" role="alert">
@@ -24,22 +24,12 @@ import { NbAuthService } from "@nebular/auth/services/auth.service";
         </div>
         <div *ngIf="showMessages.success && messages && messages.length > 0 && !submitted"
              class="alert alert-success" role="alert">
-          <div><strong>Hooray!</strong></div>
           <div *ngFor="let message of messages">{{ message }}</div>
         </div>
         <div class="form-group">
-          <label for="input-email" class="sr-only">Email address</label>
-          <input name="email" [(ngModel)]="user.email" id="input-email" pattern=".+@.+\..+"
-                 class="form-control" placeholder="Email address" #email="ngModel"
-                 [class.form-control-danger]="email.invalid && email.touched" autofocus
-                 [required]="getConfigValue('forms.validation.email.required')">
-          <small class="form-text error" *ngIf="email.invalid && email.touched && email.errors?.required">
-            Email is required!
-          </small>
-          <small class="form-text error"
-                 *ngIf="email.invalid && email.touched && email.errors?.pattern">
-            Email should be the real one!
-          </small>
+          <label for="input-user ID" class="sr-only">User ID</label>
+          <input name="email" [(ngModel)]="user.email" id="input-email" 
+                 class="form-control" placeholder="User ID" #email="ngModel" autofocus>
         </div>
         <div class="form-group">
           <label for="input-password" class="sr-only">Password</label>
@@ -88,9 +78,6 @@ import { NbAuthService } from "@nebular/auth/services/auth.service";
             </ng-container>
           </div>
         </ng-container>
-        <small class="form-text">
-          Don't have an account? <a routerLink="../register"><strong>Sign Up</strong></a>
-        </small>
       </div>
     </nb-auth-block>
   `

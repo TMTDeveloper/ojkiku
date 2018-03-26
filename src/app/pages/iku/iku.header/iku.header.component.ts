@@ -468,6 +468,35 @@ export class IkuHeaderComponent {
         });
       }
     });
-    await this.route.navigateByUrl("../../pages/iku");
+
+    await this.tableData.forEach((data, i) => {
+      if (a.find(item => item === data[0].NO_IKU)) {
+        data.forEach((item, i) => {
+          let dataPost = {
+            YEAR: this.yearPeriode,
+            NO_IKU: item.NO_IKU,
+            BANK: item.BANK_NO,
+            TW1: 0,
+            TW2: 0,
+            TW3: 0,
+            TW4: 0,
+            DATE_CREATED: moment(),
+            DATE_MODIFIED: moment()
+          };
+
+          console.log(dataPost);
+
+          this.service.postreq("trn_realisasi_ikus/postdt", dataPost).subscribe(
+            response => {
+              console.log(JSON.stringify(response));
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        });
+      }
+    });
+    await this.route.navigateByUrl("/pages");
   }
 }

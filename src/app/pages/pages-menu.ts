@@ -15,12 +15,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: "Input Realisasi",
     icon: "nb-compose",
-    link: "/pages/iku"
+    link: "/pages/realisasi"
   },
   {
     title: "Reporting",
     icon: "nb-bar-chart",
-    link: "/pages/iku"
+    link: "/pages/report"
   }
 ];
 

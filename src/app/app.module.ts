@@ -15,6 +15,7 @@ import { NgxLoginComponent } from "./@theme/components/auth/login/login.componen
 import { ThemeModule } from "./@theme/theme.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
+import { NB_AUTH_TOKEN_CLASS, NbAuthJWTToken } from '@nebular/auth';
 
 @NgModule({
   declarations: [AppComponent, NgxLoginComponent],
@@ -33,7 +34,8 @@ import { AppComponent } from "./app.component";
     {
       provide: APP_BASE_HREF,
       useValue: "/"
-    }
+    },
+    { provide: NB_AUTH_TOKEN_CLASS, useValue: NbAuthJWTToken }
   ]
 })
 export class AppModule {}

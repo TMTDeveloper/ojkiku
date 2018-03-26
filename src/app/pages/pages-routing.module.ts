@@ -10,6 +10,10 @@ const routes: Routes = [
     component: PagesComponent,
     children: [
       {
+        path: "report",
+        loadChildren: "./report/report.module#ReportModule"
+      },
+      {
         path: "dashboard",
         component: DashboardComponent
       },
@@ -21,6 +25,10 @@ const routes: Routes = [
         path: "",
         redirectTo: "dashboard",
         pathMatch: "full"
+      },
+      {
+        path: "realisasi",
+        loadChildren: "./realisasi/realisasi.module#RealisasiModule"
       }
     ]
   }

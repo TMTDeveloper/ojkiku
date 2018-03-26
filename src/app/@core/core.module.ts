@@ -36,12 +36,15 @@ const NB_CORE_PROVIDERS = [
       email: {
         service: NbEmailPassAuthProvider,
         config: {
-          baseEndpoint: "http://172.20.10.4:3000/api",
+          token: {
+            key: "data.token"
+          },
+          baseEndpoint: "",
           delay: 1,
           login: {
             alwaysFail: false,
             rememberMe: true,
-            endpoint: "/LOGIN_IKUs/login",
+            endpoint: "http://192.168.1.10:3000/api/LOGIN_IKUs/login",
             method: "post",
             redirect: {
               success: "/pages",
@@ -51,7 +54,10 @@ const NB_CORE_PROVIDERS = [
               "Login/Email combination is not correct, please try again."
             ],
             defaultMessages: ["You have been successfully logged in."]
-          }
+          },
+          logout: {
+            endpoint: '',
+          },
         }
       }
     },

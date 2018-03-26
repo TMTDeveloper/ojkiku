@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { NbMenuService, NbSidebarService } from "@nebular/theme";
 import { UserService } from "../../../@core/data/users.service";
 import { AnalyticsService } from "../../../@core/utils/analytics.service";
+import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
 
 @Component({
   selector: "ngx-header",
@@ -14,19 +15,32 @@ export class HeaderComponent implements OnInit {
 
   user: any;
 
-  userMenu = [{ title: "Profile" }, { title: "Log out" }];
+  userMenu = [{ title: "Log out", link: "/auth/logout" }];
 
   constructor(
     private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
     private userService: UserService,
-    private analyticsService: AnalyticsService
-  ) {}
+    private analyticsService: AnalyticsService,
+    private authService: NbAuthService
+  ) {
+    this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
+      if (token.isValid()) {
+        console.log(JSON.stringify(token));
+        this.user = token.getPayload(); // here we receive a payload from the token and assigne it to our `user` variable
+        console.log(JSON.stringify(this.user.NAMA));
+      }
+    });
+  }
+
+  onMenuClick(event) {
+    console.log(JSON.stringify(event));
+  }
 
   ngOnInit() {
-    this.userService
-      .getUsers()
-      .subscribe((users: any) => (this.user = users.nick));
+    // this.userService
+    //   .getUsers()
+    //   .subscribe((users: any) => (this.user = users.nick));
   }
 
   toggleSidebar(): boolean {
