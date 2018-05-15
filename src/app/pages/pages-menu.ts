@@ -13,14 +13,45 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link: "/pages/iku"
   },
   {
-    title: "Input Realisasi",
-    icon: "nb-compose",
-    link: "/pages/realisasi"
+    title: "Realisasi",
+    icon: "nb-locked",
+    children: [
+      {
+        title: "Realisasi Quantitative",
+        link: "/pages/realisasi/realisasi-quantitative"
+      },
+      {
+        title: "Realisasi Qualitative",
+        link: "/pages/realisasi/realisasi-qualitative"
+      }
+    ]
   },
   {
     title: "Reporting",
     icon: "nb-bar-chart",
     link: "/pages/report"
+  },
+  {
+    title: "Master",
+    icon: "nb-locked",
+    children: [
+      {
+        title: "Bank",
+        link: "/pages/master/master-bank"
+      },
+      {
+        title: "User",
+        link: "/pages/master/master-user"
+      },
+      {
+        title: "User Bank",
+        link: "/pages/master/user-bank"
+      },
+      {
+        title: "Iku",
+        link: "/pages/master/iku"
+      }
+    ]
   }
 ];
 

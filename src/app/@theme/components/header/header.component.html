@@ -12,6 +12,6 @@
 
 <nb-actions size="medium" class="header-container" [class.right]="position === 'normal'" [class.left]="position === 'inverse'">
   <nb-action *nbIsGranted="['view', 'user']">
-    <nb-user [nbContextMenu]="userMenu" [name]="user.NAMA" (menuClick)="onMenuClick($event)" (click)="onMenuClick($event)"></nb-user>
+    <nb-user [nbContextMenu]="userMenu" [name]="user.USER_NAME" (menuClick)="onMenuClick($event)" (click)="onMenuClick($event)"></nb-user>
   </nb-action>
 </nb-actions>

@@ -29,6 +29,10 @@ const routes: Routes = [
       {
         path: "realisasi",
         loadChildren: "./realisasi/realisasi.module#RealisasiModule"
+      },
+      {
+        path: "master",
+        loadChildren: "./master/master.module#MasterModule"
       }
     ]
   }

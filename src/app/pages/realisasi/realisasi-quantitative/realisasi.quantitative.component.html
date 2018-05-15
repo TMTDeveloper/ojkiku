@@ -1,0 +1,35 @@
+<nb-card>
+  <nb-card-header *ngIf="user.BANK==''">Access Denied!</nb-card-header>
+  <nb-card-header *ngIf="user.BANK">Input Realisasi {{user.BANK_DESCRIPTION}} Tahun {{yearPeriode}}</nb-card-header>
+</nb-card>
+
+<div *ngIf="user.BANK!=''">
+  <nb-card *ngFor="let item of data; let i=index;">
+    <nb-card-header>{{item.IKU_NAME}}</nb-card-header>
+    <nb-card-body>
+      <div class="row">
+        <div class="col-sm-5 mt-2">
+          <label>Triwulan 1</label>
+          <input type="number" [(ngModel)]="data[i].TW1" class="form-control">
+        </div>
+        <div class="col-sm-5 mt-2">
+          <label>Triwulan 2</label>
+          <input type="number" [(ngModel)]="data[i].TW2" class="form-control">
+        </div>
+        <div class="col-sm-5 mt-2">
+          <label>Triwulan 3</label>
+          <input type="number" [(ngModel)]="data[i].TW3" class="form-control">
+        </div>
+        <div class="col-sm-5 mt-2">
+          <label>Triwulan 4</label>
+          <input type="number" [(ngModel)]="data[i].TW4" class="form-control">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-5 mt-2">
+          <button type="button" class="btn btn-success" (click)="submit(data[i])"> SUBMIT </button>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</div>

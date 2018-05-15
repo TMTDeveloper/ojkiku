@@ -1,0 +1,9 @@
+<nb-card>
+  <nb-card-header>Bank</nb-card-header>
+  <nb-card-body>
+    <div class="form-group">
+      <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="submit($event)" (createConfirm)="addData($event)">
+      </ng2-smart-table>
+    </div>
+  </nb-card-body>
+</nb-card>

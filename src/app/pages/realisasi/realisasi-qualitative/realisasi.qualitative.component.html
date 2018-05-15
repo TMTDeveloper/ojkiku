@@ -1,0 +1,21 @@
+<nb-card>
+  <nb-card-header>Input Realisasi Qualitative</nb-card-header>
+  <nb-card-body>
+    <form #myForm="ngForm" (ngSubmit)="register(myForm)">
+  
+      <div ngModelGroup="iku">
+        <div *ngFor="let ikuId of ikuIds; let i=index;">
+          <div ngModelGroup="{{ikuId}}">
+            <div class="row">
+             
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </form>
+  </nb-card-body>
+
+</nb-card>
