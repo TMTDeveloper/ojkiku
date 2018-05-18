@@ -8,25 +8,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true
   },
   {
-    title: "Input IKU",
-    icon: "nb-locked",
-    link: "/pages/iku"
-  },
-  {
-    title: "Realisasi",
-    icon: "nb-locked",
-    children: [
-      {
-        title: "Realisasi Quantitative",
-        link: "/pages/realisasi/realisasi-quantitative"
-      },
-      {
-        title: "Realisasi Qualitative",
-        link: "/pages/realisasi/realisasi-qualitative"
-      }
-    ]
-  },
-  {
     title: "Reporting",
     icon: "nb-bar-chart",
     link: "/pages/report"
@@ -50,6 +31,28 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title: "Iku",
         link: "/pages/master/iku"
+      }
+    ]
+  },
+  {
+    title: "Transaction",
+    icon: "nb-locked",
+    children: [
+      {
+        title: "Indicator Quantitative",
+        link: "/pages/transaction/indicator-quantitative"
+      },
+      {
+        title: "Realisasi Quantitative",
+        link: "/pages/transaction/realisasi-quantitative"
+      },
+      {
+        title: "Indicator Qualitative",
+        link: "/pages/transaction/indicator-qualitative"
+      },
+      {
+        title: "Realisasi Qualitative",
+        link: "/pages/transaction/realisasi-qualitative"
       }
     ]
   }
