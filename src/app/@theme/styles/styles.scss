@@ -18,7 +18,7 @@
   .custom-control .custom-control-indicator {
     border-radius: 50%; // TODO: quickfix for https://github.com/akveo/nebular/issues/275
   }
-  .xlModal>.modal-dialog {
+  .xlModal > .modal-dialog {
     max-width: 1490px !important;
     min-width: 971px !important;
     width: 95% !important;
