@@ -36,7 +36,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
     title: "Transaction",
-    icon: "nb-locked",
+    icon: "nb-compose",
     children: [
       {
         title: "Indicator Quantitative",

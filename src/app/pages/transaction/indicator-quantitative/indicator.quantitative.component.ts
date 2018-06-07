@@ -9,7 +9,8 @@ import { isNullOrUndefined } from "util";
 import { IndicatorQuantitativeModalComponent } from "./modal/indicator.quantitative.modal.component";
 @Component({
   selector: "ngx-indicator-quantitative",
-  templateUrl: "./indicator.quantitative.component.html"
+  templateUrl: "./indicator.quantitative.component.html",
+  styleUrls: ["./indicator.quantitative.component.scss"]
 })
 export class IndicatorQuantitativeComponent {
   @ViewChild("myForm") private myForm: NgForm;
@@ -58,21 +59,28 @@ export class IndicatorQuantitativeComponent {
         type: "string",
         filter: false,
         editable: false,
-        width: "30%"
+        width: "25%"
       },
       NILAI_INDICATOR_1: {
         title: "Nilai 1",
         type: "number",
         filter: false,
         editable: true,
-        width: "30%"
+        width: "25%"
       },
       NILAI_INDICATOR_2: {
         title: "Nilai 2",
         type: "number",
         filter: false,
         editable: true,
-        width: "30%"
+        width: "25%"
+      },
+      NILAI_INDICATOR_3: {
+        title: "Nilai 3",
+        type: "number",
+        filter: false,
+        editable: true,
+        width: "25%"
       }
     }
   };
@@ -150,7 +158,7 @@ export class IndicatorQuantitativeComponent {
           this.source.load(this.tabledata);
         }
       },
-      error => {}
+      error => { }
     );
   }
 

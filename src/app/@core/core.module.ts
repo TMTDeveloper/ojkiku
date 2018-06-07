@@ -44,7 +44,7 @@ const NB_CORE_PROVIDERS = [
           login: {
             alwaysFail: false,
             rememberMe: true,
-            endpoint: "http://localhost:3000/api/LOGIN_IKUs/login",
+            endpoint: "http://35.197.155.149/api/LOGIN_IKUs/login",
             method: "post",
             redirect: {
               success: "/pages",
