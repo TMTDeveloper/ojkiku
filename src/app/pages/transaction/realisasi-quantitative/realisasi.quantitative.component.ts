@@ -102,84 +102,6 @@ export class RealisasiQuantitativeComponent {
         editable: false,
         width: "30%"
       },
-      NILAI_INDICATOR_2: {
-        title: "Indikator 2",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      NILAI_REALISASI_2: {
-        title: "Realisasi 2",
-        type: "number",
-        filter: false,
-        editable: true,
-        width: "30%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      RESULT2: {
-        title: "Result 2",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%"
-      },
-      NILAI_INDICATOR_3: {
-        title: "Indikator 3",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      NILAI_REALISASI_3: {
-        title: "Realisasi 3",
-        type: "number",
-        filter: false,
-        editable: true,
-        width: "30%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      RESULT3: {
-        title: "Result 3",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%"
-      },
       PENCAPAIAN: {
         title: "Pencapaian",
         type: "number",
@@ -216,6 +138,7 @@ export class RealisasiQuantitativeComponent {
     bankData: [],
     realisasiDetail: []
   };
+  
 
   constructor(
     private modalService: NgbModal,
@@ -223,7 +146,19 @@ export class RealisasiQuantitativeComponent {
     public service: BackendService,
   ) {
     this.loadData();
+    
   }
+
+
+clone(obj) {
+  if (null == obj || "object" != typeof obj) return obj;
+  var copy = obj.constructor();
+  for (var attr in obj) {
+      if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+  }
+  return copy;
+}
+
   loadData() {
     this.service.getreq("mst_ikus").subscribe(response => {
       if (response != null) {
@@ -266,7 +201,7 @@ export class RealisasiQuantitativeComponent {
             item.PERIODE == this.formData.periodeSelected
           );
         });
-
+        
         if (arr[0] != null) {
           let defaultValueSettings = {
             indikator1: "Indikator 1",
@@ -364,6 +299,313 @@ export class RealisasiQuantitativeComponent {
                 editable: false,
                 width: "30%"
               },
+              PENCAPAIAN: {
+                title: "Pencapaian",
+                type: "number",
+                filter: false,
+                editable: false,
+                width: "30%"
+              }
+            }
+          };
+          this.settings.columns.NILAI_INDICATOR_1.title = "test";
+                    
+          let satuColumn = {
+            add: {
+              addButtonContent: '<i class="nb-plus"></i>',
+              createButtonContent: '<i class="nb-checkmark"></i>',
+              cancelButtonContent: '<i class="nb-close"></i>',
+              confirmCreate: false
+            },
+            edit: {
+              editButtonContent: '<i class="nb-edit"></i>',
+              saveButtonContent: '<i class="nb-checkmark"></i>',
+              cancelButtonContent: '<i class="nb-close"></i>',
+              confirmSave: true
+            },
+            delete: {
+              deleteButtonContent: '<i class="nb-trash"></i>',
+              confirmDelete: false
+            },
+            mode: "inline",
+            sort: true,
+            hideSubHeader: true,
+            actions: {
+              add: false,
+              edit: true,
+              delete: false,
+              position: "right",
+              columnTitle: "Modify",
+              width: "10%"
+            },
+            pager: {
+              display: true,
+              perPage: 30
+            },
+            columns: {
+              DESC_BANK: {
+                title: "Bank",
+                type: "string",
+                filter: false,
+                editable: false,
+                width: "30%"
+              },
+              NILAI_INDICATOR_1: {
+                title: defaultValueSettings.indikator1,
+                type: "number",
+                filter: false,
+                editable: false,
+                width: "30%",
+                valuePrepareFunction: value => {
+                  if (isNaN(value)) {
+                    return 0;
+                  } else {
+                    return Number(value)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                  }
+                }
+              },
+              NILAI_REALISASI_1: {
+                title: defaultValueSettings.realisasi1,
+                type: "number",
+                filter: false,
+                editable: true,
+                width: "30%",
+                valuePrepareFunction: value => {
+                  if (isNaN(value)) {
+                    return 0;
+                  } else {
+                    return Number(value)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                  }
+                }
+              },
+              RESULT1: {
+                title: "Result 1",
+                type: "number",
+                filter: false,
+                editable: false,
+                width: "30%"
+              },
+              PENCAPAIAN: {
+                title: "Pencapaian",
+                type: "number",
+                filter: false,
+                editable: false,
+                width: "30%"
+              }
+            }
+          };
+          let duaColumn = {
+            add: {
+              addButtonContent: '<i class="nb-plus"></i>',
+              createButtonContent: '<i class="nb-checkmark"></i>',
+              cancelButtonContent: '<i class="nb-close"></i>',
+              confirmCreate: false
+            },
+            edit: {
+              editButtonContent: '<i class="nb-edit"></i>',
+              saveButtonContent: '<i class="nb-checkmark"></i>',
+              cancelButtonContent: '<i class="nb-close"></i>',
+              confirmSave: true
+            },
+            delete: {
+              deleteButtonContent: '<i class="nb-trash"></i>',
+              confirmDelete: false
+            },
+            mode: "inline",
+            sort: true,
+            hideSubHeader: true,
+            actions: {
+              add: false,
+              edit: true,
+              delete: false,
+              position: "right",
+              columnTitle: "Modify",
+              width: "10%"
+            },
+            pager: {
+              display: true,
+              perPage: 30
+            },
+            columns: {
+              DESC_BANK: {
+                title: "Bank",
+                type: "string",
+                filter: false,
+                editable: false,
+                width: "30%"
+              },
+              NILAI_INDICATOR_1: {
+                title: defaultValueSettings.indikator1,
+                type: "number",
+                filter: false,
+                editable: false,
+                width: "30%",
+                valuePrepareFunction: value => {
+                  if (isNaN(value)) {
+                    return 0;
+                  } else {
+                    return Number(value)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                  }
+                }
+              },
+              NILAI_REALISASI_1: {
+                title: defaultValueSettings.realisasi1,
+                type: "number",
+                filter: false,
+                editable: true,
+                width: "30%",
+                valuePrepareFunction: value => {
+                  if (isNaN(value)) {
+                    return 0;
+                  } else {
+                    return Number(value)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                  }
+                }
+              },
+              RESULT1: {
+                title: "Result 1",
+                type: "number",
+                filter: false,
+                editable: false,
+                width: "30%"
+              },
+              
+              NILAI_INDICATOR_2: {
+                title: defaultValueSettings.indikator2,
+                type: "number",
+                filter: false,
+                editable: false,
+                width: "30%",
+                valuePrepareFunction: value => {
+                  if (isNaN(value)) {
+                    return 0;
+                  } else {
+                    return Number(value)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                  }
+                }
+              },
+              NILAI_REALISASI_2: {
+                title: defaultValueSettings.realisasi2,
+                type: "number",
+                filter: false,
+                editable: true,
+                width: "30%",
+                valuePrepareFunction: value => {
+                  if (isNaN(value)) {
+                    return 0;
+                  } else {
+                    return Number(value)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                  }
+                }
+              },
+              RESULT2: {
+                title: "Result 2",
+                type: "number",
+                filter: false,
+                editable: false,
+                width: "30%"
+              },
+              PENCAPAIAN: {
+                title: "Pencapaian",
+                type: "number",
+                filter: false,
+                editable: false,
+                width: "30%"
+              }
+            }
+          };
+          let tigaColumn = {
+            add: {
+              addButtonContent: '<i class="nb-plus"></i>',
+              createButtonContent: '<i class="nb-checkmark"></i>',
+              cancelButtonContent: '<i class="nb-close"></i>',
+              confirmCreate: false
+            },
+            edit: {
+              editButtonContent: '<i class="nb-edit"></i>',
+              saveButtonContent: '<i class="nb-checkmark"></i>',
+              cancelButtonContent: '<i class="nb-close"></i>',
+              confirmSave: true
+            },
+            delete: {
+              deleteButtonContent: '<i class="nb-trash"></i>',
+              confirmDelete: false
+            },
+            mode: "inline",
+            sort: true,
+            hideSubHeader: true,
+            actions: {
+              add: false,
+              edit: true,
+              delete: false,
+              position: "right",
+              columnTitle: "Modify",
+              width: "10%"
+            },
+            pager: {
+              display: true,
+              perPage: 30
+            },
+            columns: {
+              DESC_BANK: {
+                title: "Bank",
+                type: "string",
+                filter: false,
+                editable: false,
+                width: "30%"
+              },
+              NILAI_INDICATOR_1: {
+                title: defaultValueSettings.indikator1,
+                type: "number",
+                filter: false,
+                editable: false,
+                width: "30%",
+                valuePrepareFunction: value => {
+                  if (isNaN(value)) {
+                    return 0;
+                  } else {
+                    return Number(value)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                  }
+                }
+              },
+              NILAI_REALISASI_1: {
+                title: defaultValueSettings.realisasi1,
+                type: "number",
+                filter: false,
+                editable: true,
+                width: "30%",
+                valuePrepareFunction: value => {
+                  if (isNaN(value)) {
+                    return 0;
+                  } else {
+                    return Number(value)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                  }
+                }
+              },
+              RESULT1: {
+                title: "Result 1",
+                type: "number",
+                filter: false,
+                editable: false,
+                width: "30%"
+              },
+              
               NILAI_INDICATOR_2: {
                 title: defaultValueSettings.indikator2,
                 type: "number",
@@ -450,7 +692,15 @@ export class RealisasiQuantitativeComponent {
                 width: "30%"
               }
             }
-          };
+          };          
+
+          if(arr[0].INDIKATOR_2_DESC != ""){
+            this.settings = Object.assign(this.settings, duaColumn );
+          }
+          if(arr[0].INDIKATOR_3_DESC != ""){
+            this.settings = Object.assign(this.settings, tigaColumn );
+          }
+
 
           this.formData.indicatorId = arr[0].KODE_INDIKATOR;
           this.formData.threshold = arr[0].THRESHOLD;
