@@ -10,7 +10,9 @@ import { IndicatorQuantitativeModalComponent } from "./modal/indicator.quantitat
 @Component({
   selector: "ngx-indicator-quantitative",
   templateUrl: "./indicator.quantitative.component.html",
-  styleUrls: ["./indicator.quantitative.component.scss"]
+  styles: [`input:disabled {
+    background-color: rgba(211,211,211, 0.6);
+ }`]
 })
 export class IndicatorQuantitativeComponent {
   @ViewChild("myForm") private myForm: NgForm;
