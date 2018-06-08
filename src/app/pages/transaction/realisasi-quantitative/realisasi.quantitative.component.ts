@@ -138,7 +138,12 @@ export class RealisasiQuantitativeComponent {
     bankData: [],
     realisasiDetail: []
   };
-  
+  nilaiIndicatorCheck = {
+    indicatorbool1 : false,
+    indicatorbool2 : false,
+    indicatorbool3 : false,
+  }
+
 
   constructor(
     private modalService: NgbModal,
@@ -146,18 +151,18 @@ export class RealisasiQuantitativeComponent {
     public service: BackendService,
   ) {
     this.loadData();
-    
+
   }
 
 
-clone(obj) {
-  if (null == obj || "object" != typeof obj) return obj;
-  var copy = obj.constructor();
-  for (var attr in obj) {
+  clone(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
       if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
   }
-  return copy;
-}
 
   loadData() {
     this.service.getreq("mst_ikus").subscribe(response => {
@@ -201,9 +206,9 @@ clone(obj) {
             item.PERIODE == this.formData.periodeSelected
           );
         });
-        
+
         if (arr[0] != null) {
-          let defaultValueSettings = {
+          var defaultValueSettings = {
             indikator1: "Indikator 1",
             indikator2: "Indikator 2",
             indikator3: "Indikator 3",
@@ -211,15 +216,18 @@ clone(obj) {
             realisasi2: "Realisasi 2",
             realisasi3: "Realisasi 3",
           };
-          if(arr[0].INDIKATOR_1_DESC != ""){
+          if (arr[0].INDIKATOR_1_DESC != "") {
             defaultValueSettings.indikator1 = arr[0].INDIKATOR_1_DESC
-          }
-          if(arr[0].INDIKATOR_2_DESC != ""){
+            this.nilaiIndicatorCheck.indicatorbool1 = true;
+          } else { this.nilaiIndicatorCheck.indicatorbool1 = false; }
+          if (arr[0].INDIKATOR_2_DESC != "") {
             defaultValueSettings.indikator2 = arr[0].INDIKATOR_2_DESC
-          }
-          if(arr[0].INDIKATOR_3_DESC != ""){
+            this.nilaiIndicatorCheck.indicatorbool2 = true;
+          } else { this.nilaiIndicatorCheck.indicatorbool2 = false; }
+          if (arr[0].INDIKATOR_3_DESC != "") {
             defaultValueSettings.indikator3 = arr[0].INDIKATOR_3_DESC
-          }
+            this.nilaiIndicatorCheck.indicatorbool3 = true;
+          } else { this.nilaiIndicatorCheck.indicatorbool3 = false; }
           this.settings = {
             add: {
               addButtonContent: '<i class="nb-plus"></i>',
@@ -308,8 +316,8 @@ clone(obj) {
               }
             }
           };
-          this.settings.columns.NILAI_INDICATOR_1.title = "test";
-                    
+          
+
           let satuColumn = {
             add: {
               addButtonContent: '<i class="nb-plus"></i>',
@@ -477,7 +485,7 @@ clone(obj) {
                 editable: false,
                 width: "30%"
               },
-              
+
               NILAI_INDICATOR_2: {
                 title: defaultValueSettings.indikator2,
                 type: "number",
@@ -605,7 +613,7 @@ clone(obj) {
                 editable: false,
                 width: "30%"
               },
-              
+
               NILAI_INDICATOR_2: {
                 title: defaultValueSettings.indikator2,
                 type: "number",
@@ -692,13 +700,13 @@ clone(obj) {
                 width: "30%"
               }
             }
-          };          
+          };
 
-          if(arr[0].INDIKATOR_2_DESC != ""){
-            this.settings = Object.assign(this.settings, duaColumn );
+          if (arr[0].INDIKATOR_2_DESC != "") {
+            this.settings = Object.assign(this.settings, duaColumn);
           }
-          if(arr[0].INDIKATOR_3_DESC != ""){
-            this.settings = Object.assign(this.settings, tigaColumn );
+          if (arr[0].INDIKATOR_3_DESC != "") {
+            this.settings = Object.assign(this.settings, tigaColumn);
           }
 
 
@@ -802,6 +810,28 @@ clone(obj) {
     } else {
       event.newData.PENCAPAIAN = 0;
     }
+        
+    if (this.nilaiIndicatorCheck.indicatorbool1 === true) {
+      if (parseInt(event.newData.RESULT1) > this.formData.threshold) {
+        event.newData.PENCAPAIAN = 1;
+      } else {
+        event.newData.PENCAPAIAN = 0;
+      }
+    } 
+    if (this.nilaiIndicatorCheck.indicatorbool2 === true) {
+      if (parseInt(event.newData.RESULT1) > this.formData.threshold && parseInt(event.newData.RESULT2) > this.formData.threshold ) {
+        event.newData.PENCAPAIAN = 1;
+      } else {
+        event.newData.PENCAPAIAN = 0;
+      }
+    } 
+    if (this.nilaiIndicatorCheck.indicatorbool3 === true) {
+      if (parseInt(event.newData.RESULT1) > this.formData.threshold && parseInt(event.newData.RESULT2) > this.formData.threshold && parseInt(event.newData.RESULT3) > this.formData.threshold) {
+        event.newData.PENCAPAIAN = 1;
+      } else {
+        event.newData.PENCAPAIAN = 0;
+      }
+    } 
     event.confirm.resolve(event.newData);
   }
 }
