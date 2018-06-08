@@ -1,27 +1,11 @@
-import {
-  Component,
-  ViewChild
-} from "@angular/core";
-import {
-  LocalDataSource
-} from "ng2-smart-table";
-import {
-  NgForm
-} from "@angular/forms";
-import {
-  NgbActiveModal,
-  NgbModal
-} from "@ng-bootstrap/ng-bootstrap";
+import { Component, ViewChild } from "@angular/core";
+import { LocalDataSource } from "ng2-smart-table";
+import { NgForm } from "@angular/forms";
+import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import * as moment from "moment";
-import {
-  ToastrService
-} from "ngx-toastr";
-import {
-  BackendService
-} from "../../../@core/data/backend.service";
-import {
-  isNullOrUndefined
-} from "util";
+import { ToastrService } from "ngx-toastr";
+import { BackendService } from "../../../@core/data/backend.service";
+import { isNullOrUndefined } from "util";
 
 @Component({
   selector: "ngx-realisasi-quantitative",
@@ -80,7 +64,7 @@ export class RealisasiQuantitativeComponent {
         width: "30%"
       },
       NILAI_INDICATOR_1: {
-        title: "indi 1",
+        title: "Indikator 1",
         type: "number",
         filter: false,
         editable: false,
@@ -119,7 +103,7 @@ export class RealisasiQuantitativeComponent {
         width: "30%"
       },
       NILAI_INDICATOR_2: {
-        title: "indi 2",
+        title: "Indikator 2",
         type: "number",
         filter: false,
         editable: false,
@@ -158,7 +142,7 @@ export class RealisasiQuantitativeComponent {
         width: "30%"
       },
       NILAI_INDICATOR_3: {
-        title: "indi 3",
+        title: "Indikator 3",
         type: "number",
         filter: false,
         editable: false,
@@ -273,8 +257,6 @@ export class RealisasiQuantitativeComponent {
 
 
   generateDetail() {
-
-
     this.service.getreq("trn_indicator_qns").subscribe(response => {
       if (response != null) {
         let arr = response.filter(item => {
@@ -286,6 +268,23 @@ export class RealisasiQuantitativeComponent {
         });
 
         if (arr[0] != null) {
+          let defaultValueSettings = {
+            indikator1: "Indikator 1",
+            indikator2: "Indikator 2",
+            indikator3: "Indikator 3",
+            realisasi1: "Realisasi 1",
+            realisasi2: "Realisasi 2",
+            realisasi3: "Realisasi 3",
+          };
+          if(arr[0].INDIKATOR_1_DESC != ""){
+            defaultValueSettings.indikator1 = arr[0].INDIKATOR_1_DESC
+          }
+          if(arr[0].INDIKATOR_2_DESC != ""){
+            defaultValueSettings.indikator2 = arr[0].INDIKATOR_2_DESC
+          }
+          if(arr[0].INDIKATOR_3_DESC != ""){
+            defaultValueSettings.indikator3 = arr[0].INDIKATOR_3_DESC
+          }
           this.settings = {
             add: {
               addButtonContent: '<i class="nb-plus"></i>',
@@ -327,7 +326,7 @@ export class RealisasiQuantitativeComponent {
                 width: "30%"
               },
               NILAI_INDICATOR_1: {
-                title: arr[0].INDIKATOR_1_DESC,
+                title: defaultValueSettings.indikator1,
                 type: "number",
                 filter: false,
                 editable: false,
@@ -343,7 +342,7 @@ export class RealisasiQuantitativeComponent {
                 }
               },
               NILAI_REALISASI_1: {
-                title: arr[0].REALISASI_1_DESC,
+                title: defaultValueSettings.realisasi1,
                 type: "number",
                 filter: false,
                 editable: true,
@@ -366,7 +365,7 @@ export class RealisasiQuantitativeComponent {
                 width: "30%"
               },
               NILAI_INDICATOR_2: {
-                title: arr[0].INDIKATOR_2_DESC,
+                title: defaultValueSettings.indikator2,
                 type: "number",
                 filter: false,
                 editable: false,
@@ -382,7 +381,7 @@ export class RealisasiQuantitativeComponent {
                 }
               },
               NILAI_REALISASI_2: {
-                title: arr[0].REALISASI_2_DESC,
+                title: defaultValueSettings.realisasi2,
                 type: "number",
                 filter: false,
                 editable: true,
@@ -405,7 +404,7 @@ export class RealisasiQuantitativeComponent {
                 width: "30%"
               },
               NILAI_INDICATOR_3: {
-                title: arr[0].INDIKATOR_3_DESC,
+                title: defaultValueSettings.indikator3,
                 type: "number",
                 filter: false,
                 editable: false,
@@ -421,7 +420,7 @@ export class RealisasiQuantitativeComponent {
                 }
               },
               NILAI_REALISASI_3: {
-                title: arr[0].REALISASI_3_DESC,
+                title: defaultValueSettings.realisasi3,
                 type: "number",
                 filter: false,
                 editable: true,
@@ -490,13 +489,11 @@ export class RealisasiQuantitativeComponent {
                       return item.ID_BANK == element.KODE_BANK;
                     })[0].DESCRIPTION
                   };
-
                   realisasiDetail.push(detail);
                 });
                 this.tabledata = realisasiDetail;
                 this.formData.realisasiDetail = realisasiDetail;
                 this.source.load(this.tabledata);
-
               }
             }
           });
@@ -547,12 +544,12 @@ export class RealisasiQuantitativeComponent {
   }
 
   editConfirm(event) {
-    event.newData.RESULT1 = ( event.newData.NILAI_REALISASI_1 / event.newData.NILAI_INDICATOR_1 * 100 ).toFixed(2) + "%";
-    event.newData.RESULT2 = ( event.newData.NILAI_REALISASI_2 / event.newData.NILAI_INDICATOR_2 * 100 ).toFixed(2) + "%";
-    event.newData.RESULT3 = ( event.newData.NILAI_REALISASI_3 / event.newData.NILAI_INDICATOR_3 * 100 ).toFixed(2) + "%";
-    if(parseInt(event.newData.RESULT1) > this.formData.threshold && parseInt(event.newData.RESULT2) > this.formData.threshold && parseInt(event.newData.RESULT3) > this.formData.threshold){
+    event.newData.RESULT1 = (event.newData.NILAI_REALISASI_1 / event.newData.NILAI_INDICATOR_1 * 100).toFixed(2) + "%";
+    event.newData.RESULT2 = (event.newData.NILAI_REALISASI_2 / event.newData.NILAI_INDICATOR_2 * 100).toFixed(2) + "%";
+    event.newData.RESULT3 = (event.newData.NILAI_REALISASI_3 / event.newData.NILAI_INDICATOR_3 * 100).toFixed(2) + "%";
+    if (parseInt(event.newData.RESULT1) > this.formData.threshold && parseInt(event.newData.RESULT2) > this.formData.threshold && parseInt(event.newData.RESULT3) > this.formData.threshold) {
       event.newData.PENCAPAIAN = 1;
-    } else{
+    } else {
       event.newData.PENCAPAIAN = 0;
     }
     event.confirm.resolve(event.newData);

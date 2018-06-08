@@ -7,6 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
 import { IndicatorQuantitativeModalComponent } from "./modal/indicator.quantitative.modal.component";
+
 @Component({
   selector: "ngx-indicator-quantitative",
   templateUrl: "./indicator.quantitative.component.html",
@@ -14,6 +15,7 @@ import { IndicatorQuantitativeModalComponent } from "./modal/indicator.quantitat
     background-color: rgba(211,211,211, 0.6);
  }`]
 })
+
 export class IndicatorQuantitativeComponent {
   @ViewChild("myForm") private myForm: NgForm;
 
