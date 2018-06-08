@@ -26,7 +26,9 @@ import {
 @Component({
   selector: "ngx-realisasi-quantitative",
   templateUrl: "./realisasi.quantitative.component.html",
-  //styles: [``]
+  styles: [`input:disabled {
+    background-color: rgba(211,211,211, 0.6);
+ }`]
 })
 export class RealisasiQuantitativeComponent {
   @ViewChild("myForm") private myForm: NgForm;
@@ -35,7 +37,7 @@ export class RealisasiQuantitativeComponent {
 
   tabledata: any[] = [];
 
-    subscription: any;
+  subscription: any;
   activeModal: any;
   settings = {
     add: {
@@ -202,24 +204,24 @@ export class RealisasiQuantitativeComponent {
         width: "30%"
       }
     }
-   };
+  };
   formData = {
     periode: [{
-        id: "TW1",
-        desc: "Triwulan 1"
-      },
-      {
-        id: "TW2",
-        desc: "Triwulan 2"
-      },
-      {
-        id: "TW3",
-        desc: "Triwulan 3"
-      },
-      {
-        id: "TW4",
-        desc: "Triwulan 4"
-      }
+      id: "TW1",
+      desc: "Triwulan 1"
+    },
+    {
+      id: "TW2",
+      desc: "Triwulan 2"
+    },
+    {
+      id: "TW3",
+      desc: "Triwulan 3"
+    },
+    {
+      id: "TW4",
+      desc: "Triwulan 4"
+    }
     ],
     periodeSelected: "",
     ikuData: [],
@@ -268,10 +270,10 @@ export class RealisasiQuantitativeComponent {
     });
   }
 
- 
+
 
   generateDetail() {
-    
+
 
     this.service.getreq("trn_indicator_qns").subscribe(response => {
       if (response != null) {
@@ -341,7 +343,7 @@ export class RealisasiQuantitativeComponent {
                 }
               },
               NILAI_REALISASI_1: {
-                title: "Realisasi 1",
+                title: arr[0].REALISASI_1_DESC,
                 type: "number",
                 filter: false,
                 editable: true,
@@ -380,7 +382,7 @@ export class RealisasiQuantitativeComponent {
                 }
               },
               NILAI_REALISASI_2: {
-                title: "Realisasi 2",
+                title: arr[0].REALISASI_2_DESC,
                 type: "number",
                 filter: false,
                 editable: true,
@@ -419,7 +421,7 @@ export class RealisasiQuantitativeComponent {
                 }
               },
               NILAI_REALISASI_3: {
-                title: "Realisasi 3",
+                title: arr[0].REALISASI_3_DESC,
                 type: "number",
                 filter: false,
                 editable: true,
@@ -450,18 +452,9 @@ export class RealisasiQuantitativeComponent {
               }
             }
           };
-          
-
-    
-
-          //this.settings.columns.NILAI_INDICATOR_1.title = arr[0].INDIKATOR_1_DESC;
-          //this.settings.columns.NILAI_INDICATOR_2.title = arr[0].INDIKATOR_2_DESC;
-          //this.settings.columns.NILAI_INDICATOR_3.title = arr[0].INDIKATOR_3_DESC;
-
-
-    
 
           this.formData.indicatorId = arr[0].KODE_INDIKATOR;
+          this.formData.threshold = arr[0].THRESHOLD;
           this.service.getreq("trn_indicator_qn_dtls").subscribe(response => {
             if (response != null) {
               let arrDtl = response.filter(item => {
@@ -503,7 +496,7 @@ export class RealisasiQuantitativeComponent {
                 this.tabledata = realisasiDetail;
                 this.formData.realisasiDetail = realisasiDetail;
                 this.source.load(this.tabledata);
-              
+
               }
             }
           });
@@ -522,7 +515,7 @@ export class RealisasiQuantitativeComponent {
       TAHUN_REALISASI: this.formData.yearPeriode,
       PERIODE: this.formData.periodeSelected,
       KODE_INDIKATOR: this.formData.indicatorId,
-      PENCAIPAIAN: 0,
+      PENCAPAIAN: 0,
       USER_CREATED: "Admin",
       DATETIME_CREATED: moment().format(),
       USER_UPDATED: "Admin",
@@ -554,25 +547,14 @@ export class RealisasiQuantitativeComponent {
   }
 
   editConfirm(event) {
-    event.newData.RESULT1 =
-      (
-        event.newData.NILAI_REALISASI_1 /
-        event.newData.NILAI_INDICATOR_1 *
-        100
-      ).toFixed(2) + "%";
-    event.newData.RESULT2 =
-      (
-        event.newData.NILAI_REALISASI_2 /
-        event.newData.NILAI_INDICATOR_2 *
-        100
-      ).toFixed(2) + "%";
-    event.newData.RESULT3 =
-      (
-        event.newData.NILAI_REALISASI_3 /
-        event.newData.NILAI_INDICATOR_3 *
-        100
-      ).toFixed(2) + "%";
-    console.log(event.newData.RESULT1);
+    event.newData.RESULT1 = ( event.newData.NILAI_REALISASI_1 / event.newData.NILAI_INDICATOR_1 * 100 ).toFixed(2) + "%";
+    event.newData.RESULT2 = ( event.newData.NILAI_REALISASI_2 / event.newData.NILAI_INDICATOR_2 * 100 ).toFixed(2) + "%";
+    event.newData.RESULT3 = ( event.newData.NILAI_REALISASI_3 / event.newData.NILAI_INDICATOR_3 * 100 ).toFixed(2) + "%";
+    if(parseInt(event.newData.RESULT1) > this.formData.threshold && parseInt(event.newData.RESULT2) > this.formData.threshold && parseInt(event.newData.RESULT3) > this.formData.threshold){
+      event.newData.PENCAPAIAN = 1;
+    } else{
+      event.newData.PENCAPAIAN = 0;
+    }
     event.confirm.resolve(event.newData);
   }
 }
