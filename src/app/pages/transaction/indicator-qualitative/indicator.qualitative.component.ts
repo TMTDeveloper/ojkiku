@@ -6,6 +6,7 @@ import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
 import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
+import { IndicatorQualitativeModalComponent } from "./modal/indicator.qualitative.modal.component";
 
 @Component({
   selector: "ngx-indicator-qualitative",
@@ -53,136 +54,32 @@ export class IndicatorQualitativeComponent {
       perPage: 30
     },
     columns: {
-      DESC_BANK: {
-        title: "Bank",
+      NO_DETAIL: {
+        title: "No",
+        type: "number",
+        filter: true,
+        editable: true,
+        width: "10%"
+      },
+      TIPE_DATA: {
+        title: "Type Data",
+        type: "html",
+        editor: {
+          type: "list",
+          config: {
+            list: [{title: 'String', value: 'string'}, {title: 'Date', value: 'date'},{title: 'Number', value: 'number'}]
+          }
+        },
+        filter: false,
+        editable: true,
+        width: "10%"
+      },
+      DESKRIPSI: {
+        title: "Deskripsi",
         type: "string",
         filter: false,
-        editable: false,
-        width: "30%"
-      },
-      NILAI_INDICATOR_1: {
-        title: "Indicator 1",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      NILAI_REALISASI_1: {
-        title: "Realisasi 1",
-        type: "number",
-        filter: false,
         editable: true,
-        width: "30%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      RESULT1: {
-        title: "Result 1",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%"
-      },
-      NILAI_INDICATOR_2: {
-        title: "Indicator 2",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      NILAI_REALISASI_2: {
-        title: "Realisasi 2",
-        type: "number",
-        filter: false,
-        editable: true,
-        width: "30%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      RESULT2: {
-        title: "Result 2",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%"
-      },
-      NILAI_INDICATOR_3: {
-        title: "Indicator 3",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      NILAI_REALISASI_3: {
-        title: "Realisasi 3",
-        type: "number",
-        filter: false,
-        editable: true,
-        width: "30%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      RESULT3: {
-        title: "Result 3",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%"
-      },
-      PENCAPAIAN: {
-        title: "Pencapaian",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%"
+        width: "70%"
       }
     }
   };
@@ -209,11 +106,9 @@ export class IndicatorQualitativeComponent {
     periodeSelected: "",
     ikuData: [],
     ikuSelected: "",
-    yearPeriode: moment().format("YYYY"),
-    threshold: 0,
-    indicatorId: "",
-    bankData: [],
-    realisasiDetail: []
+    indicatorQualitativeData: [],
+    yearPeriode: moment().format("YYYY")
+    
   };
 
   constructor(
@@ -223,15 +118,41 @@ export class IndicatorQualitativeComponent {
   ) {
     this.loadData();
   }
+
+  showModal() {
+    this.activeModal = this.modalService.open(
+      IndicatorQualitativeModalComponent,
+      {
+        windowClass: "xlModal",
+        container: "nb-layout",
+        backdrop: "static"
+      }
+    );
+    
+    this.activeModal.componentInstance.formData.ikuData = this.formData.ikuData;
+    this.activeModal.componentInstance.formData.ikuSelected = this.formData.ikuSelected;
+    this.activeModal.componentInstance.formData.yearPeriode = this.formData.yearPeriode;
+    this.activeModal.componentInstance.formData.periodeSelected = this.formData.periodeSelected;
+    this.activeModal.result.then(
+      async response => {
+        //console.log(response);
+        if (response != null) {
+          this.formData.ikuSelected = response.ikuSelected
+          this.formData.periodeSelected = response.periodeSelected
+          this.formData.yearPeriode = response.yearPeriode
+          this.tabledata = response.indicatorQualitativeData;
+          this.formData.indicatorQualitativeData = response.indicatorQualitativeData;
+          this.source.load(this.tabledata);
+        }
+      },
+      error => { }
+    );
+  }
+
   loadData() {
     this.service.getreq("mst_ikus").subscribe(response => {
       if (response != null) {
         this.formData.ikuData = response;
-        this.service.getreq("mst_banks").subscribe(response => {
-          if (response != null) {
-            this.formData.bankData = response;
-          }
-        });
       }
     });
   }
@@ -254,61 +175,22 @@ export class IndicatorQualitativeComponent {
   }
 
   generateDetail() {
-    this.service.getreq("trn_indicator_qns").subscribe(response => {
+    this.service.getreq("trn_indicator_qls").subscribe(response => {
       if (response != null) {
         let arr = response.filter(item => {
           return (
             item.KODE_IKU == this.formData.ikuSelected &&
             item.TAHUN_INDICATOR == this.formData.yearPeriode &&
             item.PERIODE == this.formData.periodeSelected
-          );
-        });
+          )
+        })
         if (arr[0] != null) {
-          this.formData.indicatorId = arr[0].KODE_INDIKATOR;
-          this.service.getreq("trn_indicator_qn_dtls").subscribe(response => {
-            if (response != null) {
-              let arrDtl = response.filter(item => {
-                return (
-                  item.KODE_IKU == this.formData.ikuSelected &&
-                  item.TAHUN_INDICATOR == this.formData.yearPeriode &&
-                  item.PERIODE == this.formData.periodeSelected
-                );
-              });
-              if (arrDtl[0] != null) {
-                let realisasiDetail = [];
-                arrDtl.forEach((element, ind) => {
-                  let detail = {
-                    KODE_IKU: this.formData.ikuSelected,
-                    TAHUN_REALISASI: this.formData.yearPeriode,
-                    PERIODE: this.formData.periodeSelected,
-                    KODE_BANK: element.KODE_BANK,
-                    NILAI_INDICATOR_1: element.NILAI_INDICATOR_1,
-                    NILAI_INDICATOR_2: element.NILAI_INDICATOR_2,
-                    NILAI_INDICATOR_3: element.NILAI_INDICATOR_3,
-                    NILAI_REALISASI_1: 0,
-                    NILAI_REALISASI_2: 0,
-                    NILAI_REALISASI_3: 0,
-                    RESULT1: "0%",
-                    RESULT2: "0%",
-                    RESULT3: "0%",
-                    PENCAPAIAN: 0,
-                    USER_CREATED: "Admin",
-                    DATETIME_CREATED: moment().format(),
-                    USER_UPDATED: "Admin",
-                    DATETIME_UPDATED: moment().format(),
-                    DESC_BANK: this.formData.bankData.filter(item => {
-                      return item.ID_BANK == element.KODE_BANK;
-                    })[0].DESCRIPTION
-                  };
-
-                  realisasiDetail.push(detail);
-                });
-                this.tabledata = realisasiDetail;
-                this.formData.realisasiDetail = realisasiDetail;
-                this.source.load(this.tabledata);
-              }
-            }
-          });
+         arr.forEach((element, ind) => {
+          element.NO_DETAIL = ind + 1
+          this.formData.indicatorQualitativeData.push(element)
+          })
+          this.toastr.success("Load Data Success!");
+          this.source.load(this.formData.indicatorQualitativeData);
         } else {
           this.toastr.error("Data Not Found!");
           this.tabledata = [];
@@ -318,63 +200,25 @@ export class IndicatorQualitativeComponent {
     });
   }
 
-  save() {
-    let header = {
-      KODE_IKU: this.formData.ikuSelected,
-      TAHUN_REALISASI: this.formData.yearPeriode,
-      PERIODE: this.formData.periodeSelected,
-      KODE_INDIKATOR: this.formData.indicatorId,
-      PENCAIPAIAN: 0,
-      USER_CREATED: "Admin",
-      DATETIME_CREATED: moment().format(),
-      USER_UPDATED: "Admin",
-      DATETIME_UPDATED: moment().format()
-    };
-    this.service.postreq("trn_realization_qns/crud", header).subscribe(
-      response => {
-        console.log(response);
-        this.formData.realisasiDetail.forEach((element, ind) => {
-          this.service
-            .postreq("trn_realization_qn_dtls/crud", element)
-            .subscribe(
-              response => {
-                console.log(response);
-              },
-              error => {
-                console.log("indicator detail");
-                console.log(error);
-              }
-            );
-        });
-        this.toastr.success("Data Saved!");
-      },
-      error => {
-        console.log("indicator header");
-        console.log(error);
-      }
-    );
+  updateData() {
+    this.formData.indicatorQualitativeData.forEach((element) => {
+      this.service.postreq("trn_indicator_qls/crud", element).subscribe(
+        response => {
+          console.log(response);
+        },
+        error => {
+          //console.log("indicator detail");
+          console.log(error);
+        }
+      )
+    })
+    this.toastr.success("Data Saved!");
   }
 
   editConfirm(event) {
-    event.newData.RESULT1 =
-      (
-        event.newData.NILAI_REALISASI_1 /
-        event.newData.NILAI_INDICATOR_1 *
-        100
-      ).toFixed(2) + "%";
-    event.newData.RESULT2 =
-      (
-        event.newData.NILAI_REALISASI_2 /
-        event.newData.NILAI_INDICATOR_2 *
-        100
-      ).toFixed(2) + "%";
-    event.newData.RESULT3 =
-      (
-        event.newData.NILAI_REALISASI_3 /
-        event.newData.NILAI_INDICATOR_3 *
-        100
-      ).toFixed(2) + "%";
-    console.log(event.newData.RESULT1);
+
+    console.log(event.newData);
     event.confirm.resolve(event.newData);
   }
 }
+

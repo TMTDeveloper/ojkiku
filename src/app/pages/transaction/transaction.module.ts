@@ -10,6 +10,7 @@ import { ToastrModule } from "ngx-toastr";
 import { BackendService } from "../../@core/data/backend.service";
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { IndicatorQuantitativeModalComponent } from "./indicator-quantitative/modal/indicator.quantitative.modal.component";
+import { IndicatorQualitativeModalComponent } from "./indicator-qualitative/modal/indicator.qualitative.modal.component";
 @NgModule({
   imports: [
     ThemeModule,
@@ -19,7 +20,7 @@ import { IndicatorQuantitativeModalComponent } from "./indicator-quantitative/mo
     ToastrModule.forRoot()
   ],
   declarations: [...routedComponents],
-  entryComponents: [IndicatorQuantitativeModalComponent],
+  entryComponents: [IndicatorQuantitativeModalComponent,IndicatorQualitativeModalComponent],
   providers: [BackendService]
 })
 export class TransactionModule {}

@@ -1,47 +1,108 @@
-<nb-card>
-  <nb-card-header>Input Accident</nb-card-header>
-  <nb-card-body>
+<div class="modal-header">
+  <h4 class="modal-title">Input Accident</h4>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 
-    <div class="row">
-      <div class="col-sm-4">
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">IKU
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">IKU
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-6">
+          <select name="risk_level" class="form-control" [(ngModel)]="formData.ikuSelected">
+            <option *ngFor="let data of formData.ikuData" value="{{data.KODE_IKU}}">{{data.KODE_IKU+" "+data.DESKRIPSI}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Tahun
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-6">
+          <input class="form-control" [(ngModel)]="formData.yearPeriode">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Periode
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-6">
+          <select name="risk_level" class="form-control" [(ngModel)]="formData.periodeSelected">
+            <option *ngFor="let data of formData.periode" value="{{data.id}}">{{data.desc}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Threshold
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-3">
+          <input class="form-control" [(ngModel)]="formData.threshold">
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-7">
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Indicator 1 Description
             <font color="red">*</font>
+        </label>
+        <div class="col-sm-8">
+          <input class="form-control" [(ngModel)]="formData.indicator1">
+        </div>
+      </div>
+      <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Realisasi 1 Description
+              <font color="red">*</font>
           </label>
-          <div class="col-sm-6">
-            <select name="risk_level" class="form-control" [(ngModel)]="formData.ikuSelected">
-              <option *ngFor="let data of formData.ikuData" value="{{data.KODE_IKU}}">{{data.KODE_IKU+" "+data.DESKRIPSI}}</option>
-            </select>
+          <div class="col-sm-8">
+            <input class="form-control" [class.green]="isDisabled" [(ngModel)]="formData.realisasi1">
           </div>
         </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Tahun
-            <font color="red">*</font>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label" >Indicator 2 Description
+
+        </label>
+        <div class="col-sm-8">
+          <input class="form-control" [(ngModel)]="formData.indicator2" [disabled]="!formData.realisasi1">
+        </div>
+      </div>
+      <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Realisasi 2 Description
+
           </label>
-          <div class="col-sm-6">
-            <input class="form-control" [(ngModel)]="formData.yearPeriode">
+          <div class="col-sm-8">
+            <input class="form-control" [disabled]="!formData.realisasi1" [(ngModel)]="formData.realisasi2">
           </div>
         </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Periode
-            <font color="red">*</font>
-          </label>
-          <div class="col-sm-6">
-            <select name="risk_level" class="form-control" [(ngModel)]="formData.periodeSelected">
-              <option *ngFor="let data of formData.periode" value="{{data.id}}">{{data.desc}}</option>
-            </select>
-          </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Indicator 3 Description
+
+        </label>
+        <div class="col-sm-8">
+          <input class="form-control" [(ngModel)]="formData.indicator3" [disabled]="!formData.realisasi2">
+        </div>
+      </div>
+     
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Realisasi 3 Description
+
+        </label>
+        <div class="col-sm-8">
+          <input class="form-control" [disabled]="!formData.realisasi2" [(ngModel)]="formData.realisasi3">
         </div>
       </div>
     </div>
-
     <div class="col-sm-auto">
       <div class="form-group">
-        <button type="submit" class="btn btn-danger" (click)="loadData()">Select</button>
-
+        <button type="submit" class="btn btn-success" (click)="addNewData()" 
+        [disabled]="!formData.ikuSelected||!formData.yearPeriode||!formData.periodeSelected||!formData.threshold||!formData.indicator1||!formData.realisasi1">Add New Data</button>
+        <button type="submit" class="btn btn-danger" (click)=closeModal()>Cancel</button>
       </div>
     </div>
-  </nb-card-body>
-</nb-card>
-
-<!-- { COUNTER_NO: 1, YEAR_ACTIVE: "2018", DESCRIPTION: "hehehe", CONDITION: "IMP", INDICATOR_name: "IMP001", SCORE: 123 }, -->
+  </div>
+</div>

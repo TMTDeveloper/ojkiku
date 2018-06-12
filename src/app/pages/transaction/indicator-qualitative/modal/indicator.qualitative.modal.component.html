@@ -1,0 +1,65 @@
+<div class="modal-header">
+  <h4 class="modal-title">Input New Data</h4>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group row">
+        <label class="col-sm-1 col-form-label">IKU
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-6">
+          <select name="risk_level" class="form-control" [(ngModel)]="formData.ikuSelected">
+            <option *ngFor="let data of formData.ikuData" value="{{data.KODE_IKU}}">{{data.KODE_IKU+" "+data.DESKRIPSI}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-1 col-form-label">Tahun
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-1">
+          <input class="form-control" [(ngModel)]="formData.yearPeriode">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-1 col-form-label">Periode
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-2">
+          <select name="risk_level" class="form-control" [(ngModel)]="formData.periodeSelected">
+            <option *ngFor="let data of formData.periode" value="{{data.id}}">{{data.desc}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-1 col-form-label">Tipe Data
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-2">
+          <select name="risk_level" class="form-control" [(ngModel)]="formData.tipeDataSelected">
+            <option *ngFor="let data of formData.tipeData" value="{{data.id}}">{{data.desc}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-1 col-form-label">Deskripsi
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-6">
+          <input class="form-control" [(ngModel)]="formData.descriptionIndicator">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-auto">
+    <div class="form-group">
+      <button type="submit" class="btn btn-success" (click)="generateDetail()">Add New Data</button>
+      <button type="submit" class="btn btn-danger" (click)="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>

@@ -11,7 +11,8 @@ import { IndicatorQuantitativeModalComponent } from "./modal/indicator.quantitat
 @Component({
   selector: "ngx-indicator-quantitative",
   templateUrl: "./indicator.quantitative.component.html",
-  styles: [`input:disabled {
+  styles: [`
+  input:disabled {
     background-color: rgba(211,211,211, 0.6);
  }`]
 })
@@ -131,6 +132,7 @@ export class IndicatorQuantitativeComponent {
   ) {
     this.loadData();
   }
+
   loadData() {
     this.service.getreq("mst_ikus").subscribe(response => {
       if (response != null) {
@@ -148,10 +150,11 @@ export class IndicatorQuantitativeComponent {
         backdrop: "static"
       }
     );
+
     this.activeModal.componentInstance.formData.ikuData = this.formData.ikuData;
-    this.activeModal.componentInstance.formData.periodeSelectedParent = this.formData.periodeSelected;
-    this.activeModal.componentInstance.formData.ikuSelectedParent = this.formData.ikuSelected;
-    this.activeModal.componentInstance.formData.yearPeriodeParent = this.formData.yearPeriode;
+    this.activeModal.componentInstance.formData.periodeSelected = this.formData.periodeSelected;
+    this.activeModal.componentInstance.formData.ikuSelected = this.formData.ikuSelected;
+    this.activeModal.componentInstance.formData.yearPeriode = this.formData.yearPeriode;
     this.activeModal.result.then(
       async response => {
         console.log(response);
@@ -183,6 +186,95 @@ export class IndicatorQuantitativeComponent {
     });
   }
 
+  getData() {
+    this.service.getreq("trn_indicator_qns").subscribe(response => {
+      if (response != null) {
+        let res = response.filter(item => {
+          return (
+            item.KODE_IKU == this.formData.ikuSelected &&
+            item.TAHUN_INDICATOR == this.formData.yearPeriode &&
+            item.PERIODE == this.formData.periodeSelected
+          );
+        });
+        if (res[0] != null) {
+          this.formData.indicator1 = res[0].INDIKATOR_1_DESC
+          this.formData.indicator2 = res[0].INDIKATOR_2_DESC
+          this.formData.indicator3 = res[0].INDIKATOR_3_DESC
+          this.formData.realisasi1 = res[0].REALISASI_1_DESC
+          this.formData.realisasi2 = res[0].REALISASI_2_DESC
+          this.formData.realisasi3 = res[0].REALISASI_3_DESC
+          this.formData.threshold = res[0].THRESHOLD
+          this.formData.indicatorId = res[0].KODE_INDIKATOR
+
+          this.service.getreq("mst_banks").subscribe(response => {
+            if (response != null) {
+              this.formData.bankData = response;
+              let indicatorDetail = [];
+              this.service.getreq("trn_indicator_qn_dtls").subscribe(responseDtl => {
+                if (responseDtl != null) {
+                  this.formData.bankData.forEach((element, ind) => {
+                    let arr = responseDtl.filter(item => {
+                      return (
+                        item.KODE_IKU == this.formData.ikuSelected &&
+                        item.TAHUN_INDICATOR == this.formData.yearPeriode &&
+                        item.PERIODE == this.formData.periodeSelected &&
+                        item.KODE_BANK == element.ID_BANK
+                      );
+                    });
+                    if (arr[0] == null) {
+                      console.log(arr);
+                      let detail = {
+                        KODE_IKU: this.formData.ikuSelected,
+                        TAHUN_INDICATOR: this.formData.yearPeriode,
+                        PERIODE: this.formData.periodeSelected,
+                        KODE_BANK: element.ID_BANK,
+                        NILAI_INDICATOR_1: 0,
+                        NILAI_INDICATOR_2: 0,
+                        NILAI_INDICATOR_3: 0,
+                        USER_CREATED: "Admin",
+                        DATETIME_CREATED: moment().format(),
+                        USER_UPDATED: "Admin",
+                        DATETIME_UPDATED: moment().format(),
+                        DESC_BANK: element.DESCRIPTION
+                      };
+                      indicatorDetail.push(detail);
+                    } else {
+                      console.log(arr);
+                      let detail = {
+                        KODE_IKU: this.formData.ikuSelected,
+                        TAHUN_INDICATOR: this.formData.yearPeriode,
+                        PERIODE: this.formData.periodeSelected,
+                        KODE_BANK: element.ID_BANK,
+                        NILAI_INDICATOR_1: arr[0].NILAI_INDICATOR_1,
+                        NILAI_INDICATOR_2: arr[0].NILAI_INDICATOR_2,
+                        NILAI_INDICATOR_3: arr[0].NILAI_INDICATOR_3,
+                        USER_CREATED: "Admin",
+                        DATETIME_CREATED: moment().format(),
+                        USER_UPDATED: "Admin",
+                        DATETIME_UPDATED: moment().format(),
+                        DESC_BANK: element.DESCRIPTION
+                      };
+                      indicatorDetail.push(detail);
+                    }
+                  })
+                  this.tabledata = indicatorDetail;
+                  this.formData.indicatorDetail = indicatorDetail;
+                  this.formData.indicatorId =
+                    "RBB" +
+                    this.formData.ikuSelected +
+                    this.formData.yearPeriode +
+                    this.formData.periodeSelected;
+                  this.source.load(this.tabledata);
+                }
+              });
+            }
+          });
+        } else {
+          this.toastr.error("Data Not Found!");
+        }
+      }
+    });
+  }
 
   generateDetail() {
     this.service.getreq("mst_banks").subscribe(response => {

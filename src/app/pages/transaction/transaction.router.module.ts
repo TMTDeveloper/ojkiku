@@ -6,6 +6,7 @@ import { IndicatorQuantitativeModalComponent } from "./indicator-quantitative/mo
 import { RealisasiQuantitativeComponent } from "./realisasi-quantitative/realisasi.quantitative.component";
 import { RealisasiQualitativeComponent } from "./realisasi-qualitative/realisasi.qualitative.component";
 import { IndicatorQualitativeComponent } from "./indicator-qualitative/indicator.qualitative.component";
+import { IndicatorQualitativeModalComponent } from "./indicator-qualitative/modal/indicator.qualitative.modal.component";
 const routes: Routes = [
   {
     path: "",
@@ -39,6 +40,7 @@ export class TransactionRouterModule {}
 
 export const routedComponents = [
   IndicatorQualitativeComponent,
+  IndicatorQualitativeModalComponent,
   RealisasiQualitativeComponent,
   IndicatorQuantitativeComponent,
   IndicatorQuantitativeModalComponent,

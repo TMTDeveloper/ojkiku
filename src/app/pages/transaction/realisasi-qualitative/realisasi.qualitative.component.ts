@@ -53,19 +53,19 @@ export class RealisasiQualitativeComponent {
       perPage: 30
     },
     columns: {
-      DESC_BANK: {
-        title: "Bank",
+      NO: {
+        title: "No",
         type: "string",
         filter: false,
         editable: false,
-        width: "30%"
+        width: "10%"
       },
-      NILAI_INDICATOR_1: {
-        title: "Indicator 1",
+      DETAIL: {
+        title: "Detail",
         type: "number",
         filter: false,
         editable: false,
-        width: "30%",
+        width: "10%",
         valuePrepareFunction: value => {
           if (isNaN(value)) {
             return 0;
@@ -76,12 +76,12 @@ export class RealisasiQualitativeComponent {
           }
         }
       },
-      NILAI_REALISASI_1: {
-        title: "Realisasi 1",
+      KETERANGAN: {
+        title: "Keterangan",
         type: "number",
         filter: false,
         editable: true,
-        width: "30%",
+        width: "70%",
         valuePrepareFunction: value => {
           if (isNaN(value)) {
             return 0;
@@ -91,98 +91,6 @@ export class RealisasiQualitativeComponent {
               .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
           }
         }
-      },
-      RESULT1: {
-        title: "Result 1",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%"
-      },
-      NILAI_INDICATOR_2: {
-        title: "Indicator 2",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      NILAI_REALISASI_2: {
-        title: "Realisasi 2",
-        type: "number",
-        filter: false,
-        editable: true,
-        width: "30%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      RESULT2: {
-        title: "Result 2",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%"
-      },
-      NILAI_INDICATOR_3: {
-        title: "Indicator 3",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      NILAI_REALISASI_3: {
-        title: "Realisasi 3",
-        type: "number",
-        filter: false,
-        editable: true,
-        width: "30%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      RESULT3: {
-        title: "Result 3",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%"
-      },
-      PENCAPAIAN: {
-        title: "Pencapaian",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%"
       }
     }
   };
