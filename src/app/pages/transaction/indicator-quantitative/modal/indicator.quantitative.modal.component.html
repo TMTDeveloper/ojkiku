@@ -12,7 +12,7 @@
         <label class="col-sm-3 col-form-label">IKU
           <font color="red">*</font>
         </label>
-        <div class="col-sm-6">
+        <div class="col-sm-9">
           <select name="risk_level" class="form-control" [(ngModel)]="formData.ikuSelected">
             <option *ngFor="let data of formData.ikuData" value="{{data.KODE_IKU}}">{{data.KODE_IKU+" "+data.DESKRIPSI}}</option>
           </select>

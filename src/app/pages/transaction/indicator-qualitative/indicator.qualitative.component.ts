@@ -143,6 +143,7 @@ export class IndicatorQualitativeComponent {
           this.tabledata = response.indicatorQualitativeData;
           this.formData.indicatorQualitativeData = response.indicatorQualitativeData;
           this.source.load(this.tabledata);
+          
         }
       },
       error => { }
@@ -191,6 +192,7 @@ export class IndicatorQualitativeComponent {
           })
           this.toastr.success("Load Data Success!");
           this.source.load(this.formData.indicatorQualitativeData);
+          console.log(this.tabledata)
         } else {
           this.toastr.error("Data Not Found!");
           this.tabledata = [];

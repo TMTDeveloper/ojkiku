@@ -41,7 +41,7 @@ export class RealisasiQuantitativeComponent {
       confirmDelete: false
     },
     mode: "inline",
-    sort: true,
+    sort: false,
     hideSubHeader: true,
     actions: {
       add: false,
@@ -184,7 +184,10 @@ export class RealisasiQuantitativeComponent {
     });
   }
 
-  generateDetail() {
+
+
+  generateDetaildua() {
+    "use strict";
     this.service.getreq("trn_indicator_qns").subscribe(response => {
       if (response != null) {
         let arr = response.filter(item => {
@@ -700,71 +703,80 @@ export class RealisasiQuantitativeComponent {
 
           this.formData.indicatorId = arr[0].KODE_INDIKATOR;
           this.formData.threshold = arr[0].THRESHOLD;
-          this.service.getreq("trn_indicator_qn_dtls").subscribe(response => {
-            if (response != null) {
-              let arrDtl = response.filter(item => {
+
+          this.service.getreq("mst_banks").subscribe(responseBank => {
+            if (responseBank != null) {
+              this.formData.bankData = responseBank;
+            }
+          });
+
+          let realisasiDetail = [];
+          this.formData.bankData.forEach((element) => {
+
+            let detail = {
+              KODE_IKU: this.formData.ikuSelected,
+              TAHUN_REALISASI: this.formData.yearPeriode,
+              PERIODE: this.formData.periodeSelected,
+              KODE_BANK: element.ID_BANK,
+              NILAI_INDICATOR_1: 0,
+              NILAI_INDICATOR_2: 0,
+              NILAI_INDICATOR_3: 0,
+              NILAI_REALISASI_1: 0,
+              NILAI_REALISASI_2: 0,
+              NILAI_REALISASI_3: 0,
+              RESULT1: "0%",
+              RESULT2: "0%",
+              RESULT3: "0%",
+              PENCAPAIAN: 0,
+              USER_CREATED: "Admin",
+              DATETIME_CREATED: moment().format(),
+              USER_UPDATED: "Admin",
+              DATETIME_UPDATED: moment().format(),
+              DESC_BANK: element.DESCRIPTION
+            };
+
+            this.service.getreq("trn_indicator_qn_dtls").subscribe(res => {
+              let arr = res.filter(item => {
                 return (
                   item.KODE_IKU == this.formData.ikuSelected &&
                   item.TAHUN_INDICATOR == this.formData.yearPeriode &&
-                  item.PERIODE == this.formData.periodeSelected
-                );
-              });
-              if (arrDtl[0] != null) {
-                let realisasiDetail = [];
-                arrDtl.forEach((element) => {
-                  let detail = {
-                    KODE_IKU: this.formData.ikuSelected,
-                    TAHUN_REALISASI: this.formData.yearPeriode,
-                    PERIODE: this.formData.periodeSelected,
-                    KODE_BANK: element.KODE_BANK,
-                    NILAI_INDICATOR_1: element.NILAI_INDICATOR_1,
-                    NILAI_INDICATOR_2: element.NILAI_INDICATOR_2,
-                    NILAI_INDICATOR_3: element.NILAI_INDICATOR_3,
-                    NILAI_REALISASI_1: 0,
-                    NILAI_REALISASI_2: 0,
-                    NILAI_REALISASI_3: 0,
-                    RESULT1: "0%",
-                    RESULT2: "0%",
-                    RESULT3: "0%",
-                    PENCAPAIAN: element.PENCAPAIAN,
-                    USER_CREATED: "Admin",
-                    DATETIME_CREATED: moment().format(),
-                    USER_UPDATED: "Admin",
-                    DATETIME_UPDATED: moment().format(),
-                    DESC_BANK: this.formData.bankData.filter(item => {
-                      return item.ID_BANK == element.KODE_BANK;
-                    })[0].DESCRIPTION
-                  };
-                  if (detail.PENCAPAIAN == null) { detail.PENCAPAIAN = 0 }
-                  realisasiDetail.push(detail);
-                });
+                  item.PERIODE == this.formData.periodeSelected &&
+                  item.KODE_BANK == element.ID_BANK
+                )
+              })
 
-                this.service.getreq("trn_realization_qn_dtls").subscribe(response => {
-                  if (response != null) {
-                    let arrReaDtl = response.filter(item => {
-                      return (
-                        item.KODE_IKU == this.formData.ikuSelected &&
-                        item.TAHUN_REALISASI == this.formData.yearPeriode &&
-                        item.PERIODE == this.formData.periodeSelected
-                      );
-                    });
-                    if (arrReaDtl[0] != null) {
-                      arrReaDtl.forEach((el, i) => {
-                        console.log(el.NILAI_REALISASI_1)
-                        realisasiDetail[i].NILAI_REALISASI_1 = el.NILAI_REALISASI_1
-                        realisasiDetail[i].NILAI_REALISASI_2 = el.NILAI_REALISASI_2
-                        realisasiDetail[i].NILAI_REALISASI_3 = el.NILAI_REALISASI_3
-                      })
-                      console.log("setelah di tiban", realisasiDetail)
-                    }
-                  };
-                });
-                this.tabledata = realisasiDetail;
-                this.formData.realisasiDetail = realisasiDetail;
-                this.source.load(this.tabledata);
+              if (arr[0] != null) {
+                detail.NILAI_INDICATOR_1 = arr[0].NILAI_INDICATOR_1;
+                detail.NILAI_INDICATOR_2 = arr[0].NILAI_INDICATOR_2;
+                detail.NILAI_INDICATOR_3 = arr[0].NILAI_INDICATOR_3;
               }
-            }
-          });
+            })
+            this.service.getreq("trn_realization_qn_dtls").subscribe(resqndtl => {
+              if (resqndtl != null) {
+                let arrqntl = resqndtl.filter(item => {
+                  return (
+                    item.KODE_IKU == this.formData.ikuSelected &&
+                    item.TAHUN_REALISASI == this.formData.yearPeriode &&
+                    item.PERIODE == this.formData.periodeSelected &&
+                    item.KODE_BANK == element.ID_BANK
+                  );
+                })
+
+                if (arrqntl[0] != null) {
+                  detail.NILAI_REALISASI_1 = arrqntl[0].NILAI_REALISASI_1;
+                  detail.NILAI_REALISASI_2 = arrqntl[0].NILAI_REALISASI_2;
+                  detail.NILAI_REALISASI_3 = arrqntl[0].NILAI_REALISASI_3;
+                }
+              }
+            })
+            realisasiDetail.push(detail);
+          })
+          this.tabledata = realisasiDetail;
+          this.formData.realisasiDetail = realisasiDetail;
+          this.source.load(this.formData.realisasiDetail);
+          this.source.refresh();
+          console.log(this.tabledata)
+
         } else {
           this.toastr.error("Data Not Found!");
           this.tabledata = [];
@@ -816,28 +828,28 @@ export class RealisasiQuantitativeComponent {
     event.newData.RESULT1 = (event.newData.NILAI_REALISASI_1 / event.newData.NILAI_INDICATOR_1 * 100).toFixed(2) + "%";
     event.newData.RESULT2 = (event.newData.NILAI_REALISASI_2 / event.newData.NILAI_INDICATOR_2 * 100).toFixed(2) + "%";
     event.newData.RESULT3 = (event.newData.NILAI_REALISASI_3 / event.newData.NILAI_INDICATOR_3 * 100).toFixed(2) + "%";
-    if (parseInt(event.newData.RESULT1) > this.formData.threshold && parseInt(event.newData.RESULT2) > this.formData.threshold && parseInt(event.newData.RESULT3) > this.formData.threshold) {
+    if (parseInt(event.newData.RESULT1) >= this.formData.threshold && parseInt(event.newData.RESULT2) >= this.formData.threshold && parseInt(event.newData.RESULT3) >= this.formData.threshold) {
       event.newData.PENCAPAIAN = 1;
     } else {
       event.newData.PENCAPAIAN = 0;
     }
 
     if (this.nilaiIndicatorCheck.indicatorbool1 === true) {
-      if (parseInt(event.newData.RESULT1) > this.formData.threshold) {
+      if (parseInt(event.newData.RESULT1) >= this.formData.threshold) {
         event.newData.PENCAPAIAN = 1;
       } else {
         event.newData.PENCAPAIAN = 0;
       }
     }
     if (this.nilaiIndicatorCheck.indicatorbool2 === true) {
-      if (parseInt(event.newData.RESULT1) > this.formData.threshold && parseInt(event.newData.RESULT2) > this.formData.threshold) {
+      if (parseInt(event.newData.RESULT1) >= this.formData.threshold && parseInt(event.newData.RESULT2) >= this.formData.threshold) {
         event.newData.PENCAPAIAN = 1;
       } else {
         event.newData.PENCAPAIAN = 0;
       }
     }
     if (this.nilaiIndicatorCheck.indicatorbool3 === true) {
-      if (parseInt(event.newData.RESULT1) > this.formData.threshold && parseInt(event.newData.RESULT2) > this.formData.threshold && parseInt(event.newData.RESULT3) > this.formData.threshold) {
+      if (parseInt(event.newData.RESULT1) >= this.formData.threshold && parseInt(event.newData.RESULT2) >= this.formData.threshold && parseInt(event.newData.RESULT3) >= this.formData.threshold) {
         event.newData.PENCAPAIAN = 1;
 
       } else {

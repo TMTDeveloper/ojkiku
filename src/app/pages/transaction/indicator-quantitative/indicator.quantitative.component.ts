@@ -71,21 +71,48 @@ export class IndicatorQuantitativeComponent {
         type: "number",
         filter: false,
         editable: true,
-        width: "25%"
+        width: "25%",
+        valuePrepareFunction: value => {
+          if (isNaN(value)) {
+            return 0;
+          } else {
+            return Number(value)
+              .toString()
+              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+          }
+        }
       },
       NILAI_INDICATOR_2: {
         title: "Nilai 2",
         type: "number",
         filter: false,
         editable: true,
-        width: "25%"
+        width: "25%",
+        valuePrepareFunction: value => {
+          if (isNaN(value)) {
+            return 0;
+          } else {
+            return Number(value)
+              .toString()
+              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+          }
+        }
       },
       NILAI_INDICATOR_3: {
         title: "Nilai 3",
         type: "number",
         filter: false,
         editable: true,
-        width: "25%"
+        width: "25%",
+        valuePrepareFunction: value => {
+          if (isNaN(value)) {
+            return 0;
+          } else {
+            return Number(value)
+              .toString()
+              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+          }
+        }
       }
     }
   };
@@ -159,10 +186,10 @@ export class IndicatorQuantitativeComponent {
       async response => {
         console.log(response);
         if (response != null) {
-          this.tabledata = response.indicatorDetail;
-          this.formData.indicatorDetail = response.indicatorDetail;
-          this.formData.indicatorId = response.indicatorId;
-          this.source.load(this.tabledata);
+          this.formData.ikuSelected = response.ikuSelected;
+          this.formData.periodeSelected = response.periodeSelected;
+          this.formData.yearPeriode = response.yearPeriode;
+          this.getData();
         }
       },
       error => { }

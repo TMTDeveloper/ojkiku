@@ -1,5 +1,6 @@
 import { LocalDataSource } from "ng2-smart-table";
 import { Component, ViewChild } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
 import * as moment from "moment";
 import { NgForm } from "@angular/forms";
 import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -37,17 +38,57 @@ export class IndicatorQuantitativeModalComponent {
     ikuSelected: "",
     yearPeriode: moment().format("YYYY"),
     bankData: [],
-    indicatorDetail: []
+    indicatorDetail: [],
+    threshold: 0,
+    indicator1: "",
+    indicator2: "",
+    indicator3: "",
+    realisasi1: "",
+    realisasi2: "",
+    realisasi3: ""
   };
   source: LocalDataSource = new LocalDataSource();
   constructor(
     private activeModal: NgbActiveModal,
+    private toastr: ToastrService,
     public service: BackendService
-  ) {}
+  ) { }
 
-addNewData(){
-  
-}
+  addNewData() {
+    let header = {
+      KODE_IKU: this.formData.ikuSelected,
+      TAHUN_INDICATOR: this.formData.yearPeriode,
+      PERIODE: this.formData.periodeSelected,
+      KODE_INDIKATOR: "FET" +
+        this.formData.ikuSelected +
+        this.formData.yearPeriode +
+        this.formData.periodeSelected,
+      THRESHOLD: this.formData.threshold,
+      INDIKATOR_1_DESC: this.formData.indicator1,
+      INDIKATOR_2_DESC: this.formData.indicator2,
+      INDIKATOR_3_DESC: this.formData.indicator3,
+      REALISASI_1_DESC: this.formData.realisasi1,
+      REALISASI_2_DESC: this.formData.realisasi2,
+      REALISASI_3_DESC: this.formData.realisasi3,
+      USER_CREATED: "admin",
+      DATETIME_CREATED: moment().format(),
+      USER_UPDATED: "admin",
+      DATETIME_UPDATED: moment().format()
+    }
+    this.service.postreq("trn_indicator_qns", header).subscribe(response => {
+      if (response != null){
+        this.toastr.success("Data Added!")
+        let data = {
+          ikuSelected: this.formData.ikuSelected,
+          periodeSelected: this.formData.periodeSelected,
+          yearPeriode: this.formData.yearPeriode
+        }
+        this.activeModal.close(data);
+      } else {
+        this.toastr.error("Add Data Failed!")
+      }
+    });
+  }
 
   loadData() {
     this.service.getreq("mst_banks").subscribe(response => {
@@ -125,7 +166,7 @@ addNewData(){
     // this.selectedData = event.data;
   }
 
-  submit() {}
+  submit() { }
 
   closeModal() {
     this.activeModal.close();
