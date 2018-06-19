@@ -8,7 +8,9 @@
       "root": "src",
       "outDir": "dist",
       "assets": [
+        "images",
         "assets",
+        "assets/images/calendar-icon.svg",
         "favicon.ico",
         "favicon.png"
       ],

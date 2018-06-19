@@ -16,6 +16,7 @@ import { MonaTargetModalComponent } from "./mona-target/modal/mona.target.modal.
 import { MonaRealisasiModalComponent } from "./mona-realisasi/modal/mona.realisasi.modal.component";
 
 
+
 @NgModule({
   imports: [
     ThemeModule,
@@ -26,6 +27,8 @@ import { MonaRealisasiModalComponent } from "./mona-realisasi/modal/mona.realisa
   ],
   declarations: [...routedComponents,ButtonRenderComponent],
   entryComponents: [MonaTargetModalComponent,MonaRealisasiModalComponent,IndicatorQuantitativeModalComponent,IndicatorQualitativeModalComponent,ButtonRenderComponent],
-  providers: [BackendService]
+  providers: [
+    BackendService,
+  ]
 })
 export class TransactionModule {}

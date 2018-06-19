@@ -48,7 +48,7 @@ export class MonaRealisasiComponent {
     hideSubHeader: true,
     actions: {
       add: false,
-      edit: true,
+      edit: false,
       delete: false,
       position: "right",
       columnTitle: "Modify",
@@ -59,94 +59,66 @@ export class MonaRealisasiComponent {
       perPage: 30
     },
     columns: {
-      DESC_BANK: {
+      TIPE_DOKUMEN: {
+        title: "Tipe Dokumen",
+        type: "string",
+        filter: false,
+        editable: false,
+        width: "10%"
+      },
+      ID_BANK: {
         title: "Bank",
         type: "string",
         filter: false,
         editable: false,
-        width: "25%"
+        width: "20%"
       },
-      NILAI_INDICATOR_1: {
-        title: "Nilai 1",
-        type: "number",
+      START_DATE: {
+        title: "Start Date",
+        type: "date",
         filter: false,
         editable: true,
-        width: "25%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
+        width: "10%"
       },
-      NILAI_INDICATOR_2: {
-        title: "Nilai 2",
-        type: "number",
+      TARGET_DATE: {
+        title: "Target Date",
+        type: "date",
         filter: false,
         editable: true,
-        width: "25%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
+        width: "10%",
       },
-      NILAI_INDICATOR_3: {
-        title: "Nilai 3",
-        type: "number",
+      REALIZATION_DATE: {
+        title: "Realization Date",
+        type: "date",
         filter: false,
         editable: true,
-        width: "25%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      }
+        width: "10%",
+      },
+      KETERANGAN: {
+        title: "Keterangan",
+        type: "string",
+        filter: false,
+        editable: true,
+        width: "35%",
+      },
     }
   };
 
   formData = {
     documentData: [
       {
-        id: "RBP",
-        desc: "Triwulan 1"
+        id: "rbp",
+        desc: "RBP"
       },
       {
-        id: "Lain-lain",
-        desc: "Triwulan 2"
+        id: "lainlain",
+        desc: "Lain-lain"
       }
     ],
-    periodeSelected: "",
-    documentSelected: "",
-    bankSelected: "",
-    startDate: "",
-    targetDate: "",
-    realizationDate: "",
-    ikuData: [],
-    ikuSelected: "",
-    yearPeriode: moment().format("YYYY"),
+    years: moment().format("YYYY"),
     threshold: 0,
-    indicatorId: "",
-    indicator1: "",
-    indicator2: "",
-    indicator3: "",
-    realisasi1: "",
-    realisasi2: "",
-    realisasi3: "",
     bankData: [],
-    indicatorDetail: []
+    monaRealisasiData: []
   };
 
   constructor(
@@ -158,11 +130,6 @@ export class MonaRealisasiComponent {
   }
 
   loadData() {
-    this.service.getreq("mst_ikus").subscribe(response => {
-      if (response != null) {
-        this.formData.ikuData = response;
-      }
-    });
     this.service.getreq("mst_banks").subscribe(response => {
       if (response != null) {
         this.formData.bankData = response;
@@ -179,207 +146,55 @@ export class MonaRealisasiComponent {
         backdrop: "static"
       }
     );
-
-    this.activeModal.componentInstance.formData.ikuData = this.formData.ikuData;
-    this.activeModal.componentInstance.formData.periodeSelected = this.formData.periodeSelected;
-    this.activeModal.componentInstance.formData.ikuSelected = this.formData.ikuSelected;
-    this.activeModal.componentInstance.formData.yearPeriode = this.formData.yearPeriode;
-    this.activeModal.result.then(
-      async response => {
-        console.log(response);
-        if (response != null) {
-          this.formData.ikuSelected = response.ikuSelected;
-          this.formData.periodeSelected = response.periodeSelected;
-          this.formData.yearPeriode = response.yearPeriode;
-          this.getData();
-        }
-      },
-      error => { }
-    );
-  }
-
-  submit(event) {
-    this.tabledata.forEach((element, ind) => {
-      if (element.KODE_IKU == event.newData.KODE_IKU) {
-        element.KODE_IKU = event.newData.KODE_IKU;
-        element.DESKRIPSI = event.newData.DESKRIPSI;
-        element.TIPE_IKU = event.newData.TIPE_IKU;
-        this.service
-          .patchreq("mst_ikus", this.tabledata[ind])
-          .subscribe(response => {
-            console.log(JSON.stringify(response));
-            event.confirm.resolve(event.newData);
-            this.toastr.success("Data Updated!");
-          });
-      }
-    });
+    this.activeModal.componentInstance.formData.bankData = this.formData.bankData;
   }
 
   getData() {
-    this.service.getreq("trn_indicator_qns").subscribe(response => {
+    this.service.getreq("trn_monas").subscribe(response => {
       if (response != null) {
         let res = response.filter(item => {
           return (
-            item.KODE_IKU == this.formData.ikuSelected &&
-            item.TAHUN_INDICATOR == this.formData.yearPeriode &&
-            item.PERIODE == this.formData.periodeSelected
+            item.YEAR == this.formData.years &&
+            item.REALIZATION_DATE != null
           );
         });
+        let monaTargetdetail = [];
         if (res[0] != null) {
-          this.formData.indicator1 = res[0].INDIKATOR_1_DESC
-          this.formData.indicator2 = res[0].INDIKATOR_2_DESC
-          this.formData.indicator3 = res[0].INDIKATOR_3_DESC
-          this.formData.realisasi1 = res[0].REALISASI_1_DESC
-          this.formData.realisasi2 = res[0].REALISASI_2_DESC
-          this.formData.realisasi3 = res[0].REALISASI_3_DESC
-          this.formData.threshold = res[0].THRESHOLD
-          this.formData.indicatorId = res[0].KODE_INDIKATOR
-
-          this.service.getreq("mst_banks").subscribe(response => {
-            if (response != null) {
-              this.formData.bankData = response;
-              let indicatorDetail = [];
-              this.service.getreq("trn_indicator_qn_dtls").subscribe(responseDtl => {
-                if (responseDtl != null) {
-                  this.formData.bankData.forEach((element, ind) => {
-                    let arr = responseDtl.filter(item => {
-                      return (
-                        item.KODE_IKU == this.formData.ikuSelected &&
-                        item.TAHUN_INDICATOR == this.formData.yearPeriode &&
-                        item.PERIODE == this.formData.periodeSelected &&
-                        item.KODE_BANK == element.ID_BANK
-                      );
-                    });
-                    if (arr[0] == null) {
-                      console.log(arr);
-                      let detail = {
-                        KODE_IKU: this.formData.ikuSelected,
-                        TAHUN_INDICATOR: this.formData.yearPeriode,
-                        PERIODE: this.formData.periodeSelected,
-                        KODE_BANK: element.ID_BANK,
-                        NILAI_INDICATOR_1: 0,
-                        NILAI_INDICATOR_2: 0,
-                        NILAI_INDICATOR_3: 0,
-                        USER_CREATED: "Admin",
-                        DATETIME_CREATED: moment().format(),
-                        USER_UPDATED: "Admin",
-                        DATETIME_UPDATED: moment().format(),
-                        DESC_BANK: element.DESCRIPTION
-                      };
-                      indicatorDetail.push(detail);
-                    } else {
-                      console.log(arr);
-                      let detail = {
-                        KODE_IKU: this.formData.ikuSelected,
-                        TAHUN_INDICATOR: this.formData.yearPeriode,
-                        PERIODE: this.formData.periodeSelected,
-                        KODE_BANK: element.ID_BANK,
-                        NILAI_INDICATOR_1: arr[0].NILAI_INDICATOR_1,
-                        NILAI_INDICATOR_2: arr[0].NILAI_INDICATOR_2,
-                        NILAI_INDICATOR_3: arr[0].NILAI_INDICATOR_3,
-                        USER_CREATED: "Admin",
-                        DATETIME_CREATED: moment().format(),
-                        USER_UPDATED: "Admin",
-                        DATETIME_UPDATED: moment().format(),
-                        DESC_BANK: element.DESCRIPTION
-                      };
-                      indicatorDetail.push(detail);
-                    }
-                  })
-                  this.tabledata = indicatorDetail;
-                  this.formData.indicatorDetail = indicatorDetail;
-                  this.formData.indicatorId =
-                    "RBB" +
-                    this.formData.ikuSelected +
-                    this.formData.yearPeriode +
-                    this.formData.periodeSelected;
-                  this.source.load(this.tabledata);
-                }
-              });
+          res.forEach(element => {
+            let arr = this.formData.bankData.filter(item => {
+              return (
+                item.ID_BANK == element.ID_BANK
+              );
+            });
+            let detail = {};
+            if (arr[0] != null) {
+              detail = {
+                TIPE_DOKUMEN : element.TIPE_DOKUMEN,
+                ID_BANK : arr[0].DESCRIPTION,
+                START_DATE: moment(element.START_DATE).format("DD MMMM YYYY"),
+                TARGET_DATE: moment(element.TARGET_DATE).format("DD MMMM YYYY"),
+                REALIZATION_DATE: moment(element.REALIZATION_DATE).format("DD MMMM YYYY"),
+                KETERANGAN: element.KETERANGAN
+              }
+              monaTargetdetail.push(detail);
             }
           });
-        } else {
-          this.toastr.error("Data Not Found!");
+          this.toastr.success("Get Data Success!")
+          this.formData.monaRealisasiData = monaTargetdetail;
+          this.tabledata = monaTargetdetail;
+          this.source.load(this.tabledata);
+          this.source.refresh();
+
+        }
+        else {
+          this.toastr.error("Data Not Found!")
+          this.tabledata = []
+          this.source.load(this.tabledata);
+          this.source.refresh();
         }
       }
     });
   }
 
-  generateDetail() {
-    this.service.getreq("mst_banks").subscribe(response => {
-      if (response != null) {
-        this.formData.bankData = response;
-        let indicatorDetail = [];
-        this.formData.bankData.forEach((element, ind) => {
-          let detail = {
-            KODE_IKU: this.formData.ikuSelected,
-            TAHUN_INDICATOR: this.formData.yearPeriode,
-            PERIODE: this.formData.periodeSelected,
-            KODE_BANK: element.ID_BANK,
-            NILAI_INDICATOR_1: 0,
-            NILAI_INDICATOR_2: 0,
-            NILAI_INDICATOR_3: 0,
-            USER_CREATED: "Admin",
-            DATETIME_CREATED: moment().format(),
-            USER_UPDATED: "Admin",
-            DATETIME_UPDATED: moment().format(),
-            DESC_BANK: element.DESCRIPTION
-          };
-          indicatorDetail.push(detail);
-        });
-        this.tabledata = indicatorDetail;
-        this.formData.indicatorDetail = indicatorDetail;
-        this.formData.indicatorId =
-          "RBB" +
-          this.formData.ikuSelected +
-          this.formData.yearPeriode +
-          this.formData.periodeSelected;
-        this.source.load(this.tabledata);
-      }
-      // error => {
-      //   console.log(error);
-      // };
-    });
-  }
 
-  save() {
-    let header = {
-      KODE_IKU: this.formData.ikuSelected,
-      TAHUN_INDICATOR: this.formData.yearPeriode,
-      PERIODE: this.formData.periodeSelected,
-      KODE_INDIKATOR: this.formData.indicatorId,
-      THRESHOLD: this.formData.threshold,
-      INDIKATOR_1_DESC: this.formData.indicator1,
-      INDIKATOR_2_DESC: this.formData.indicator2,
-      INDIKATOR_3_DESC: this.formData.indicator3,
-      REALISASI_1_DESC: this.formData.realisasi1,
-      REALISASI_2_DESC: this.formData.realisasi2,
-      REALISASI_3_DESC: this.formData.realisasi3,
-      USER_CREATED: "Admin",
-      DATETIME_CREATED: moment().format(),
-      USER_UPDATED: "Admin",
-      DATETIME_UPDATED: moment().format()
-    };
-    this.service.postreq("trn_indicator_qns/crud", header).subscribe(
-      response => {
-        console.log(response);
-        this.formData.indicatorDetail.forEach((element, ind) => {
-          this.service.postreq("trn_indicator_qn_dtls/crud", element).subscribe(
-            response => {
-              console.log(response);
-            },
-            error => {
-              console.log("indicator detail");
-              console.log(error);
-            }
-          );
-        });
-        this.toastr.success("Data Saved!");
-      },
-      error => {
-        console.log("indicator header");
-        console.log(error);
-      }
-    );
-  }
 }
