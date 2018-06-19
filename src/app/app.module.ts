@@ -17,6 +17,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { NB_AUTH_TOKEN_CLASS, NbAuthJWTToken } from '@nebular/auth';
 
+
 @NgModule({
   declarations: [AppComponent, NgxLoginComponent],
   imports: [

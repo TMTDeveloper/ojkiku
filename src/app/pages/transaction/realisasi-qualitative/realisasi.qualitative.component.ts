@@ -6,6 +6,8 @@ import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
 import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
+import { ButtonRenderComponent } from "./button.realisasi.quantitative.component"
+import { renderComponent } from "@angular/core/src/render3";
 
 @Component({
   selector: "ngx-realisasi-qualitative",
@@ -55,42 +57,39 @@ export class RealisasiQualitativeComponent {
     columns: {
       NO: {
         title: "No",
-        type: "string",
+        type: "number",
         filter: false,
         editable: false,
         width: "10%"
       },
       DETAIL: {
         title: "Detail",
-        type: "number",
-        filter: false,
+        type: "custom",
         editable: false,
+        filter: false,
         width: "10%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+        renderComponent: ButtonRenderComponent
+      },
+      STATUS: {
+        title: "Status",
+        type: "html",
+        editor: {
+          type: "list",
+          config: {
+            list: [{title: 'Selesai', value: 'selesai'}, {title: 'Belum Selesai', value: 'belum selesai'},{title: 'Pantau', value: 'pantau'}]
           }
-        }
+        },
+        filter: false,
+        editable: true,
+        width: "10%"
       },
       KETERANGAN: {
         title: "Keterangan",
-        type: "number",
+        type: "string",
         filter: false,
         editable: true,
-        width: "70%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
+        width: "70%"
+        
       }
     }
   };
@@ -115,13 +114,14 @@ export class RealisasiQualitativeComponent {
       }
     ],
     periodeSelected: "",
-    ikuData: [],
     ikuSelected: "",
+    bankSelected: "",
+    ikuData: [],
+    bankData: [],
+    realisasiDetail: [],
     yearPeriode: moment().format("YYYY"),
     threshold: 0,
-    indicatorId: "",
-    bankData: [],
-    realisasiDetail: []
+    indicatorId: ""
   };
 
   constructor(
@@ -190,12 +190,9 @@ export class RealisasiQualitativeComponent {
                     TAHUN_REALISASI: this.formData.yearPeriode,
                     PERIODE: this.formData.periodeSelected,
                     KODE_BANK: element.KODE_BANK,
-                    NILAI_INDICATOR_1: element.NILAI_INDICATOR_1,
-                    NILAI_INDICATOR_2: element.NILAI_INDICATOR_2,
-                    NILAI_INDICATOR_3: element.NILAI_INDICATOR_3,
-                    NILAI_REALISASI_1: 0,
-                    NILAI_REALISASI_2: 0,
-                    NILAI_REALISASI_3: 0,
+                    NO: "1",
+                    DETAIL: "1",
+                    STATUS: "SELESAI",
                     RESULT1: "0%",
                     RESULT2: "0%",
                     RESULT3: "0%",

@@ -1,0 +1,91 @@
+<nb-card>
+  <nb-card-header>MONA</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-sm-4">
+
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Dokumen
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-8">
+            <select name="risk_level" class="form-control" [(ngModel)]="formData.documentSelected">
+              <option *ngFor="let data of formData.documentData" value="{{data.KODE_IKU}}">{{ data.id }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Bank
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-8">
+            <select name="risk_level" class="form-control" [(ngModel)]="formData.bankSelected">
+              <option *ngFor="let data of formData.bankData" value="{{data.ID_BANK}}">{{data.DESCRIPTION}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Start Date
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-8">
+            
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="d1" [(ngModel)]="formData.startDate" ngbDatepicker #d1="ngbDatepicker">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="d1.toggle()" type="button">
+                    <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                  </button>
+                </div>
+              </div>
+            
+
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Target Date
+              <font color="red">*</font>
+          </label>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="d2" [(ngModel)]="formData.targetDate" ngbDatepicker #d2="ngbDatepicker">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button">
+                  <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Realisasi Date
+              <font color="red">*</font>
+          </label>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="d3" [(ngModel)]="formData.realizationDate" ngbDatepicker #d3="ngbDatepicker">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="d3.toggle()" type="button">
+                  <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-auto">
+        <button type=" button " class="btn btn-success " [disabled]="!formData.ikuSelected||!formData.yearPeriode||!formData.periodeSelected||!formData.threshold"
+          (click)="save()">Save Data</button>
+      </div>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
+  </nb-card-body>
+</nb-card>

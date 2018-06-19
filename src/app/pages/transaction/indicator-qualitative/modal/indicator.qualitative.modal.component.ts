@@ -61,7 +61,7 @@ export class IndicatorQualitativeModalComponent {
   ) {}
 
 
-  generateDetail() {
+  saveData() {
     this.service.getreq("trn_indicator_qls").subscribe(response => {
       if (response != null) {
         let arr = response.filter(item => {
@@ -72,9 +72,11 @@ export class IndicatorQualitativeModalComponent {
           )
         })
         
-        if(Array.isArray(arr) && arr.length){
+        if(arr[0] != null){
           this.formData.noDetail = arr.length + 1;
-        } 
+        } else {
+          this.formData.noDetail = 1
+        }
         let header = {
           KODE_IKU: this.formData.ikuSelected,
           TAHUN_INDICATOR: this.formData.yearPeriode,
@@ -89,12 +91,17 @@ export class IndicatorQualitativeModalComponent {
         };
         this.service.postreq("trn_indicator_qls/crud", header).subscribe(response => {
           if (response != null){
-            //console.log(response)
+            console.log(response)
           }
         });
-        this.formData.noDetail = 1;
-
-        this.generateTable()
+        this.toastr.success("New Data Added!");
+        let data = {
+          ikuSelected: this.formData.ikuSelected,
+          yearPeriode: this.formData.yearPeriode,
+          periodeSelected: this.formData.periodeSelected
+        };
+        this.activeModal.close(data);
+        
       }
     });
   }
@@ -110,20 +117,26 @@ export class IndicatorQualitativeModalComponent {
           )
         })
         if (arr[0] != null) {
+          let indicatorQualitativeModalData = [];
+          arr.forEach((element, ind) => {
+            element.NO_DETAIL = ind + 1
+            indicatorQualitativeModalData.push(element)
+            });
           let data = {
             ikuSelected: this.formData.ikuSelected,
             yearPeriode: this.formData.yearPeriode,
             periodeSelected: this.formData.periodeSelected,
-            indicatorQualitativeData: arr
+            indicatorQualitativeData: indicatorQualitativeModalData
           }
-          this.formData.indicatorQualitativeData = arr;
+          this.formData.indicatorQualitativeData = indicatorQualitativeModalData;
           this.toastr.success("New Data Added!");
           this.activeModal.close(data);
         } else {
           let data = {
             ikuSelected: this.formData.ikuSelected,
             yearPeriode: this.formData.yearPeriode,
-            periodeSelected: this.formData.periodeSelected
+            periodeSelected: this.formData.periodeSelected,
+            indicatorQualitativeData: []
           }
           this.toastr.error("Data Not Found!");
           this.activeModal.close(data);

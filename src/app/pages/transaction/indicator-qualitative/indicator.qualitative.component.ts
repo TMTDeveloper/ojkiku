@@ -140,10 +140,8 @@ export class IndicatorQualitativeComponent {
           this.formData.ikuSelected = response.ikuSelected
           this.formData.periodeSelected = response.periodeSelected
           this.formData.yearPeriode = response.yearPeriode
-          this.tabledata = response.indicatorQualitativeData;
-          this.formData.indicatorQualitativeData = response.indicatorQualitativeData;
-          this.source.load(this.tabledata);
-          
+          this.generateDetail();
+          this.source.refresh();
         }
       },
       error => { }
@@ -186,17 +184,21 @@ export class IndicatorQualitativeComponent {
           )
         })
         if (arr[0] != null) {
+        let indicatorQualitativeDetail = [];
          arr.forEach((element, ind) => {
           element.NO_DETAIL = ind + 1
-          this.formData.indicatorQualitativeData.push(element)
+          indicatorQualitativeDetail.push(element)
           })
+          this.tabledata = indicatorQualitativeDetail;
+          this.formData.indicatorQualitativeData = indicatorQualitativeDetail;
           this.toastr.success("Load Data Success!");
-          this.source.load(this.formData.indicatorQualitativeData);
+          this.source.load(this.tabledata);
           console.log(this.tabledata)
         } else {
           this.toastr.error("Data Not Found!");
           this.tabledata = [];
           this.source.load(this.tabledata);
+          this.source.refresh();
         }
       }
     });

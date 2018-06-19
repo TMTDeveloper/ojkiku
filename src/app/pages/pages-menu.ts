@@ -35,7 +35,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     ]
   },
   {
-    title: "Transaction",
+    title: "Transaction IKU",
     icon: "nb-compose",
     children: [
       {
@@ -53,6 +53,20 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title: "Realisasi Qualitative",
         link: "/pages/transaction/realisasi-qualitative"
+      }
+    ]
+  },
+  {
+    title: "Transaction MONA",
+    icon: "nb-compose",
+    children: [
+      {
+        title: "Target Mona",
+        link: "/pages/transaction/mona-target"
+      },
+      {
+        title: "Realisasi Mona",
+        link: "/pages/transaction/mona-realisasi"
       }
     ]
   }

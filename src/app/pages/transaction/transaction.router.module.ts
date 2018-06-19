@@ -7,6 +7,11 @@ import { RealisasiQuantitativeComponent } from "./realisasi-quantitative/realisa
 import { RealisasiQualitativeComponent } from "./realisasi-qualitative/realisasi.qualitative.component";
 import { IndicatorQualitativeComponent } from "./indicator-qualitative/indicator.qualitative.component";
 import { IndicatorQualitativeModalComponent } from "./indicator-qualitative/modal/indicator.qualitative.modal.component";
+import { MonaTargetComponent } from "./mona-target/mona.target.component";
+import { MonaTargetModalComponent } from "./mona-target/modal/mona.target.modal.component";
+import { MonaRealisasiComponent } from "./mona-realisasi/mona.realisasi.component";
+import { MonaRealisasiModalComponent } from "./mona-realisasi/modal/mona.realisasi.modal.component";
+
 const routes: Routes = [
   {
     path: "",
@@ -27,6 +32,14 @@ const routes: Routes = [
       {
         path: "indicator-qualitative",
         component: IndicatorQualitativeComponent
+      },      
+      {
+        path: "mona-target",
+        component: MonaTargetComponent
+      },
+      {
+        path: "mona-realisasi",
+        component: MonaRealisasiComponent
       }
     ]
   }
@@ -45,5 +58,9 @@ export const routedComponents = [
   IndicatorQuantitativeComponent,
   IndicatorQuantitativeModalComponent,
   RealisasiQuantitativeComponent,
-  TransactionComponent
+  TransactionComponent,
+  MonaTargetComponent,
+  MonaTargetModalComponent,
+  MonaRealisasiComponent,
+  MonaRealisasiModalComponent,
 ];
