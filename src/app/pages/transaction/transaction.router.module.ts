@@ -10,7 +10,6 @@ import { IndicatorQualitativeModalComponent } from "./indicator-qualitative/moda
 import { MonaTargetComponent } from "./mona-target/mona.target.component";
 import { MonaTargetModalComponent } from "./mona-target/modal/mona.target.modal.component";
 import { MonaRealisasiComponent } from "./mona-realisasi/mona.realisasi.component";
-import { MonaRealisasiModalComponent } from "./mona-realisasi/modal/mona.realisasi.modal.component";
 
 const routes: Routes = [
   {
@@ -62,5 +61,5 @@ export const routedComponents = [
   MonaTargetComponent,
   MonaTargetModalComponent,
   MonaRealisasiComponent,
-  MonaRealisasiModalComponent,
+
 ];
