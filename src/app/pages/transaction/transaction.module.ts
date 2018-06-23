@@ -14,6 +14,7 @@ import { IndicatorQualitativeModalComponent } from "./indicator-qualitative/moda
 import { ButtonRenderComponent } from "./realisasi-qualitative/button.realisasi.quantitative.component";
 import { MonaRealisasiDatePicker } from "./mona-realisasi/button.mona.realisasi.component";
 import { MonaTargetModalComponent } from "./mona-target/modal/mona.target.modal.component";
+import { RealisasiQualitativeModalComponent } from "./realisasi-qualitative/modal/realisasi.qualitative.modal.component";
 
 
 
@@ -26,7 +27,7 @@ import { MonaTargetModalComponent } from "./mona-target/modal/mona.target.modal.
     ToastrModule.forRoot()
   ],
   declarations: [...routedComponents, ButtonRenderComponent, MonaRealisasiDatePicker],
-  entryComponents: [MonaTargetModalComponent, IndicatorQuantitativeModalComponent, IndicatorQualitativeModalComponent, ButtonRenderComponent, MonaRealisasiDatePicker],
+  entryComponents: [MonaTargetModalComponent, RealisasiQualitativeModalComponent, IndicatorQuantitativeModalComponent, IndicatorQualitativeModalComponent, ButtonRenderComponent, MonaRealisasiDatePicker],
   providers: [
     BackendService,
   ]

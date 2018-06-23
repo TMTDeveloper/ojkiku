@@ -60,7 +60,7 @@ export class RealisasiQualitativeComponent {
         type: "number",
         filter: false,
         editable: false,
-        width: "10%"
+        width: "5%"
       },
       DETAIL: {
         title: "Detail",
@@ -76,12 +76,12 @@ export class RealisasiQualitativeComponent {
         editor: {
           type: "list",
           config: {
-            list: [{title: 'Selesai', value: 'selesai'}, {title: 'Belum Selesai', value: 'belum selesai'},{title: 'Pantau', value: 'pantau'}]
+            list: [{ title: 'Selesai', value: 'selesai' }, { title: 'Belum Selesai', value: 'belum selesai' }, { title: 'Pantau', value: 'pantau' }]
           }
         },
         filter: false,
         editable: true,
-        width: "10%"
+        width: "15%"
       },
       KETERANGAN: {
         title: "Keterangan",
@@ -89,7 +89,7 @@ export class RealisasiQualitativeComponent {
         filter: false,
         editable: true,
         width: "70%"
-        
+
       }
     }
   };
@@ -113,16 +113,16 @@ export class RealisasiQualitativeComponent {
         desc: "Triwulan 4"
       }
     ],
-    periodeSelected: "",
     ikuSelected: "",
+    yearPeriode: moment().format("YYYY"),
+    periodeSelected: "",
     bankSelected: "",
     ikuData: [],
     bankData: [],
     realisasiDetail: [],
-    yearPeriode: moment().format("YYYY"),
-    threshold: 0,
-    indicatorId: ""
   };
+
+
 
   constructor(
     private modalService: NgbModal,
@@ -144,6 +144,21 @@ export class RealisasiQualitativeComponent {
     });
   }
 
+  updateData() {
+    this.tabledata.forEach((element) => {
+      this.service.postreq("trn_realization_qls/crud", element).subscribe(
+        response => {
+          console.log(response);
+        },
+        error => {
+          //console.log("indicator detail");
+          console.log(error);
+        }
+      )
+    })
+    this.toastr.success("Data Updated!");
+  }
+
   submit(event) {
     this.tabledata.forEach((element, ind) => {
       if (element.KODE_IKU == event.newData.KODE_IKU) {
@@ -161,125 +176,118 @@ export class RealisasiQualitativeComponent {
     });
   }
 
-  generateDetail() {
-    this.service.getreq("trn_indicator_qns").subscribe(response => {
-      if (response != null) {
-        let arr = response.filter(item => {
-          return (
-            item.KODE_IKU == this.formData.ikuSelected &&
-            item.TAHUN_INDICATOR == this.formData.yearPeriode &&
-            item.PERIODE == this.formData.periodeSelected
-          );
-        });
-        if (arr[0] != null) {
-          this.formData.indicatorId = arr[0].KODE_INDIKATOR;
-          this.service.getreq("trn_indicator_qn_dtls").subscribe(response => {
-            if (response != null) {
-              let arrDtl = response.filter(item => {
-                return (
-                  item.KODE_IKU == this.formData.ikuSelected &&
-                  item.TAHUN_INDICATOR == this.formData.yearPeriode &&
-                  item.PERIODE == this.formData.periodeSelected
-                );
-              });
-              if (arrDtl[0] != null) {
-                let realisasiDetail = [];
-                arrDtl.forEach((element, ind) => {
-                  let detail = {
-                    KODE_IKU: this.formData.ikuSelected,
-                    TAHUN_REALISASI: this.formData.yearPeriode,
-                    PERIODE: this.formData.periodeSelected,
-                    KODE_BANK: element.KODE_BANK,
-                    NO: "1",
-                    DETAIL: "1",
-                    STATUS: "SELESAI",
-                    RESULT1: "0%",
-                    RESULT2: "0%",
-                    RESULT3: "0%",
-                    PENCAPAIAN: 0,
-                    USER_CREATED: "Admin",
-                    DATETIME_CREATED: moment().format(),
-                    USER_UPDATED: "Admin",
-                    DATETIME_UPDATED: moment().format(),
-                    DESC_BANK: this.formData.bankData.filter(item => {
-                      return item.ID_BANK == element.KODE_BANK;
-                    })[0].DESCRIPTION
-                  };
-
-                  realisasiDetail.push(detail);
-                });
-                this.tabledata = realisasiDetail;
-                this.formData.realisasiDetail = realisasiDetail;
-                this.source.load(this.tabledata);
-              }
-            }
-          });
-        } else {
-          this.toastr.error("Data Not Found!");
-          this.tabledata = [];
-          this.source.load(this.tabledata);
-        }
-      }
-    });
-  }
-
-  save() {
+  addData() {
     let header = {
       KODE_IKU: this.formData.ikuSelected,
       TAHUN_REALISASI: this.formData.yearPeriode,
       PERIODE: this.formData.periodeSelected,
-      KODE_INDIKATOR: this.formData.indicatorId,
-      PENCAIPAIAN: 0,
-      USER_CREATED: "Admin",
+      KODE_BANK: this.formData.bankSelected,
+      NO_URUT: 5,
+      STATUS: "test",
+      KETERANGAN: "test",
+      USER_CREATED: "admin",
       DATETIME_CREATED: moment().format(),
-      USER_UPDATED: "Admin",
+      USER_UPDATED: "admin",
       DATETIME_UPDATED: moment().format()
     };
-    this.service.postreq("trn_realization_qns/crud", header).subscribe(
-      response => {
+    console.log(header)
+    this.service.postreq("trn_realization_qls", header).subscribe(response => {
+      console.log(header)
+      if (response != null) {
+        console.log(header)
         console.log(response);
-        this.formData.realisasiDetail.forEach((element, ind) => {
-          this.service
-            .postreq("trn_realization_qn_dtls/crud", element)
-            .subscribe(
-              response => {
-                console.log(response);
-              },
-              error => {
-                console.log("indicator detail");
-                console.log(error);
-              }
-            );
-        });
-        this.toastr.success("Data Saved!");
-      },
-      error => {
-        console.log("indicator header");
-        console.log(error);
       }
-    );
+    });
   }
 
-  editConfirm(event) {
-    event.newData.RESULT1 =
-      (
-        event.newData.NILAI_REALISASI_1 /
-        event.newData.NILAI_INDICATOR_1 *
-        100
-      ).toFixed(2) + "%";
-    event.newData.RESULT2 =
-      (
-        event.newData.NILAI_REALISASI_2 /
-        event.newData.NILAI_INDICATOR_2 *
-        100
-      ).toFixed(2) + "%";
-    event.newData.RESULT3 =
-      (
-        event.newData.NILAI_REALISASI_3 /
-        event.newData.NILAI_INDICATOR_3 *
-        100
-      ).toFixed(2) + "%";
-    console.log(event.newData.RESULT1);
-    event.confirm.resolve(event.newData);
-  }
+  generateDetail() {
+    this.service.getreq("trn_realization_qls").subscribe(response => {
+      if (response != null) {
+        let arr = response.filter(item => {
+          return (
+            item.KODE_IKU == this.formData.ikuSelected &&
+            item.TAHUN_REALISASI == this.formData.yearPeriode &&
+            item.PERIODE == this.formData.periodeSelected &&
+            item.KODE_BANK == this.formData.bankSelected
+          );
+        });
+        let realisasiDetail = [];
+        arr.forEach((element, ind) => {
+          let detail = {
+            KODE_IKU: this.formData.ikuSelected,
+            TAHUN_REALISASI: this.formData.yearPeriode,
+            PERIODE: this.formData.periodeSelected,
+            KODE_BANK: element.KODE_BANK,
+            NO: ind+1,
+            STATUS: element.STATUS,
+            KETERANGAN: element.KETERANGAN,
+            USER_CREATED: "Admin",
+            DATETIME_CREATED: moment().format(),
+            USER_UPDATED: "Admin",
+            DATETIME_UPDATED: moment().format(),
+            DESC_BANK: this.formData.bankData.filter(item => {
+              return item.ID_BANK == element.KODE_BANK;
+            })[0].DESCRIPTION
+          };
+          realisasiDetail.push(detail);
+        });
+        this.tabledata = realisasiDetail;
+        this.formData.realisasiDetail = realisasiDetail;
+        this.source.load(this.tabledata);
+      } else {
+        this.toastr.error("Data Not Found!");
+        this.tabledata = [];
+        this.source.load(this.tabledata);
+      }
+    });
+}
+
+save() {
+  let header = {
+    KODE_IKU: this.formData.ikuSelected,
+    TAHUN_REALISASI: this.formData.yearPeriode,
+    PERIODE: this.formData.periodeSelected,
+    KODE_BANK: this.formData.bankSelected,
+    NO: 0,
+    STATUS: "belum tuntas",
+    KETERANGAN: "belum di isi",
+    USER_CREATED: "Admin",
+    DATETIME_CREATED: moment().format(),
+    USER_UPDATED: "Admin",
+    DATETIME_UPDATED: moment().format(),
+  };
+  this.service.postreq("trn_realization_qls", header).subscribe(response => {
+      console.log(response);
+      
+      this.toastr.success("Data Saved!");
+    },
+    error => {
+      console.log("indicator header");
+      console.log(error);
+    }
+  );
+}
+
+editConfirm(event) {
+  event.newData.RESULT1 =
+    (
+      event.newData.NILAI_REALISASI_1 /
+      event.newData.NILAI_INDICATOR_1 *
+      100
+    ).toFixed(2) + "%";
+  event.newData.RESULT2 =
+    (
+      event.newData.NILAI_REALISASI_2 /
+      event.newData.NILAI_INDICATOR_2 *
+      100
+    ).toFixed(2) + "%";
+  event.newData.RESULT3 =
+    (
+      event.newData.NILAI_REALISASI_3 /
+      event.newData.NILAI_INDICATOR_3 *
+      100
+    ).toFixed(2) + "%";
+  console.log(event.newData.RESULT1);
+  event.confirm.resolve(event.newData);
+}
 }
