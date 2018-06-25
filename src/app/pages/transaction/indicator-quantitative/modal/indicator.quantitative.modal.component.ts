@@ -75,7 +75,7 @@ export class IndicatorQuantitativeModalComponent {
       USER_UPDATED: "admin",
       DATETIME_UPDATED: moment().format()
     }
-    this.service.postreq("trn_indicator_qns", header).subscribe(response => {
+    this.service.postreq("trn_indicator_qns/crud", header).subscribe(response => {
       if (response != null){
         this.toastr.success("Data Added!")
         let data = {

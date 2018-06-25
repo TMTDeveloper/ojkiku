@@ -24,6 +24,8 @@ export class RealisasiQualitativeModalComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
+  tabledata: any[] = [];
+
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -57,12 +59,14 @@ export class RealisasiQualitativeModalComponent {
       perPage: 30
     },
     columns: {
-      NO: {
+      NO_DETAIL: {
         title: "No",
         type: "number",
-        filter: false,
+        filter: true,
         editable: false,
-        width: "5%"
+        width: "5%",
+        sortDirection: 'asc'
+
       },
       TIPE_DATA: {
         title: "Tipe Data",
@@ -70,58 +74,34 @@ export class RealisasiQualitativeModalComponent {
         editable: false,
         filter: false,
         width: "10%",
-        
+
       },
       JUDUL: {
         title: "Judul",
-        type: "html",
-        editor: {
-          type: "list",
-          config: {
-            list: [{ title: 'Selesai', value: 'selesai' }, { title: 'Belum Selesai', value: 'belum selesai' }, { title: 'Pantau', value: 'pantau' }]
-          }
-        },
+        type: "string",
         filter: false,
-        editable: true,
-        width: "15%"
+        editable: false,
+        width: "45%"
       },
       DESKRIPSI: {
         title: "Deskripsi",
         type: "string",
         filter: false,
         editable: true,
-        width: "70%"
+        width: "45%"
 
       }
     }
   };
 
-  tabledata = [
-    {NO: 1,TIPE_DATA: "String",JUDUL: "Dummy 1",DESKRIPSI: "Dummy 1"},
-    {NO: 2,TIPE_DATA: "Date",JUDUL: "Dummy 2",DESKRIPSI: "Dummy 2"},
-    {NO: 3,TIPE_DATA: "Number",JUDUL: "Dummy 3",DESKRIPSI: "Dummy 3"},
-    {NO: 4,TIPE_DATA: "String",JUDUL: "Dummy 4",DESKRIPSI: "Dummy 4"},
-    {NO: 5,TIPE_DATA: "Date",JUDUL: "Dummy 5",DESKRIPSI: "Dummy 5"},
-]
-
   formData = {
-    documentData: [
-      {
-        id: "rbp",
-        desc: "RBP"
-      },
-      {
-        id: "lainlain",
-        desc: "Lain-lain"
-      }
-    ],
-    documentSelected: "",
-    bankSelected: "",
-    startDate: "",
-    targetDate: "",
-    keterangan: "",
-    year: moment().format("YYYY"),
-    bankData: [],
+
+    ikuSelected: String,
+    tahunSelected: String,
+    periodeSelected: String,
+    bankSelected: String,
+    noUrut: Number
+
   };
 
   constructor(
@@ -131,46 +111,111 @@ export class RealisasiQualitativeModalComponent {
   ) { }
 
   ngOnInit() {
-    this.source.load(this.tabledata)
+    //this.source.load(this.tabledata)
+    //console.log(this.formData)
+    this.generateDetail();
   }
 
-  dateReformat(value) {
-    return value.year + "-" + value.month + "-" + value.day
-  }
-
-  addNewData() {
-    
-    let header = {
-      YEAR: this.formData.year,
-      ID_BANK: this.formData.bankSelected,
-      TIPE_DOKUMEN: this.formData.documentSelected,
-      KETERANGAN: this.formData.keterangan,
-      START_DATE: moment(this.dateReformat(this.formData.startDate)).format(),
-      TARGET_DATE: moment(this.dateReformat(this.formData.targetDate)).format(),
-      USER_CREATED: "admin",
-      DATE_CREATED: moment().format(),
-      USER_UPDATED: "admin",
-      DATE_UPDATED: moment().format(),
-    }
-    console.log(header)
-    this.service.postreq("trn_monas", header).subscribe(response => {
+  generateDetail() {
+    this.service.getreq("trn_indicator_qls").subscribe(response => {
       if (response != null) {
-        this.toastr.success("Data Added!")
-        let data = {
-          yearPeriode: this.formData.startDate
+        let arr = response.filter(item => {
+          return (
+            item.KODE_IKU == this.formData.ikuSelected &&
+            item.TAHUN_INDICATOR == this.formData.tahunSelected &&
+            item.PERIODE == this.formData.periodeSelected
+          );
+        });
+        if (arr[0] != null) {
+          let realisasidetail = [];
+          arr.forEach((element, index) => {
+            let detail = {
+              KODE_IKU: this.formData.ikuSelected,
+              TAHUN_REALISASI: this.formData.tahunSelected,
+              PERIODE: this.formData.periodeSelected,
+              KODE_BANK: this.formData.bankSelected,
+              NO_URUT: this.formData.noUrut,
+              NO_DETAIL: Number,
+              TIPE_DATA: String,
+              JUDUL: String,
+              DESKRIPSI: "Belum Di isi",
+              USER_CREATED: "admin",
+              DATETIME_CREATED: moment().format(),
+              USER_UPDATED: "admin",
+              DATETIME_UPDATED: moment().format(),
+            };
+
+            detail.NO_DETAIL = element.NO_DETAIL;
+            detail.TIPE_DATA = element.TIPE_DATA;
+            detail.JUDUL = element.DESKRIPSI;
+
+            this.service.getreq("trn_realization_ql_dtls").subscribe(res => {
+              if (res != null) {
+                let arrDtl = res.filter(item => {
+                  return (
+                    item.KODE_IKU == this.formData.ikuSelected &&
+                    item.TAHUN_REALISASI == this.formData.tahunSelected &&
+                    item.PERIODE == this.formData.periodeSelected &&
+                    item.KODE_BANK == this.formData.bankSelected &&
+                    item.NO_URUT == this.formData.noUrut &&
+                    item.NO_DETAIL == element.NO_DETAIL
+                  );
+                });
+                console.log(arrDtl)
+                if (arrDtl[0] != null) {
+                  detail.DESKRIPSI = arrDtl[0].DESKRIPSI
+                  realisasidetail.push(detail);
+                  this.tabledata = realisasidetail;
+                  this.source.load(this.tabledata)
+                  this.source.refresh();
+                } else {
+                  detail.DESKRIPSI = "Belum di isi"
+                  realisasidetail.push(detail);
+                  this.tabledata = realisasidetail;
+                  this.source.load(this.tabledata)
+                  this.source.refresh();
+                }
+              }
+            })
+          })
         }
-        this.activeModal.close(data);
-      } else {
-        this.toastr.error("Add Data Failed!")
       }
+    })
+  }
+
+  save() {
+    console.log(this.tabledata)
+    this.tabledata.forEach(element => {
+      let header = {
+        KODE_IKU: this.formData.ikuSelected,
+        TAHUN_REALISASI: this.formData.tahunSelected,
+        PERIODE: this.formData.periodeSelected,
+        KODE_BANK: this.formData.bankSelected,
+        NO_URUT: this.formData.noUrut,
+        NO_DETAIL: element.NO_DETAIL,
+        TIPE_DATA: element.TIPE_DATA,
+        JUDUL: element.JUDUL,
+        DESKRIPSI: element.DESKRIPSI,
+        USER_CREATED: "admin",
+        DATETIME_CREATED: moment().format(),
+        USER_UPDATED: "admin",
+        DATETIME_UPDATED: moment().format(),
+      }
+      console.log(header)
+      this.service.postreq("trn_realization_ql_dtls/crud", header).subscribe(response => {
+        if (response != null) {
+          this.toastr.success("Data Updated!")
+        } else {
+          this.toastr.error("Update Failed!")
+        }
+      });
     });
   }
 
-  refreshSelected(event) {
-    // this.selectedData = event.data;
+  editConfirm(event) {
+    //console.log(event.newData.RESULT1);
+    event.confirm.resolve(event.newData);
   }
-
-  submit() { }
 
   closeModal() {
     this.activeModal.close();

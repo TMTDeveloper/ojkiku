@@ -6,8 +6,7 @@ import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
 import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
-import { ButtonRenderComponent } from "./button.realisasi.quantitative.component"
-import { renderComponent } from "@angular/core/src/render3";
+import { ButtonRenderComponent } from "./button.realisasi.quantitative.component";
 
 @Component({
   selector: "ngx-realisasi-qualitative",
@@ -68,6 +67,7 @@ export class RealisasiQualitativeComponent {
         editable: false,
         filter: false,
         width: "10%",
+        valuePrepareFunction: (cell, row) => row,
         renderComponent: ButtonRenderComponent
       },
       STATUS: {
@@ -76,7 +76,10 @@ export class RealisasiQualitativeComponent {
         editor: {
           type: "list",
           config: {
-            list: [{ title: 'Selesai', value: 'selesai' }, { title: 'Belum Selesai', value: 'belum selesai' }, { title: 'Pantau', value: 'pantau' }]
+            list: [
+              { title: 'Selesai', value: 'Selesai' },
+              { title: 'Belum Selesai', value: 'Belum Selesai' },
+              { title: 'Pantau', value: 'Pantau' }]
           }
         },
         filter: false,
@@ -146,35 +149,43 @@ export class RealisasiQualitativeComponent {
 
   updateData() {
     this.tabledata.forEach((element) => {
-      this.service.postreq("trn_realization_qls/crud", element).subscribe(
+      if (element.STATUS == "Selesai") {
+        element.STATUS = "selesai";
+      }
+      if (element.STATUS == "Belum Selesai") {
+        element.STATUS = "blmselesai";
+      }
+      if (element.STATUS == "Pantau") {
+        element.STATUS = "pantau";
+      }
+      let header = {
+        KODE_IKU: element.KODE_IKU,
+        TAHUN_REALISASI: element.TAHUN_REALISASI,
+        PERIODE: element.PERIODE,
+        KODE_BANK: element.KODE_BANK,
+        NO_URUT: element.NO,
+        STATUS: element.STATUS,
+        KETERANGAN: element.KETERANGAN,
+        USER_CREATED: "admin",
+        DATETIME_CREATED: moment().format(),
+        USER_UPDATED: "admin",
+        DATETIME_UPDATED: moment().format()
+      }
+      //console.log(header);
+      this.service.postreq("trn_realization_qls/crud", header).subscribe(
         response => {
-          console.log(response);
+          //console.log(response);
         },
         error => {
           //console.log("indicator detail");
-          console.log(error);
+          //console.log(error);
         }
       )
     })
     this.toastr.success("Data Updated!");
   }
 
-  submit(event) {
-    this.tabledata.forEach((element, ind) => {
-      if (element.KODE_IKU == event.newData.KODE_IKU) {
-        element.KODE_IKU = event.newData.KODE_IKU;
-        element.DESKRIPSI = event.newData.DESKRIPSI;
-        element.TIPE_IKU = event.newData.TIPE_IKU;
-        this.service
-          .patchreq("mst_ikus", this.tabledata[ind])
-          .subscribe(response => {
-            console.log(JSON.stringify(response));
-            event.confirm.resolve(event.newData);
-            this.toastr.success("Data Updated!");
-          });
-      }
-    });
-  }
+
 
   addData() {
     let header = {
@@ -182,22 +193,29 @@ export class RealisasiQualitativeComponent {
       TAHUN_REALISASI: this.formData.yearPeriode,
       PERIODE: this.formData.periodeSelected,
       KODE_BANK: this.formData.bankSelected,
-      NO_URUT: 5,
-      STATUS: "test",
-      KETERANGAN: "test",
+      NO_URUT: 1,
+      STATUS: "blmselesai",
+      KETERANGAN: "Belum Di Isi",
       USER_CREATED: "admin",
       DATETIME_CREATED: moment().format(),
       USER_UPDATED: "admin",
       DATETIME_UPDATED: moment().format()
     };
+    this.service.getreq("trn_realization_qls").subscribe(res => {
+      if (res != null) {
+        header.NO_URUT = res.length + 1
+      }
+    })
     console.log(header)
     this.service.postreq("trn_realization_qls", header).subscribe(response => {
-      console.log(header)
+      //console.log(header)
       if (response != null) {
-        console.log(header)
-        console.log(response);
+        this.toastr.success("Data Added!")
+      } else {
+        this.toastr.error("Failed Add Data!")
       }
     });
+    this.generateDetail()
   }
 
   generateDetail() {
@@ -211,83 +229,52 @@ export class RealisasiQualitativeComponent {
             item.KODE_BANK == this.formData.bankSelected
           );
         });
-        let realisasiDetail = [];
-        arr.forEach((element, ind) => {
-          let detail = {
-            KODE_IKU: this.formData.ikuSelected,
-            TAHUN_REALISASI: this.formData.yearPeriode,
-            PERIODE: this.formData.periodeSelected,
-            KODE_BANK: element.KODE_BANK,
-            NO: ind+1,
-            STATUS: element.STATUS,
-            KETERANGAN: element.KETERANGAN,
-            USER_CREATED: "Admin",
-            DATETIME_CREATED: moment().format(),
-            USER_UPDATED: "Admin",
-            DATETIME_UPDATED: moment().format(),
-            DESC_BANK: this.formData.bankData.filter(item => {
-              return item.ID_BANK == element.KODE_BANK;
-            })[0].DESCRIPTION
-          };
-          realisasiDetail.push(detail);
-        });
-        this.tabledata = realisasiDetail;
-        this.formData.realisasiDetail = realisasiDetail;
-        this.source.load(this.tabledata);
-      } else {
-        this.toastr.error("Data Not Found!");
-        this.tabledata = [];
-        this.source.load(this.tabledata);
+        if (arr[0] != null) {
+          let realisasiDetail = [];
+          arr.forEach((element, ind) => {
+            if (element.STATUS == "selesai") {
+              element.STATUS = "Selesai";
+            }
+            if (element.STATUS == "blmselesai") {
+              element.STATUS = "Belum Selesai";
+            }
+            if (element.STATUS == "pantau") {
+              element.STATUS = "Pantau";
+            }
+  
+            let detail = {
+              KODE_IKU: this.formData.ikuSelected,
+              TAHUN_REALISASI: this.formData.yearPeriode,
+              PERIODE: this.formData.periodeSelected,
+              KODE_BANK: element.KODE_BANK,
+              NO: ind + 1,
+              STATUS: element.STATUS,
+              KETERANGAN: element.KETERANGAN,
+              USER_CREATED: "Admin",
+              DATETIME_CREATED: moment().format(),
+              USER_UPDATED: "Admin",
+              DATETIME_UPDATED: moment().format(),
+              DESC_BANK: this.formData.bankData.filter(item => {
+                return item.ID_BANK == element.KODE_BANK;
+              })[0].DESCRIPTION
+            };
+            realisasiDetail.push(detail);
+          });
+          this.tabledata = realisasiDetail;
+          this.formData.realisasiDetail = realisasiDetail;
+          this.source.load(this.tabledata);
+          this.toastr.success("Get Data Success!")
+        } else {
+          this.toastr.error("Data Not Found!");
+          this.tabledata = [];
+          this.source.load(this.tabledata);
+        }
       }
-    });
-}
+    })
+  }
 
-save() {
-  let header = {
-    KODE_IKU: this.formData.ikuSelected,
-    TAHUN_REALISASI: this.formData.yearPeriode,
-    PERIODE: this.formData.periodeSelected,
-    KODE_BANK: this.formData.bankSelected,
-    NO: 0,
-    STATUS: "belum tuntas",
-    KETERANGAN: "belum di isi",
-    USER_CREATED: "Admin",
-    DATETIME_CREATED: moment().format(),
-    USER_UPDATED: "Admin",
-    DATETIME_UPDATED: moment().format(),
-  };
-  this.service.postreq("trn_realization_qls", header).subscribe(response => {
-      console.log(response);
-      
-      this.toastr.success("Data Saved!");
-    },
-    error => {
-      console.log("indicator header");
-      console.log(error);
-    }
-  );
-}
-
-editConfirm(event) {
-  event.newData.RESULT1 =
-    (
-      event.newData.NILAI_REALISASI_1 /
-      event.newData.NILAI_INDICATOR_1 *
-      100
-    ).toFixed(2) + "%";
-  event.newData.RESULT2 =
-    (
-      event.newData.NILAI_REALISASI_2 /
-      event.newData.NILAI_INDICATOR_2 *
-      100
-    ).toFixed(2) + "%";
-  event.newData.RESULT3 =
-    (
-      event.newData.NILAI_REALISASI_3 /
-      event.newData.NILAI_INDICATOR_3 *
-      100
-    ).toFixed(2) + "%";
-  console.log(event.newData.RESULT1);
-  event.confirm.resolve(event.newData);
-}
+  editConfirm(event) {
+    //console.log(event.newData.RESULT1);
+    event.confirm.resolve(event.newData);
+  }
 }

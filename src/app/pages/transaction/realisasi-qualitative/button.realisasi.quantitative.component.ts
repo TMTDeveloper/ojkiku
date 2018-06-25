@@ -9,37 +9,20 @@ import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 })
 export class ButtonRenderComponent implements OnInit {
 
-  public renderValue;
+  public value: ButtonRenderComponent;
+
   activeModal: any;
 
-  formData = {
-    documentData: [
-      {
-        id: "rbp",
-        desc: "RBP"
-      },
-      {
-        id: "lainlain",
-        desc: "Lain-lain"
-      }
-    ],
-    bankData: [],
-    monaDataDetail: []
-  };
+  realisasiData: any;
 
-
-  @Input() value;
 
   constructor(
     private modalService: NgbModal,
-  ) {  }
+  ) { }
 
   ngOnInit() {
-    this.renderValue = this.value;
-  }
-
-  example() {
-    alert(this.renderValue);
+    this.realisasiData = this.value;
+    //console.log(this.realisasiData);
   }
 
   showModal() {
@@ -51,7 +34,11 @@ export class ButtonRenderComponent implements OnInit {
         backdrop: "static"
       }
     );
-    this.activeModal.componentInstance.formData.bankData = this.formData.bankData;
+    this.activeModal.componentInstance.formData.ikuSelected     = this.realisasiData.KODE_IKU;
+    this.activeModal.componentInstance.formData.tahunSelected   = this.realisasiData.TAHUN_REALISASI;
+    this.activeModal.componentInstance.formData.periodeSelected = this.realisasiData.PERIODE;
+    this.activeModal.componentInstance.formData.bankSelected    = this.realisasiData.KODE_BANK;
+    this.activeModal.componentInstance.formData.noUrut          = this.realisasiData.NO;
   }
 
 
