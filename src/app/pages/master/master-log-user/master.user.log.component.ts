@@ -45,10 +45,11 @@ export class MasterUserLogComponent {
       },
       DATETIME_LOGIN: {
         title: "Datetime Login",
-        type: "number",
+        type: "string",
         filter: false,
         editable: true,
-        width: "50%"
+        width: "50%",
+        sortDirection: "desc"
       }
     }
   };
@@ -63,6 +64,10 @@ export class MasterUserLogComponent {
   loadData() {
     this.service.getreq("LOGIN_LOGs").subscribe(response => {
       if (response != null) {
+        response.forEach(element => {
+          element.DATETIME_LOGIN = moment(element.DATETIME_LOGIN).format("DD/MM/YYYY HH:mm:ss")
+        });
+
         this.tabledata = response;
         console.log(JSON.stringify(response));
         this.source.load(this.tabledata);
