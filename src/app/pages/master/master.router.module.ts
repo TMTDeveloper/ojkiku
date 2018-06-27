@@ -4,6 +4,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { MasterComponent } from "./master.component";
 import { MasterBankComponent } from "./master-bank/master.bank.component";
 import { MasterUserComponent } from "./master-user/master.user.component";
+import { MasterUserLogComponent } from "./master-log-user/master.user.log.component";
 import { MasterUserBankComponent } from "./user-bank/master.user.bank.component";
 import { IkuComponent } from "./iku/iku.component";
 const routes: Routes = [
@@ -18,6 +19,10 @@ const routes: Routes = [
       {
         path: "master-user",
         component: MasterUserComponent
+      },
+      {
+        path: "master-log-user",
+        component: MasterUserLogComponent
       },
       {
         path: "user-bank",
@@ -41,6 +46,7 @@ export const routedComponents = [
   MasterComponent,
   MasterBankComponent,
   MasterUserComponent,
+  MasterUserLogComponent,
   MasterUserBankComponent,
   IkuComponent
 ];
