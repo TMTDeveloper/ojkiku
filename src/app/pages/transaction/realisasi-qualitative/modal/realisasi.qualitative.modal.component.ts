@@ -204,7 +204,8 @@ export class RealisasiQualitativeModalComponent {
       console.log(header)
       this.service.postreq("trn_realization_ql_dtls/crud", header).subscribe(response => {
         if (response != null) {
-          this.toastr.success("Data Updated!")
+          this.toastr.success("Data Updated!");
+          this.closeModal();
         } else {
           this.toastr.error("Update Failed!")
         }

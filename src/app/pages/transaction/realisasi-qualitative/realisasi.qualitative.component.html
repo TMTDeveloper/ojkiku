@@ -7,7 +7,7 @@
           <label class="col-sm-1 col-form-label">IKU
             <font color="red">*</font>
           </label>
-          <div class="col-sm-5">
+          <div class="col-sm-7">
             <select name="risk_level" class="form-control" [(ngModel)]="formData.ikuSelected">
               <option *ngFor="let data of formData.ikuData" value="{{data.KODE_IKU}}">{{data.KODE_IKU+" "+data.DESKRIPSI}}</option>
             </select>
@@ -17,7 +17,7 @@
           <label class="col-sm-1 col-form-label">Tahun
             <font color="red">*</font>
           </label>
-          <div class="col-sm-2">
+          <div class="col-sm-4">
             <input class="form-control" [(ngModel)]="formData.yearPeriode">
           </div>
         </div>
@@ -25,7 +25,7 @@
           <label class="col-sm-1 col-form-label">Periode
             <font color="red">*</font>
           </label>
-          <div class="col-sm-2">
+          <div class="col-sm-4">
             <select name="risk_level" class="form-control" [(ngModel)]="formData.periodeSelected">
               <option *ngFor="let data of formData.periode" value="{{data.id}}">{{data.desc}}</option>
             </select>
@@ -35,7 +35,7 @@
           <label class="col-sm-1 col-form-label">Bank
 
           </label>
-          <div class="col-sm-5">
+          <div class="col-sm-7">
             <select name="risk_level" class="form-control" [(ngModel)]="formData.bankSelected">
               <option *ngFor="let data of formData.bankData" value="{{data.ID_BANK}}">{{data.DESCRIPTION}}</option>
             </select>
