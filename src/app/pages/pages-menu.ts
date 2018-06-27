@@ -10,7 +10,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: "Reporting",
     icon: "nb-bar-chart",
-    link: "/pages/report"
+    children: [
+      {
+        title: "Report IKU",
+        link: "/pages/report/report-iku"
+      },
+      {
+        title: "Report MONA",
+        link: "/pages/report/report-mona"
+      }
+    ]
   },
   {
     title: "Master",
