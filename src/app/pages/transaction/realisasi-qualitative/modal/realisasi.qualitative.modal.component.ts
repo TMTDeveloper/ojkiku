@@ -16,10 +16,6 @@ import { BackendService } from "../../../../@core/data/backend.service";
  }`]
 })
 
-
-
-
-
 export class RealisasiQualitativeModalComponent {
 
   source: LocalDataSource = new LocalDataSource();

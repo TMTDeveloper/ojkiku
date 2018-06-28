@@ -36,20 +36,34 @@ export class MasterUserLogComponent {
       perPage: 30
     },
     columns: {
+      NO: {
+        title: "NO",
+        type: "Number",
+        filter: false,
+        editable: false,
+        width: "10%",
+        sortDirection: "asc"
+      },
       USERNAME: {
         title: "Username",
         type: "string",
         filter: false,
         editable: false,
-        width: "50%"
+        width: "30%"
+      },
+      NAMA: {
+        title: "Nama",
+        type: "string",
+        filter: false,
+        editable: false,
+        width: "30%"
       },
       DATETIME_LOGIN: {
         title: "Datetime Login",
         type: "string",
         filter: false,
         editable: true,
-        width: "50%",
-        sortDirection: "desc"
+        width: "30%",
       }
     }
   };
@@ -61,16 +75,41 @@ export class MasterUserLogComponent {
   ) {
     this.loadData();
   }
+
   loadData() {
     this.service.getreq("LOGIN_LOGs").subscribe(response => {
       if (response != null) {
-        response.forEach(element => {
-          element.DATETIME_LOGIN = moment(element.DATETIME_LOGIN).format("DD/MM/YYYY HH:mm:ss")
-        });
+        let logDetail = [];
+        var lengthLog = parseInt(response.length);
+        console.log(lengthLog)
+        response.forEach((element,index) => {
+          let detail = {
+            NO: lengthLog-index,
+            DATETIME_LOGIN: "",
+            USERNAME: "",
+            NAMA: ""
+          }
+          detail.USERNAME = element.USERNAME;
+          detail.DATETIME_LOGIN = moment(element.DATETIME_LOGIN).format("DD/MM/YYYY HH:mm:ss");
+          this.service.getreq("mst_users").subscribe(res => {
 
-        this.tabledata = response;
-        console.log(JSON.stringify(response));
-        this.source.load(this.tabledata);
+            if (res != null) {
+              let arr = res.filter(item => {
+                return (
+                  item.ID_USER == detail.USERNAME
+                );
+              });
+              if (arr[0] != null) {
+                detail.NAMA = arr[0].USER_NAME
+              }
+              logDetail.push(detail);
+              this.tabledata = logDetail;
+              this.source.load(this.tabledata);
+              
+            }
+          })
+        });
+        console.log(logDetail)
       }
     });
   }

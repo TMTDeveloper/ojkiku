@@ -85,7 +85,8 @@ export class MasterUserComponent {
         type: "number",
         filter: false,
         editable: true,
-        width: "30%"
+        width: "30%",
+        
       }
     }
   };
