@@ -45,6 +45,14 @@
             <input class="form-control" [(ngModel)]="formData.indicatorId" readonly="true" disabled>
           </div>
         </div>
+        <div class="form-group row">
+          <div class="col-sm-auto">
+            <button type=" button " class="btn btn-success " (click)="getData()" [disabled]="!formData.ikuSelected||!formData.yearPeriode||!formData.periodeSelected">Get Data</button>
+          </div>
+          <div class="col-sm-auto">
+            <button type=" button " class="btn btn-success" (click)="showModal()">Add Data</button>
+          </div>
+        </div>
       </div>
       <div class="col-sm-8">
         <div class="form-group row">
@@ -98,22 +106,20 @@
             <input class="form-control" [(ngModel)]="formData.realisasi3" disabled>
           </div>
         </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Remark
+  
+          </label>
+          <div class="col-sm-9">
+            <input class="form-control" [(ngModel)]="formData.remark" disabled>
+          </div>
+        </div>
       </div>
 
       
        
       
-    </div>
-    
-    
-
-    <div class="form-group row">
-      <div class="col-sm-auto">
-        <button type=" button " class="btn btn-success " (click)="getData()" [disabled]="!formData.ikuSelected||!formData.yearPeriode||!formData.periodeSelected">Get Data</button>
-      </div>
-      <div class="col-sm-auto">
-        <button type=" button " class="btn btn-success" (click)="showModal()">Add Data</button>
-      </div>
     </div>
 
     <div class="form-group">

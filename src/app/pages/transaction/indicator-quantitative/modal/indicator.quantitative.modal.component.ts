@@ -45,7 +45,8 @@ export class IndicatorQuantitativeModalComponent {
     indicator3: "",
     realisasi1: "",
     realisasi2: "",
-    realisasi3: ""
+    realisasi3: "",
+    remark: ""
   };
   source: LocalDataSource = new LocalDataSource();
   constructor(
@@ -73,7 +74,8 @@ export class IndicatorQuantitativeModalComponent {
       USER_CREATED: "admin",
       DATETIME_CREATED: moment().format(),
       USER_UPDATED: "admin",
-      DATETIME_UPDATED: moment().format()
+      DATETIME_UPDATED: moment().format(),
+      REMARK: this.formData.remark
     }
     this.service.postreq("trn_indicator_qns/crud", header).subscribe(response => {
       if (response != null){

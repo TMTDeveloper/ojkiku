@@ -76,42 +76,43 @@ export class MasterUserLogComponent {
     this.loadData();
   }
 
-  loadData() {
-    this.service.getreq("LOGIN_LOGs").subscribe(response => {
+  async loadData() {
+    let LogData: any = [];
+    let userData: any = [];
+    await this.service.getreq("LOGIN_LOGs").toPromise().then(response => {
       if (response != null) {
-        let logDetail = [];
-        var lengthLog = parseInt(response.length);
-        console.log(lengthLog)
-        response.forEach((element,index) => {
-          let detail = {
-            NO: lengthLog-index,
-            DATETIME_LOGIN: "",
-            USERNAME: "",
-            NAMA: ""
-          }
-          detail.USERNAME = element.USERNAME;
-          detail.DATETIME_LOGIN = moment(element.DATETIME_LOGIN).format("DD/MM/YYYY HH:mm:ss");
-          this.service.getreq("mst_users").subscribe(res => {
-
-            if (res != null) {
-              let arr = res.filter(item => {
-                return (
-                  item.ID_USER == detail.USERNAME
-                );
-              });
-              if (arr[0] != null) {
-                detail.NAMA = arr[0].USER_NAME
-              }
-              logDetail.push(detail);
-              this.tabledata = logDetail;
-              this.source.load(this.tabledata);
-              
-            }
-          })
-        });
-        console.log(logDetail)
+        LogData = response;
       }
     });
+
+    await this.service.getreq("mst_users").toPromise().then(res => {
+      if (res != null) {
+        userData = res;
+      }
+    });
+
+    await LogData.forEach((element, index) => {
+      var lengthLog = parseInt(LogData.length);
+      let detail = {
+        NO: lengthLog - index,
+        DATETIME_LOGIN: "",
+        USERNAME: "",
+        NAMA: ""
+      }
+      detail.USERNAME = element.USERNAME;
+      detail.DATETIME_LOGIN = moment(element.DATETIME_LOGIN).format("DD/MM/YYYY HH:mm:ss");
+      let arr = userData.filter(item => {
+        return (
+          item.ID_USER == detail.USERNAME
+        );
+      });
+      if (arr[0] != null) {
+        detail.NAMA = arr[0].USER_NAME
+      };
+      this.tabledata.push(detail);   
+    });
+    this.source.load(this.tabledata);
   }
+
 
 }

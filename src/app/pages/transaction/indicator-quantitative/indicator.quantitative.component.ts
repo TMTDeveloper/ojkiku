@@ -148,6 +148,7 @@ export class IndicatorQuantitativeComponent {
     realisasi1: "",
     realisasi2: "",
     realisasi3: "",
+    remark: "",
     bankData: [],
     indicatorDetail: []
   };
@@ -182,6 +183,16 @@ export class IndicatorQuantitativeComponent {
     this.activeModal.componentInstance.formData.periodeSelected = this.formData.periodeSelected;
     this.activeModal.componentInstance.formData.ikuSelected = this.formData.ikuSelected;
     this.activeModal.componentInstance.formData.yearPeriode = this.formData.yearPeriode;
+    //
+    this.activeModal.componentInstance.formData.threshold = this.formData.threshold;
+    this.activeModal.componentInstance.formData.indicator1 = this.formData.indicator1;
+    this.activeModal.componentInstance.formData.indicator2 = this.formData.indicator2;
+    this.activeModal.componentInstance.formData.indicator3 = this.formData.indicator3;
+    this.activeModal.componentInstance.formData.realisasi1 = this.formData.realisasi1;
+    this.activeModal.componentInstance.formData.realisasi2 = this.formData.realisasi2;
+    this.activeModal.componentInstance.formData.realisasi3 = this.formData.realisasi3;
+    this.activeModal.componentInstance.formData.remark = this.formData.remark;
+    //
     this.activeModal.result.then(
       async response => {
         console.log(response);
@@ -224,14 +235,16 @@ export class IndicatorQuantitativeComponent {
           );
         });
         if (res[0] != null) {
-          this.formData.indicator1 = res[0].INDIKATOR_1_DESC
-          this.formData.indicator2 = res[0].INDIKATOR_2_DESC
-          this.formData.indicator3 = res[0].INDIKATOR_3_DESC
-          this.formData.realisasi1 = res[0].REALISASI_1_DESC
-          this.formData.realisasi2 = res[0].REALISASI_2_DESC
-          this.formData.realisasi3 = res[0].REALISASI_3_DESC
-          this.formData.threshold = res[0].THRESHOLD
-          this.formData.indicatorId = res[0].KODE_INDIKATOR
+          this.formData.indicator1 = res[0].INDIKATOR_1_DESC;
+          this.formData.indicator2 = res[0].INDIKATOR_2_DESC;
+          this.formData.indicator3 = res[0].INDIKATOR_3_DESC;
+          this.formData.realisasi1 = res[0].REALISASI_1_DESC;
+          this.formData.realisasi2 = res[0].REALISASI_2_DESC;
+          this.formData.realisasi3 = res[0].REALISASI_3_DESC;
+          this.formData.threshold = res[0].THRESHOLD;
+          this.formData.indicatorId = res[0].KODE_INDIKATOR;
+          this.formData.remark = res[0].REMARK;
+          
 
           this.service.getreq("mst_banks").subscribe(response => {
             if (response != null) {
