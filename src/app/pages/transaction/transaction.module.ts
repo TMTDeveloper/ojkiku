@@ -12,8 +12,8 @@ import { CurrencyMaskModule } from "ng2-currency-mask";
 import { IndicatorQuantitativeModalComponent } from "./indicator-quantitative/modal/indicator.quantitative.modal.component";
 import { IndicatorQualitativeModalComponent } from "./indicator-qualitative/modal/indicator.qualitative.modal.component";
 import { ButtonRenderComponent } from "./realisasi-qualitative/button.realisasi.quantitative.component";
-import { MonaRealisasiDatePicker } from "./mona-realisasi/button.mona.realisasi.component";
-import { MonaTargetModalComponent } from "./mona-target/modal/mona.target.modal.component";
+import { MokaRealisasiDatePicker } from "./moka-realisasi/button.moka.realisasi.component";
+import { MokaTargetModalComponent } from "./moka-target/modal/moka.target.modal.component";
 import { RealisasiQualitativeModalComponent } from "./realisasi-qualitative/modal/realisasi.qualitative.modal.component";
 
 
@@ -26,8 +26,8 @@ import { RealisasiQualitativeModalComponent } from "./realisasi-qualitative/moda
     CurrencyMaskModule,
     ToastrModule.forRoot()
   ],
-  declarations: [...routedComponents, ButtonRenderComponent, MonaRealisasiDatePicker],
-  entryComponents: [MonaTargetModalComponent, RealisasiQualitativeModalComponent, IndicatorQuantitativeModalComponent, IndicatorQualitativeModalComponent, ButtonRenderComponent, MonaRealisasiDatePicker],
+  declarations: [...routedComponents, ButtonRenderComponent, MokaRealisasiDatePicker],
+  entryComponents: [MokaTargetModalComponent, RealisasiQualitativeModalComponent, IndicatorQuantitativeModalComponent, IndicatorQualitativeModalComponent, ButtonRenderComponent, MokaRealisasiDatePicker],
   providers: [
     BackendService,
   ]

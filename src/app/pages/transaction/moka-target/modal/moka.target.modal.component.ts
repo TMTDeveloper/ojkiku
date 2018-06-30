@@ -7,8 +7,8 @@ import { NgbActiveModal, NgbModal, NgbDateParserFormatter, NgbDateStruct } from 
 import { BackendService } from "../../../../@core/data/backend.service";
 
 @Component({
-  selector: "ngx-mona-target-modal",
-  templateUrl: "./mona.target.modal.component.html",
+  selector: "ngx-moka-target-modal",
+  templateUrl: "./moka.target.modal.component.html",
   styles: [`
   input:disabled {
     background-color: rgba(211,211,211, 0.6);
@@ -16,18 +16,15 @@ import { BackendService } from "../../../../@core/data/backend.service";
 })
 
 
-
-
-
-export class MonaTargetModalComponent {
+export class MokaTargetModalComponent {
   formData = {
     documentData: [
       {
-        id: "rbp",
-        desc: "RBP"
+        id: "RBB",
+        desc: "RBB"
       },
       {
-        id: "lainlain",
+        id: "Lain-lain",
         desc: "Lain-lain"
       }
     ],
@@ -78,6 +75,7 @@ export class MonaTargetModalComponent {
     });
   }
 
+  
   refreshSelected(event) {
     // this.selectedData = event.data;
   }

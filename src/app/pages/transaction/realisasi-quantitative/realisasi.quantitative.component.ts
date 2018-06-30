@@ -171,13 +171,26 @@ export class RealisasiQuantitativeComponent {
     this.loadData();
   }
 
-  loadData() {
-    this.service.getreq("mst_ikus").subscribe(response => {
+  async loadData() {
+    let respIku: any[];
+    await this.service.getreq("mst_ikus").toPromise().then(response => {
       if (response != null) {
-        this.formData.ikuData = response;
+        respIku = response;
       }
     });
-    this.service.getreq("mst_banks").subscribe(response => {
+    let arr = await respIku.filter(item => {
+      return (
+        item.TIPE_IKU == "QUANTITATIVE"
+      )
+    });
+
+    if (arr[0] != null) {
+      this.formData.ikuData = arr;
+    } else {
+      this.toastr.error("Tidak Ditemukan IKU Qualitative Data")
+    }
+
+    await this.service.getreq("mst_banks").toPromise().then(response => {
       if (response != null) {
         this.formData.bankData = response;
       }
@@ -241,7 +254,8 @@ export class RealisasiQuantitativeComponent {
         indikator3: "Indikator 3",
         realisasi1: "Realisasi 1",
         realisasi2: "Realisasi 2",
-        realisasi3: "Realisasi 3"
+        realisasi3: "Realisasi 3",
+        remark: "Remark"
       };
       if (arr[0].INDIKATOR_1_DESC != "") {
         defaultValueSettings.indikator1 = arr[0].INDIKATOR_1_DESC;
@@ -263,6 +277,10 @@ export class RealisasiQuantitativeComponent {
         this.nilaiIndicatorCheck.indicatorbool3 = true;
       } else {
         this.nilaiIndicatorCheck.indicatorbool3 = false;
+      }
+
+      if (arr[0].REMARK != null) {
+        defaultValueSettings.remark = arr[0].REMARK;
       }
 
       this.settings = {
@@ -345,7 +363,7 @@ export class RealisasiQuantitativeComponent {
             width: "30%"
           },
           REMARK: {
-            title: "Remark",
+            title: defaultValueSettings.remark,
             type: "string",
             filter: false,
             editable: true,
@@ -488,7 +506,7 @@ export class RealisasiQuantitativeComponent {
             width: "30%"
           },
           REMARK: {
-            title: "Remark",
+            title: defaultValueSettings.remark,
             type: "string",
             filter: false,
             editable: true,
@@ -669,7 +687,7 @@ export class RealisasiQuantitativeComponent {
             width: "30%"
           },
           REMARK: {
-            title: "Remark",
+            title: defaultValueSettings.remark,
             type: "string",
             filter: false,
             editable: true,
@@ -763,8 +781,8 @@ export class RealisasiQuantitativeComponent {
       }
 
       if (arrRealizationDtlData[0].REMARK != null) {
-      detail.REMARK = arrRealizationDtlData[0].REMARK;
-    }
+        detail.REMARK = arrRealizationDtlData[0].REMARK;
+      }
 
       detail.RESULT1 = ((detail.NILAI_REALISASI_1 / detail.NILAI_INDICATOR_1) * 100).toFixed(2) + "%";
       detail.RESULT2 = ((detail.NILAI_REALISASI_2 / detail.NILAI_INDICATOR_2) * 100).toFixed(2) + "%";
@@ -781,6 +799,8 @@ export class RealisasiQuantitativeComponent {
       };
       realisasiDetail.push(detail);
     });
+    
+    realisasiDetail = realisasiDetail.sort(function(a, b){return a.KODE_BANK - b.KODE_BANK});
     this.tabledata = realisasiDetail;
     this.formData.realisasiDetail = realisasiDetail;
     this.source.load(this.formData.realisasiDetail);
@@ -829,15 +849,24 @@ export class RealisasiQuantitativeComponent {
         REMARK: element.REMARK,
         TARGET: element.TARGET
       }
+
+      if (element.NILAI_REALISASI_2 == 0) {
+        headerdtl.NILAI_REALISASI_2 = element.NILAI_REALISASI_1
+      }
+
+      if (element.NILAI_REALISASI_3 == 0) {
+        headerdtl.NILAI_REALISASI_3 = element.NILAI_REALISASI_1
+      }
+
       this.service.postreq("trn_realization_qn_dtls/crud", headerdtl).subscribe(
-          response => {
-            console.log(response);
-          },
-          error => {
-            console.log("indicator detail");
-            console.log(error);
-          }
-        );
+        response => {
+          console.log(response);
+        },
+        error => {
+          console.log("indicator detail");
+          console.log(error);
+        }
+      );
     });
     this.toastr.success("Data Saved!");
   }

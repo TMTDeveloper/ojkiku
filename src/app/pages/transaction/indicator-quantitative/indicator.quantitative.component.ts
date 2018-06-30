@@ -82,38 +82,6 @@ export class IndicatorQuantitativeComponent {
           }
         }
       },
-      NILAI_INDICATOR_2: {
-        title: "Nilai 2",
-        type: "number",
-        filter: false,
-        editable: true,
-        width: "25%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      },
-      NILAI_INDICATOR_3: {
-        title: "Nilai 3",
-        type: "number",
-        filter: false,
-        editable: true,
-        width: "25%",
-        valuePrepareFunction: value => {
-          if (isNaN(value)) {
-            return 0;
-          } else {
-            return Number(value)
-              .toString()
-              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-          }
-        }
-      }
     }
   };
 
@@ -161,12 +129,24 @@ export class IndicatorQuantitativeComponent {
     this.loadData();
   }
 
-  loadData() {
-    this.service.getreq("mst_ikus").subscribe(response => {
+  async loadData() {
+    let respIku : any [];
+    await this.service.getreq("mst_ikus").toPromise().then(response => {
       if (response != null) {
-        this.formData.ikuData = response;
+        respIku = response;
       }
     });
+    let arr = await respIku.filter(item => {
+      return (
+        item.TIPE_IKU == "QUANTITATIVE"
+      )
+    });
+
+    if (arr[0] != null) {
+      this.formData.ikuData = arr;
+    } else {
+      this.toastr.error("Tidak Ditemukan IKU Qualitative Data")
+    }
   }
 
   showModal() {
@@ -225,6 +205,13 @@ export class IndicatorQuantitativeComponent {
   }
 
   getData() {
+    let defaultTitle = {
+      nilai1 : "Nilai 1",
+      nilai2 : "Nilai 2",
+      nilai3 : "Nilai 3"
+    };
+    
+    
     this.service.getreq("trn_indicator_qns").subscribe(response => {
       if (response != null) {
         let res = response.filter(item => {
@@ -234,6 +221,7 @@ export class IndicatorQuantitativeComponent {
             item.PERIODE == this.formData.periodeSelected
           );
         });
+
         if (res[0] != null) {
           this.formData.indicator1 = res[0].INDIKATOR_1_DESC;
           this.formData.indicator2 = res[0].INDIKATOR_2_DESC;
@@ -244,6 +232,249 @@ export class IndicatorQuantitativeComponent {
           this.formData.threshold = res[0].THRESHOLD;
           this.formData.indicatorId = res[0].KODE_INDIKATOR;
           this.formData.remark = res[0].REMARK;
+
+          if (res[0].INDIKATOR_1_DESC != "") {
+            defaultTitle.nilai1 = res[0].INDIKATOR_1_DESC;
+          }
+
+          if (res[0].INDIKATOR_2_DESC != "") {
+            defaultTitle.nilai2 = res[0].INDIKATOR_2_DESC;
+          }
+  
+          if (res[0].INDIKATOR_3_DESC != "") {
+            defaultTitle.nilai3 = res[0].INDIKATOR_3_DESC;
+          }
+
+          this.settings = {
+            add: {
+              addButtonContent: '<i class="nb-plus"></i>',
+              createButtonContent: '<i class="nb-checkmark"></i>',
+              cancelButtonContent: '<i class="nb-close"></i>',
+              confirmCreate: false
+            },
+            edit: {
+              editButtonContent: '<i class="nb-edit"></i>',
+              saveButtonContent: '<i class="nb-checkmark"></i>',
+              cancelButtonContent: '<i class="nb-close"></i>',
+              confirmSave: false
+            },
+            delete: {
+              deleteButtonContent: '<i class="nb-trash"></i>',
+              confirmDelete: false
+            },
+            mode: "inline",
+            sort: true,
+            hideSubHeader: true,
+            actions: {
+              add: false,
+              edit: true,
+              delete: false,
+              position: "right",
+              columnTitle: "Modify",
+              width: "10%"
+            },
+            pager: {
+              display: true,
+              perPage: 30
+            },
+            columns: {
+              DESC_BANK: {
+                title: "Bank",
+                type: "string",
+                filter: false,
+                editable: false,
+                width: "40%"
+              },
+              NILAI_INDICATOR_1: {
+                title: defaultTitle.nilai1,
+                type: "number",
+                filter: false,
+                editable: true,
+                width: "60%",
+                valuePrepareFunction: value => {
+                  if (isNaN(value)) {
+                    return 0;
+                  } else {
+                    return Number(value)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                  }
+                }
+              }
+            }
+          };
+          let duaColumn = {
+            add: {
+              addButtonContent: '<i class="nb-plus"></i>',
+              createButtonContent: '<i class="nb-checkmark"></i>',
+              cancelButtonContent: '<i class="nb-close"></i>',
+              confirmCreate: false
+            },
+            edit: {
+              editButtonContent: '<i class="nb-edit"></i>',
+              saveButtonContent: '<i class="nb-checkmark"></i>',
+              cancelButtonContent: '<i class="nb-close"></i>',
+              confirmSave: false
+            },
+            delete: {
+              deleteButtonContent: '<i class="nb-trash"></i>',
+              confirmDelete: false
+            },
+            mode: "inline",
+            sort: true,
+            hideSubHeader: true,
+            actions: {
+              add: false,
+              edit: true,
+              delete: false,
+              position: "right",
+              columnTitle: "Modify",
+              width: "10%"
+            },
+            pager: {
+              display: true,
+              perPage: 30
+            },
+            columns: {
+              DESC_BANK: {
+                title: "Bank",
+                type: "string",
+                filter: false,
+                editable: false,
+                width: "30%"
+              },
+              NILAI_INDICATOR_1: {
+                title: defaultTitle.nilai1,
+                type: "number",
+                filter: false,
+                editable: true,
+                width: "35%",
+                valuePrepareFunction: value => {
+                  if (isNaN(value)) {
+                    return 0;
+                  } else {
+                    return Number(value)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                  }
+                }
+              },
+              NILAI_INDICATOR_2: {
+                title: defaultTitle.nilai2,
+                type: "number",
+                filter: false,
+                editable: true,
+                width: "35%",
+                valuePrepareFunction: value => {
+                  if (isNaN(value)) {
+                    return 0;
+                  } else {
+                    return Number(value)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                  }
+                }
+              },
+            }
+          };
+          let tigaColumn = {
+            add: {
+              addButtonContent: '<i class="nb-plus"></i>',
+              createButtonContent: '<i class="nb-checkmark"></i>',
+              cancelButtonContent: '<i class="nb-close"></i>',
+              confirmCreate: false
+            },
+            edit: {
+              editButtonContent: '<i class="nb-edit"></i>',
+              saveButtonContent: '<i class="nb-checkmark"></i>',
+              cancelButtonContent: '<i class="nb-close"></i>',
+              confirmSave: false
+            },
+            delete: {
+              deleteButtonContent: '<i class="nb-trash"></i>',
+              confirmDelete: false
+            },
+            mode: "inline",
+            sort: true,
+            hideSubHeader: true,
+            actions: {
+              add: false,
+              edit: true,
+              delete: false,
+              position: "right",
+              columnTitle: "Modify",
+              width: "10%"
+            },
+            pager: {
+              display: true,
+              perPage: 30
+            },
+            columns: {
+              DESC_BANK: {
+                title: "Bank",
+                type: "string",
+                filter: false,
+                editable: false,
+                width: "20%"
+              },
+              NILAI_INDICATOR_1: {
+                title: defaultTitle.nilai1,
+                type: "number",
+                filter: false,
+                editable: true,
+                width: "25%",
+                valuePrepareFunction: value => {
+                  if (isNaN(value)) {
+                    return 0;
+                  } else {
+                    return Number(value)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                  }
+                }
+              },
+              NILAI_INDICATOR_2: {
+                title: defaultTitle.nilai2,
+                type: "number",
+                filter: false,
+                editable: true,
+                width: "25%",
+                valuePrepareFunction: value => {
+                  if (isNaN(value)) {
+                    return 0;
+                  } else {
+                    return Number(value)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                  }
+                }
+              },
+              NILAI_INDICATOR_3: {
+                title: defaultTitle.nilai3,
+                type: "number",
+                filter: false,
+                editable: true,
+                width: "25%",
+                valuePrepareFunction: value => {
+                  if (isNaN(value)) {
+                    return 0;
+                  } else {
+                    return Number(value)
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                  }
+                }
+              }
+            }
+          };
+
+          if (res[0].INDIKATOR_2_DESC != "") {
+            Object.assign(this.settings, duaColumn)
+          }
+  
+          if (res[0].INDIKATOR_3_DESC != "") {
+            Object.assign(this.settings, tigaColumn)
+          }
           
 
           this.service.getreq("mst_banks").subscribe(response => {
@@ -296,7 +527,8 @@ export class IndicatorQuantitativeComponent {
                       };
                       indicatorDetail.push(detail);
                     }
-                  })
+                  });
+                  indicatorDetail = indicatorDetail.sort(function(a, b){return a.KODE_BANK - b.KODE_BANK});
                   this.tabledata = indicatorDetail;
                   this.formData.indicatorDetail = indicatorDetail;
                   this.formData.indicatorId =
@@ -313,43 +545,6 @@ export class IndicatorQuantitativeComponent {
           this.toastr.error("Data Not Found!");
         }
       }
-    });
-  }
-
-  generateDetail() {
-    this.service.getreq("mst_banks").subscribe(response => {
-      if (response != null) {
-        this.formData.bankData = response;
-        let indicatorDetail = [];
-        this.formData.bankData.forEach((element, ind) => {
-          let detail = {
-            KODE_IKU: this.formData.ikuSelected,
-            TAHUN_INDICATOR: this.formData.yearPeriode,
-            PERIODE: this.formData.periodeSelected,
-            KODE_BANK: element.ID_BANK,
-            NILAI_INDICATOR_1: 0,
-            NILAI_INDICATOR_2: 0,
-            NILAI_INDICATOR_3: 0,
-            USER_CREATED: "Admin",
-            DATETIME_CREATED: moment().format(),
-            USER_UPDATED: "Admin",
-            DATETIME_UPDATED: moment().format(),
-            DESC_BANK: element.DESCRIPTION
-          };
-          indicatorDetail.push(detail);
-        });
-        this.tabledata = indicatorDetail;
-        this.formData.indicatorDetail = indicatorDetail;
-        this.formData.indicatorId =
-          "RBB" +
-          this.formData.ikuSelected +
-          this.formData.yearPeriode +
-          this.formData.periodeSelected;
-        this.source.load(this.tabledata);
-      }
-      // error => {
-      //   console.log(error);
-      // };
     });
   }
 

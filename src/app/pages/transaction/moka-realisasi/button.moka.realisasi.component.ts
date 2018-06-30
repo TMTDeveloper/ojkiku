@@ -15,7 +15,7 @@ import { ViewCell } from 'ng2-smart-table';
 </div>
   `,
 })
-export class MonaRealisasiDatePicker implements OnInit {
+export class MokaRealisasiDatePicker implements OnInit {
 
   public renderValue;
 

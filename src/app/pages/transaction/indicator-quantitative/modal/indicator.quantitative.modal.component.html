@@ -99,7 +99,7 @@
 
       <div class="form-group row">
         <label class="col-sm-2 col-form-label">Remark
-          <font color="red">*</font>
+          
         </label>
         <div class="col-sm-8">
           <input class="form-control" [(ngModel)]="formData.remark">
@@ -109,7 +109,7 @@
     <div class="col-sm-auto">
       <div class="form-group">
         <button type="submit" class="btn btn-success" (click)="addNewData()" 
-        [disabled]="!formData.ikuSelected||!formData.yearPeriode||!formData.periodeSelected||!formData.threshold||!formData.indicator1||!formData.realisasi1||!formData.remark">Add New Data</button>
+        [disabled]="!formData.ikuSelected||!formData.yearPeriode||!formData.periodeSelected||!formData.threshold||!formData.indicator1||!formData.realisasi1">Add New Data</button>
         <button type="submit" class="btn btn-danger" (click)=closeModal()>Cancel</button>
       </div>
     </div>

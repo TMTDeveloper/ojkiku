@@ -148,12 +148,24 @@ export class IndicatorQualitativeComponent {
     );
   }
 
-  loadData() {
-    this.service.getreq("mst_ikus").subscribe(response => {
+  async loadData() {
+    let respIku : any [];
+    await this.service.getreq("mst_ikus").toPromise().then(response => {
       if (response != null) {
-        this.formData.ikuData = response;
+        respIku = response;
       }
     });
+    let arr = await respIku.filter(item => {
+      return (
+        item.TIPE_IKU == "QUALITATIVE"
+      )
+    });
+
+    if (arr[0] != null) {
+      this.formData.ikuData = arr;
+    } else {
+      this.toastr.error("Tidak Ditemukan IKU Qualitative Data")
+    }
   }
 
   submit(event) {

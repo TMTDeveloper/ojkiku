@@ -14,8 +14,8 @@ import { NbAuthService } from "@nebular/auth/services/auth.service";
   selector: "ngx-login",
   template: `
     <nb-auth-block>
+    <img src="../../../../../assets/logo.png" alt=""><br><br><br>
       <h2 class="title">Sign In</h2>
-      <small class="form-text sub-title">Hello! Sign in with your user ID</small>
       <form (ngSubmit)="login()" #form="ngForm" autocomplete="nope">
         <div *ngIf="showMessages.error && errors && errors.length > 0 && !submitted"
              class="alert alert-danger" role="alert">

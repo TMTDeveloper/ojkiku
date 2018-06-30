@@ -6,18 +6,18 @@ import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
 import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
-import { MonaRealisasiDatePicker } from "./button.mona.realisasi.component";
+import { MokaRealisasiDatePicker } from "./button.moka.realisasi.component";
 
 @Component({
-  selector: "ngx-mona-realisasi",
-  templateUrl: "./mona.realisasi.component.html",
+  selector: "ngx-moka-realisasi",
+  templateUrl: "./moka.realisasi.component.html",
   styles: [`
   input:disabled {
     background-color: rgba(211,211,211, 0.6);
  }`]
 })
 
-export class MonaRealisasiComponent {
+export class MokaRealisasiComponent {
   @ViewChild("myForm") private myForm: NgForm;
 
   source: LocalDataSource = new LocalDataSource();
@@ -64,43 +64,43 @@ export class MonaRealisasiComponent {
         type: "number",
         filter: false,
         editable: false,
-        width: "5%"
+        width: "2%"
       },
       TIPE_DOKUMEN: {
         title: "Tipe Dokumen",
         type: "string",
         filter: false,
         editable: false,
-        width: "10%"
+        width: "3%"
       },
       ID_BANK: {
         title: "Bank",
         type: "string",
         filter: false,
         editable: false,
-        width: "20%"
+        width: "15%"
       },
       START_DATE: {
         title: "Start Date",
         type: "date",
         filter: false,
         editable: true,
-        width: "10%"
+        width: "5%"
       },
       TARGET_DATE: {
         title: "Target Date",
         type: "date",
         filter: false,
         editable: false,
-        width: "10%",
+        width: "5%",
       },
       REALIZATION_DATE: {
         title: "Realization Date",
         type: "string",
         filter: false,
         editable: true,
-        width: "10%",
-        //renderComponent: MonaRealisasiDatePicker
+        width: "15%",
+        //renderComponent: MokaRealisasiDatePicker
       },
       KETERANGAN: {
         title: "Keterangan",
@@ -122,11 +122,11 @@ export class MonaRealisasiComponent {
   formData = {
     documentData: [
       {
-        id: "rbp",
-        desc: "RBP"
+        id: "RBB",
+        desc: "RBB"
       },
       {
-        id: "lainlain",
+        id: "Lain-lain",
         desc: "Lain-lain"
       }
     ],
@@ -155,83 +155,101 @@ export class MonaRealisasiComponent {
   }
 
 
-  getFuckingData() {
-    this.service.getreq("trn_monas").subscribe(res => {
-      if (res != null) {
-        let arrs = res.filter(items => {
-          return (
-            items.ID_BANK == this.formData.bankSelected &&
-            items.TIPE_DOKUMEN == this.formData.documentSelected &&
-            items.YEAR == this.formData.years
-          );
-        });
-        let monaTargetdetail = [];
-        arrs.forEach((element, index) => {
-          if (res != null) {
-            let detail = {
-              NO: 1,
-              KODE_BANK: 0,
-              TIPE_DOKUMEN: "kosong",
-              ID_BANK: "kosong",
-              START_DATE: "kosong",
-              TARGET_DATE: "kosong",
-              REALIZATION_DATE: "kosong",
-              USER_REALIZATION: "Kosong",
-              KETERANGAN: "Belum di isi",
-              YEAR: 0
-            };
+  async getData() {
+    let monaTargetData: any[];
+    let monaRealisasi: any[];
 
-            detail.NO = index+1;
-            detail.KODE_BANK = element.ID_BANK;
-            detail.TIPE_DOKUMEN = element.TIPE_DOKUMEN;
-            detail.YEAR = element.YEAR;
-            detail.START_DATE = moment(element.START_DATE).format("DD/MM/YYYY");
-            detail.TARGET_DATE = moment(element.TARGET_DATE).format("DD/MM/YYYY");
-
-            let arrBank = this.formData.bankData.filter(item => {
-              return (
-                item.ID_BANK == element.ID_BANK
-              );
-            });
-            if (arrBank[0] != null) {
-              detail.ID_BANK = arrBank[0].DESCRIPTION
-            }
-            this.service.getreq("trn_mona_realizations").subscribe(res => {
-              if (res != null) {
-                let arrs = res.filter(items => {
-                  return (
-                    items.ID_BANK == detail.KODE_BANK &&
-                    items.TIPE_DOKUMEN == detail.TIPE_DOKUMEN &&
-                    items.YEAR == detail.YEAR
-                  );
-                });
-                if (arrs[0] != null) {
-                  detail.REALIZATION_DATE = moment(arrs[0].REALIZATION_DATE).format("DD/MM/YYYY");
-                  detail.KETERANGAN = arrs[0].KETERANGAN;
-                  detail.USER_REALIZATION = arrs[0].USER_REALIZATION;
-                  console.log(detail)
-
-                  monaTargetdetail.push(detail);
-                  
-                  this.formData.monaRealisasiData = monaTargetdetail;
-                  this.tabledata = monaTargetdetail;
-                  this.source.load(this.tabledata);
-                  this.source.refresh();
-                }
-              }
-            });
-            
-          }
-        });
-        this.toastr.success("Get Data Success!")
-      } else {
-        this.toastr.error("Data Not Found!")
-        this.tabledata = []
-        this.source.load(this.tabledata);
-        this.source.refresh();
+    await this.service.getreq("trn_monas").toPromise().then(resp => {
+      if (resp != null) {
+        monaTargetData = resp
       }
     });
-    this.source.refresh();
+
+    await this.service.getreq("trn_mona_realizations").toPromise().then(res => {
+      if (res != null) {
+        monaRealisasi = res;
+      }
+    });
+
+    let arrMonaTargetData = await monaTargetData.filter(items => {
+      return (
+        items.ID_BANK == this.formData.bankSelected &&
+        items.TIPE_DOKUMEN == this.formData.documentSelected &&
+        items.YEAR == this.formData.years
+      );
+    });
+
+
+
+    
+
+    if (arrMonaTargetData[0] != null) {
+
+      let monaTargetdetail = [];
+
+      await arrMonaTargetData.forEach((element, index) => {
+        let detail = {
+          NO: 1,
+          KODE_BANK: 0,
+          TIPE_DOKUMEN: "kosong",
+          ID_BANK: "kosong",
+          START_DATE: "kosong",
+          TARGET_DATE: "kosong",
+          REALIZATION_DATE: "kosong",
+          USER_REALIZATION: "Kosong",
+          KETERANGAN: "Belum di isi",
+          YEAR: 0
+        };
+
+        detail.NO = index + 1;
+        detail.KODE_BANK = element.ID_BANK;
+        detail.TIPE_DOKUMEN = element.TIPE_DOKUMEN;
+        detail.YEAR = element.YEAR;
+        detail.START_DATE = moment(element.START_DATE).format("DD/MM/YYYY");
+        detail.TARGET_DATE = moment(element.TARGET_DATE).format("DD/MM/YYYY");
+
+        let arrBank = this.formData.bankData.filter(item => {
+          return (
+            item.ID_BANK == element.ID_BANK
+          );
+        });
+
+        if (arrBank[0] != null) {
+          detail.ID_BANK = arrBank[0].DESCRIPTION
+        }
+
+        let arrs = monaRealisasi.filter(items => {
+          return (
+            items.ID_BANK == detail.KODE_BANK &&
+            items.TIPE_DOKUMEN == detail.TIPE_DOKUMEN &&
+            items.YEAR == detail.YEAR
+          );
+        });
+
+        if (arrs[0] != null) {
+          if(arrs[0].REALIZATION_DATE != null) {
+            detail.REALIZATION_DATE = moment(arrs[0].REALIZATION_DATE).format("DD/MM/YYYY");
+          } else {
+            detail.REALIZATION_DATE = "kosong"
+          }
+          
+          detail.KETERANGAN = arrs[0].KETERANGAN;
+          detail.USER_REALIZATION = arrs[0].USER_REALIZATION;
+          console.log(detail)
+        }
+        monaTargetdetail.push(detail);
+      });
+      this.formData.monaRealisasiData = monaTargetdetail;
+      this.tabledata = monaTargetdetail;
+      this.source.load(this.tabledata);
+      this.source.refresh();
+
+    } else {
+      this.toastr.error("Data Not Found!")
+      this.tabledata = []
+      this.source.load(this.tabledata);
+      this.source.refresh();
+    }
   }
 
 
@@ -243,23 +261,28 @@ export class MonaRealisasiComponent {
         TIPE_DOKUMEN: element.TIPE_DOKUMEN,
         KETERANGAN: element.KETERANGAN,
         USER_REALIZATION: "admin",
-        REALIZATION_DATE: moment(this.dateReformat(element.REALIZATION_DATE)).format(),
+        REALIZATION_DATE: element.REALIZATION_DATE,
         USER_UPDATED: "admin",
         DATE_UPDATED: moment().format()
       }
-      console.log(element.REALIZATION_DATE)
-      console.log(header.REALIZATION_DATE)
+
+      if(element.REALIZATION_DATE == "kosong"){
+        header.REALIZATION_DATE = null
+      } else {
+        header.REALIZATION_DATE = moment(this.dateReformat(element.REALIZATION_DATE)).format()
+      }
       this.service.postreq("trn_mona_realizations/crud", header).subscribe(
         response => {
           console.log(response);
+          this.toastr.success("Data Saved!");
         },
         error => {
-          //console.log("indicator detail");
+          this.toastr.error("Error, Cek kembali data!")
           console.log(error);
         }
       )
     })
-    this.toastr.success("Data Saved!");
+    
   }
 
   editConfirm(event) {
@@ -285,7 +308,7 @@ export class MonaRealisasiComponent {
     });
   }
 
-  dateReformat(value){
+  dateReformat(value) {
     let str = value.split("/");
     return str[2] + "-" + str[1] + "-" + str[0]
   }

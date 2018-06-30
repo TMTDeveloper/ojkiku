@@ -16,8 +16,8 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: "/pages/report/report-iku"
       },
       {
-        title: "Report MONA",
-        link: "/pages/report/report-mona"
+        title: "Report MOKA",
+        link: "/pages/report/report-moka"
       }
     ]
   },
@@ -70,16 +70,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
     ]
   },
   {
-    title: "Transaction MONA",
+    title: "Transaction MOKA",
     icon: "nb-compose",
     children: [
       {
-        title: "Target Mona",
-        link: "/pages/transaction/mona-target"
+        title: "Target MOKA",
+        link: "/pages/transaction/moka-target"
       },
       {
-        title: "Realisasi Mona",
-        link: "/pages/transaction/mona-realisasi"
+        title: "Realisasi MOKA",
+        link: "/pages/transaction/moka-realisasi"
       }
     ]
   }

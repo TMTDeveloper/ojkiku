@@ -6,20 +6,20 @@ import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
 import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
-import { MonaTargetModalComponent } from "./modal/mona.target.modal.component";
+import { MokaTargetModalComponent } from "./modal/moka.target.modal.component";
 
 
 
 @Component({
-  selector: "ngx-mona-target",
-  templateUrl: "./mona.target.component.html",
+  selector: "ngx-moka-target",
+  templateUrl: "./moka.target.component.html",
   styles: [`
   input:disabled {
     background-color: rgba(211,211,211, 0.6);
  }`]
 })
 
-export class MonaTargetComponent {
+export class MokaTargetComponent {
   @ViewChild("myForm") private myForm: NgForm;
 
   source: LocalDataSource = new LocalDataSource();
@@ -134,14 +134,21 @@ export class MonaTargetComponent {
 
   showModal() {
     this.activeModal = this.modalService.open(
-      MonaTargetModalComponent,
+      MokaTargetModalComponent,
       {
         windowClass: "xlModal",
         container: "nb-layout",
         backdrop: "static"
       }
-    );
+    )
     this.activeModal.componentInstance.formData.bankData = this.formData.bankData;
+
+    this.activeModal.result.then((result) => {
+      this.getData()
+    }, (reason) => {
+      this.getData()
+    });
+    
   }
 
 

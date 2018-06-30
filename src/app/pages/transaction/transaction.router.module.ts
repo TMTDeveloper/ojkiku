@@ -7,9 +7,9 @@ import { RealisasiQuantitativeComponent } from "./realisasi-quantitative/realisa
 import { RealisasiQualitativeComponent } from "./realisasi-qualitative/realisasi.qualitative.component";
 import { IndicatorQualitativeComponent } from "./indicator-qualitative/indicator.qualitative.component";
 import { IndicatorQualitativeModalComponent } from "./indicator-qualitative/modal/indicator.qualitative.modal.component";
-import { MonaTargetComponent } from "./mona-target/mona.target.component";
-import { MonaTargetModalComponent } from "./mona-target/modal/mona.target.modal.component";
-import { MonaRealisasiComponent } from "./mona-realisasi/mona.realisasi.component";
+import { MokaTargetComponent } from "./moka-target/moka.target.component";
+import { MokaTargetModalComponent } from "./moka-target/modal/moka.target.modal.component";
+import { MokaRealisasiComponent } from "./moka-realisasi/moka.realisasi.component";
 import { RealisasiQualitativeModalComponent } from "./realisasi-qualitative/modal/realisasi.qualitative.modal.component";
 
 const routes: Routes = [
@@ -34,12 +34,12 @@ const routes: Routes = [
         component: IndicatorQualitativeComponent
       },      
       {
-        path: "mona-target",
-        component: MonaTargetComponent
+        path: "moka-target",
+        component: MokaTargetComponent
       },
       {
-        path: "mona-realisasi",
-        component: MonaRealisasiComponent
+        path: "moka-realisasi",
+        component: MokaRealisasiComponent
       }
     ]
   }
@@ -59,8 +59,8 @@ export const routedComponents = [
   IndicatorQuantitativeModalComponent,
   RealisasiQuantitativeComponent,
   TransactionComponent,
-  MonaTargetComponent,
-  MonaTargetModalComponent,
-  MonaRealisasiComponent,
+  MokaTargetComponent,
+  MokaTargetModalComponent,
+  MokaRealisasiComponent,
   RealisasiQualitativeModalComponent,
 ];
