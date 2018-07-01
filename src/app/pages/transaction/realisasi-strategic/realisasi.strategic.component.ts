@@ -411,17 +411,9 @@ export class RealisasiStrategicComponent {
         }
 
         detail.RESULT1 = ((detail.NILAI_REALISASI_1 / detail.NILAI_INDICATOR_1) * 100).toFixed(2) + "%";
-        detail.RESULT2 = ((detail.NILAI_REALISASI_2 / detail.NILAI_INDICATOR_2) * 100).toFixed(2) + "%";
-        detail.RESULT3 = ((detail.NILAI_REALISASI_3 / detail.NILAI_INDICATOR_3) * 100).toFixed(2) + "%";
 
         if (detail.RESULT1 === "NaN%" || detail.RESULT1 === "Infinity%") {
           detail.RESULT1 = "0%"
-        };
-        if (detail.RESULT2 === "NaN%" || detail.RESULT2 === "Infinity%") {
-          detail.RESULT2 = "0%"
-        };
-        if (detail.RESULT3 === "NaN%" || detail.RESULT3 === "Infinity%") {
-          detail.RESULT3 = "0%"
         };
         realisasiDetail.push(detail);
       });
@@ -511,16 +503,6 @@ export class RealisasiStrategicComponent {
         (event.newData.NILAI_REALISASI_1 / event.newData.NILAI_INDICATOR_1) *
         100
       ).toFixed(2) + "%";
-    event.newData.RESULT2 =
-      (
-        (event.newData.NILAI_REALISASI_2 / event.newData.NILAI_INDICATOR_2) *
-        100
-      ).toFixed(2) + "%";
-    event.newData.RESULT3 =
-      (
-        (event.newData.NILAI_REALISASI_3 / event.newData.NILAI_INDICATOR_3) *
-        100
-      ).toFixed(2) + "%";
 
     if (event.data.TARGET == event.newData.TARGET) {
       console.log("data sama coy")
@@ -545,12 +527,7 @@ export class RealisasiStrategicComponent {
       if (event.newData.RESULT1 == "NaN%") {
         event.newData.RESULT1 = "0%"
       }
-      if (event.newData.RESULT2 == "NaN%") {
-        event.newData.RESULT2 = "0%"
-      }
-      if (event.newData.RESULT3 == "NaN%") {
-        event.newData.RESULT3 = "0%"
-      }
+
       event.confirm.resolve(event.newData);
     }
   }

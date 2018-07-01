@@ -908,55 +908,25 @@ export class RealisasiQuantitativeComponent {
     if (event.data.TARGET == event.newData.TARGET) {
       console.log("data sama coy")
 
-      if (this.nilaiIndicatorCheck.indicatorbool1 === true) {
-        if (parseInt(event.newData.RESULT1) >= event.data.TARGET) {
-          event.newData.PENCAPAIAN = "1";
-        } else {
-          event.newData.PENCAPAIAN = "0";
-        }
+
+      if (parseInt(event.newData.RESULT1) >= event.data.TARGET) {
+        event.newData.PENCAPAIAN = "1";
+      } else {
+        event.newData.PENCAPAIAN = "0";
       }
 
-      if (this.nilaiIndicatorCheck.indicatorbool2 === true && event.newData.PENCAPAIAN != "1") {
-        if (parseInt(event.newData.RESULT2) >= event.data.TARGET) {
-          event.newData.PENCAPAIAN = "1";
-        } else {
-          event.newData.PENCAPAIAN = "0";
-        }
-      }
-
-      if (this.nilaiIndicatorCheck.indicatorbool3 === true && event.newData.PENCAPAIAN != "1") {
-        if ( parseInt(event.newData.RESULT3) >= event.data.TARGET  ) {
-          event.newData.PENCAPAIAN = "1";
-        } else {
-          event.newData.PENCAPAIAN = "0";
-        }
-      }
       event.confirm.resolve(event.newData);
 
     } else {
       console.log("data enggak sama")
 
-      if (this.nilaiIndicatorCheck.indicatorbool1 === true) {
-        if (parseInt(event.newData.RESULT1) >= event.newData.TARGET) {
-          event.newData.PENCAPAIAN = "1";
-        } else {
-          event.newData.PENCAPAIAN = "0";
-        }
+
+      if (parseInt(event.newData.RESULT1) >= event.newData.TARGET) {
+        event.newData.PENCAPAIAN = "1";
+      } else {
+        event.newData.PENCAPAIAN = "0";
       }
-      if (this.nilaiIndicatorCheck.indicatorbool2 === true && event.newData.PENCAPAIAN != "1") {
-        if (parseInt(event.newData.RESULT2) >= event.newData.TARGET) {
-          event.newData.PENCAPAIAN = "1";
-        } else {
-          event.newData.PENCAPAIAN = "0";
-        }
-      }
-      if (this.nilaiIndicatorCheck.indicatorbool3 === true && event.newData.PENCAPAIAN != "1") {
-        if (parseInt(event.newData.RESULT3) >= event.newData.TARGET) {
-          event.newData.PENCAPAIAN = "1";
-        } else {
-          event.newData.PENCAPAIAN = "0";
-        }
-      }
+
 
       if (event.newData.RESULT1 == "NaN%") {
         event.newData.RESULT1 = "0%"
