@@ -817,6 +817,108 @@ export class RealisasiQuantitativeComponent {
       console.log(this.tabledata)
       this.toastr.success("Get Data Sucess!")
     } else {
+      this.settings = {
+        add: {
+          addButtonContent: '<i class="nb-plus"></i>',
+          createButtonContent: '<i class="nb-checkmark"></i>',
+          cancelButtonContent: '<i class="nb-close"></i>',
+          confirmCreate: false
+        },
+        edit: {
+          editButtonContent: '<i class="nb-edit"></i>',
+          saveButtonContent: '<i class="nb-checkmark"></i>',
+          cancelButtonContent: '<i class="nb-close"></i>',
+          confirmSave: true
+        },
+        delete: {
+          deleteButtonContent: '<i class="nb-trash"></i>',
+          confirmDelete: false
+        },
+        mode: "inline",
+        sort: false,
+        hideSubHeader: true,
+        actions: {
+          add: false,
+          edit: true,
+          delete: false,
+          position: "right",
+          columnTitle: "Modify",
+          width: "10%"
+        },
+        pager: {
+          display: true,
+          perPage: 30
+        },
+        columns: {
+          DESC_BANK: {
+            title: "Bank",
+            type: "string",
+            filter: false,
+            editable: false,
+            width: "30%"
+          },
+          NILAI_INDICATOR_1: {
+            title: "Indikator 1",
+            type: "number",
+            filter: false,
+            editable: false,
+            width: "30%",
+            valuePrepareFunction: value => {
+              if (isNaN(value)) {
+                return 0;
+              } else {
+                return Number(value)
+                  .toString()
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+              }
+            }
+          },
+          NILAI_REALISASI_1: {
+            title: "Realisasi 1",
+            type: "number",
+            filter: false,
+            editable: true,
+            width: "30%",
+            valuePrepareFunction: value => {
+              if (isNaN(value)) {
+                return 0;
+              } else {
+                return Number(value)
+                  .toString()
+                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+              }
+            }
+          },
+          RESULT1: {
+            title: "Result 1",
+            type: "number",
+            filter: false,
+            editable: false,
+            width: "30%"
+          },
+          REMARK: {
+            title: "Remark",
+            type: "string",
+            filter: false,
+            editable: false,
+            width: "30%"
+          },
+          TARGET: {
+            title: "Target",
+            type: "number",
+            filter: false,
+            editable: false,
+            width: "30%"
+          },
+          PENCAPAIAN: {
+            title: "Pencapaian",
+            type: "number",
+            filter: false,
+            editable: false,
+            width: "30%"
+          }
+        }
+      };
       this.tabledata = []
       this.formData.realisasiDetail = this.tabledata;
       this.source.load(this.formData.realisasiDetail);
