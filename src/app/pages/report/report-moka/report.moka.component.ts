@@ -1,14 +1,13 @@
 import { Component } from "@angular/core";
 import * as moment from "moment";
 import { LocalDataSource } from "ng2-smart-table";
-
 import { BackendService } from "../../../@core/data/backend.service";
 
 @Component({
-  selector: "ngx-report-mona",
-  templateUrl: "./report.mona.component.html"
+  selector: "ngx-report-moka",
+  templateUrl: "./report.moka.component.html"
 })
-export class ReportMonaComponent {
+export class ReportMokaComponent {
   disableInput: boolean;
   settings = {
     sort: true,

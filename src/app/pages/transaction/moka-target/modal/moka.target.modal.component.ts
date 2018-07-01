@@ -62,7 +62,7 @@ export class MokaTargetModalComponent {
       DATE_UPDATED: moment().format(),
     }
     console.log(header)
-    this.service.postreq("trn_monas", header).subscribe(response => {
+    this.service.postreq("trn_monas/crud", header).subscribe(response => {
       if (response != null) {
         this.toastr.success("Data Added!")
         let data = {

@@ -11,6 +11,9 @@ import { MokaTargetComponent } from "./moka-target/moka.target.component";
 import { MokaTargetModalComponent } from "./moka-target/modal/moka.target.modal.component";
 import { MokaRealisasiComponent } from "./moka-realisasi/moka.realisasi.component";
 import { RealisasiQualitativeModalComponent } from "./realisasi-qualitative/modal/realisasi.qualitative.modal.component";
+import { IndicatorStrategicComponent } from "./indicator-strategic/indicator.strategic.component";
+import { RealisasiStrategicComponent } from "./realisasi-strategic/realisasi.strategic.component";
+import { IndicatorStrategicModalComponent } from "./indicator-strategic/modal/indicator.strategic.modal.component";
 
 const routes: Routes = [
   {
@@ -32,6 +35,14 @@ const routes: Routes = [
       {
         path: "indicator-qualitative",
         component: IndicatorQualitativeComponent
+      },
+      {
+        path: "indicator-strategic",
+        component: IndicatorStrategicComponent
+      },
+      {
+        path: "realisasi-strategic",
+        component: RealisasiStrategicComponent
       },      
       {
         path: "moka-target",
@@ -63,4 +74,7 @@ export const routedComponents = [
   MokaTargetModalComponent,
   MokaRealisasiComponent,
   RealisasiQualitativeModalComponent,
+  IndicatorStrategicComponent,
+  IndicatorStrategicModalComponent,
+  RealisasiStrategicComponent
 ];

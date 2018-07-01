@@ -75,7 +75,8 @@ export class IkuComponent {
           config: {
             list: [
               { value: "QUANTITATIVE", title: "QUANTITATIVE" },
-              { value: "QUALITATIVE", title: "QUALITATIVE" }
+              { value: "QUALITATIVE", title: "QUALITATIVE" },
+              { value: "STRATEGIC", title: "STRATEGIC"}
             ]
           }
         }

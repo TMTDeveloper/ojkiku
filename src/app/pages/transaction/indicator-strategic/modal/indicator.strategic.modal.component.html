@@ -1,0 +1,75 @@
+<div class="modal-header">
+  <h4 class="modal-title">IKU Indikator Strategic</h4>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">IKU
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-9">
+          <select name="risk_level" class="form-control" [(ngModel)]="formData.ikuSelected">
+            <option *ngFor="let data of formData.ikuData" value="{{data.KODE_IKU}}">{{data.KODE_IKU+" "+data.DESKRIPSI}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Tahun
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-9">
+          <input class="form-control" [(ngModel)]="formData.yearPeriode">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Periode
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-9">
+          <select name="risk_level" class="form-control" [(ngModel)]="formData.periodeSelected">
+            <option *ngFor="let data of formData.periode" value="{{data.id}}">{{data.desc}}</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-7">
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Indicator Description
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-8">
+          <input class="form-control" [(ngModel)]="formData.indicatorDescription">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Realisasi Description
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-8">
+          <input class="form-control" [class.green]="isDisabled" [(ngModel)]="formData.realisasiDescription">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Threshold
+          <font color="red">*</font>
+        </label>
+        <div class="col-sm-8">
+          <input class="form-control" [(ngModel)]="formData.threshold">
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-auto">
+      <div class="form-group">
+        <button type="submit" class="btn btn-success" (click)="addNewData()" [disabled]="!formData.ikuSelected||!formData.yearPeriode||!formData.periodeSelected||!formData.threshold||!formData.indicatorDescription||!formData.realisasiDescription">Add New Data</button>
+        <button type="submit" class="btn btn-danger" (click)=closeModal()>Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -3,7 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 
 import { ReportComponent } from "./report.component";
 import { ReportIkuComponent } from "./report-iku/report.iku.component";
-import { ReportMonaComponent } from "./report-mona/report.mona.component";
+import { ReportMokaComponent } from "./report-moka/report.moka.component";
 
 const routes: Routes = [
   {
@@ -15,8 +15,8 @@ const routes: Routes = [
         component: ReportIkuComponent
       },
       {
-        path: "report-mona",
-        component: ReportMonaComponent
+        path: "report-moka",
+        component: ReportMokaComponent
       }
     ]
   }
@@ -31,5 +31,5 @@ export class ReportRouterModule {}
 export const routedComponents = [
   ReportComponent,
   ReportIkuComponent,
-  ReportMonaComponent
+  ReportMokaComponent
 ];

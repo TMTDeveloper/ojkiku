@@ -15,6 +15,7 @@ import { ButtonRenderComponent } from "./realisasi-qualitative/button.realisasi.
 import { MokaRealisasiDatePicker } from "./moka-realisasi/button.moka.realisasi.component";
 import { MokaTargetModalComponent } from "./moka-target/modal/moka.target.modal.component";
 import { RealisasiQualitativeModalComponent } from "./realisasi-qualitative/modal/realisasi.qualitative.modal.component";
+import { IndicatorStrategicModalComponent } from "./indicator-strategic/modal/indicator.strategic.modal.component";
 
 
 
@@ -27,7 +28,15 @@ import { RealisasiQualitativeModalComponent } from "./realisasi-qualitative/moda
     ToastrModule.forRoot()
   ],
   declarations: [...routedComponents, ButtonRenderComponent, MokaRealisasiDatePicker],
-  entryComponents: [MokaTargetModalComponent, RealisasiQualitativeModalComponent, IndicatorQuantitativeModalComponent, IndicatorQualitativeModalComponent, ButtonRenderComponent, MokaRealisasiDatePicker],
+  entryComponents: [
+    MokaTargetModalComponent,
+    RealisasiQualitativeModalComponent,
+    IndicatorQuantitativeModalComponent,
+    IndicatorQualitativeModalComponent,
+    ButtonRenderComponent,
+    MokaRealisasiDatePicker,
+    IndicatorStrategicModalComponent
+  ],
   providers: [
     BackendService,
   ]

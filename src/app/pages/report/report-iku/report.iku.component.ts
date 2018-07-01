@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import * as moment from "moment";
 import { BackendService } from "../../../@core/data/backend.service";
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "ngx-report-iku",
@@ -35,11 +36,10 @@ export class ReportIkuComponent {
     TahunSelected: moment().format("YYYY")
   }
 
-
-
-
-
-  constructor(public service: BackendService) {
+  constructor(
+    public service: BackendService,
+    private toastr: ToastrService
+  ) {
 
   }
 
@@ -53,8 +53,12 @@ export class ReportIkuComponent {
           )
         })
         console.log(arr)
-        if (arr != null) {
+        if (arr[0] != null) {
           this.tabledata = res;
+          this.toastr.success("Get Data Success!")
+        } else {
+          this.tabledata = [];
+          this.toastr.error("Belum Ada Data!")
         }
       }
     });

@@ -66,6 +66,14 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title: "Realisasi Qualitative",
         link: "/pages/transaction/realisasi-qualitative"
+      },
+      {
+        title: "Indicator Strategic",
+        link: "/pages/transaction/indicator-strategic"
+      },
+      {
+        title: "Realisasi Strategic",
+        link: "/pages/transaction/realisasi-strategic"
       }
     ]
   },
