@@ -16,6 +16,7 @@ import { ThemeModule } from "./@theme/theme.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { NB_AUTH_TOKEN_CLASS, NbAuthJWTToken } from '@nebular/auth';
+import { AuthGuard } from "./security/auth-guard.service";
 
 
 
@@ -37,7 +38,8 @@ import { NB_AUTH_TOKEN_CLASS, NbAuthJWTToken } from '@nebular/auth';
       provide: APP_BASE_HREF,
       useValue: "/"
     },
-    { provide: NB_AUTH_TOKEN_CLASS, useValue: NbAuthJWTToken }
+    { provide: NB_AUTH_TOKEN_CLASS, useValue: NbAuthJWTToken },
+    AuthGuard
   ]
 })
 export class AppModule {}

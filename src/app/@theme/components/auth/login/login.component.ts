@@ -4,11 +4,14 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 import { Component, Inject } from "@angular/core";
-import { Router } from "@angular/router";
+import { CanActivate,Router } from "@angular/router";
 import { NB_AUTH_OPTIONS, NbAuthSocialLink } from "@nebular/auth/auth.options";
 import { getDeepFromObject } from "@nebular/auth/helpers";
 import { NbAuthResult } from "@nebular/auth/services/auth-result";
 import { NbAuthService } from "@nebular/auth/services/auth.service";
+import { tap } from 'rxjs/operators/tap';
+
+
 
 @Component({
   selector: "ngx-login",
@@ -129,5 +132,22 @@ export class NgxLoginComponent {
 
   getConfigValue(key: string): any {
     return getDeepFromObject(this.config, key, null);
+  }
+}
+
+export class AuthGuard implements CanActivate {
+
+  constructor(private authService: NbAuthService, private router: Router) {
+  }
+
+  canActivate() {
+    return this.authService.isAuthenticated()
+      .pipe(
+        tap(authenticated => {
+          if (!authenticated) {
+            this.router.navigate(['auth/login']);
+          }
+        }),
+      );
   }
 }
