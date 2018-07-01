@@ -54,7 +54,7 @@ export class ReportIkuComponent {
         })
         console.log(arr)
         if (arr[0] != null) {
-          this.tabledata = res;
+          this.tabledata = arr;
           this.toastr.success("Get Data Success!")
         } else {
           this.tabledata = [];
