@@ -6,6 +6,8 @@ import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
 import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
+import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
+
 
 @Component({
   selector: "ngx-realisasi-quantitative",
@@ -22,6 +24,8 @@ export class RealisasiQuantitativeComponent {
   @ViewChild("myForm") private myForm: NgForm;
 
   source: LocalDataSource = new LocalDataSource();
+
+  user: any;
 
   tabledata: any[] = [];
 
@@ -166,9 +170,40 @@ export class RealisasiQuantitativeComponent {
   constructor(
     private modalService: NgbModal,
     private toastr: ToastrService,
-    public service: BackendService
+    public service: BackendService,
+    private authService: NbAuthService
   ) {
     this.loadData();
+    this.getUserInfo()
+    this.getUserBank()
+  }
+
+  getUserBank() {
+    if (this.user.ID_USER != "admin") {
+      this.service.getreq("mst_user_banks").toPromise().then(response => {
+        if (response != null) {
+          let arr = response.filter(item => {
+            return (
+              item.ID_USER == this.user.ID_USER
+            )
+          })
+          if (arr[0] != null) {
+            this.user.type = arr[0].ID_BANK
+            console.log(this.user)
+          }
+        }
+      })
+    } else {
+      this.user.type = "admin";
+    }
+  }
+
+  getUserInfo() {
+    this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
+      if (token.isValid()) {
+        this.user = token.getPayload(); // here we receive a payload from the token and assigne it to our `user` variable
+      }
+    });
   }
 
   async loadData() {
@@ -810,12 +845,32 @@ export class RealisasiQuantitativeComponent {
       });
 
       realisasiDetail = realisasiDetail.sort(function (a, b) { return a.KODE_BANK - b.KODE_BANK });
-      this.tabledata = realisasiDetail;
-      this.formData.realisasiDetail = realisasiDetail;
-      this.source.load(this.formData.realisasiDetail);
-      this.source.refresh();
-      console.log(this.tabledata)
-      this.toastr.success("Get Data Sucess!")
+
+      if (this.user.type != "admin") {
+        const dataBankFilter = realisasiDetail.filter(item => {
+          return (
+            item.KODE_BANK == this.user.type
+          );
+        });
+        if (dataBankFilter[0] != null) {
+          realisasiDetail = dataBankFilter
+          this.formData.realisasiDetail = realisasiDetail;
+          this.source.load(this.formData.realisasiDetail);
+          this.source.refresh();
+          this.toastr.success("Get Data Sucess!")
+        } else {
+          console.log("kosong data filterbank")
+        }
+      } else {
+        this.tabledata = realisasiDetail;
+        this.formData.realisasiDetail = realisasiDetail;
+        this.source.load(this.formData.realisasiDetail);
+        this.source.refresh();
+        console.log(this.tabledata)
+        this.toastr.success("Get Data Sucess!")
+      }
+
+
     } else {
       this.settings = {
         add: {

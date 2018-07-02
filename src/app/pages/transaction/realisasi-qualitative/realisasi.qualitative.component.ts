@@ -7,6 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
 import { ButtonRenderComponent } from "./button.realisasi.quantitative.component";
+import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
 
 @Component({
   selector: "ngx-realisasi-qualitative",
@@ -18,6 +19,8 @@ export class RealisasiQualitativeComponent {
   source: LocalDataSource = new LocalDataSource();
 
   tabledata: any[] = [];
+
+  user: any;
 
   subscription: any;
   activeModal: any;
@@ -130,9 +133,42 @@ export class RealisasiQualitativeComponent {
   constructor(
     private modalService: NgbModal,
     private toastr: ToastrService,
-    public service: BackendService
+    public service: BackendService,
+    private authService: NbAuthService
   ) {
+    this.getUserInfo()
+    this.getUserBank()
     this.loadData();
+  }
+
+  getUserBank() {
+    if (this.user.ID_USER != "admin") {
+      this.service.getreq("mst_user_banks").toPromise().then(response => {
+        if (response != null) {
+          let arr = response.filter(item => {
+            return (
+              item.ID_USER == this.user.ID_USER
+            )
+          })
+          if (arr[0] != null) {
+            this.user.type = arr[0].ID_BANK
+            console.log(this.user)
+          }
+        }
+      })
+
+
+    } else {
+      this.user.type = "admin";
+    }
+  }
+
+  getUserInfo() {
+    this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
+      if (token.isValid()) {
+        this.user = token.getPayload(); // here we receive a payload from the token and assigne it to our `user` variable
+      }
+    });
   }
 
   async loadData() {
@@ -159,6 +195,15 @@ export class RealisasiQualitativeComponent {
         this.formData.bankData = response;
       }
     });
+
+    let arrz = this.formData.bankData.filter(item => {
+      return (
+        item.ID_BANK == this.user.type
+      )
+    })
+    if (arrz[0] != null) {
+      this.formData.bankData = arrz;
+    }
   }
 
   updateData() {
