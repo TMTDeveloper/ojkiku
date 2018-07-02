@@ -37,20 +37,18 @@
         <thead>
           <tr>
             <th>Kode IKU</th>
-            <th>Nilai Realisasi</th>
-            <th>Indikator</th>
-            <th>Realisasi</th>
-            <th>Target</th>
-            <th>Pencapaian</th>
+            <th>Nama IKU</th>
+            <th>Target (%)</th>
+            <th>Realisasi (%)</th>
+            <th>Capaian (%)</th>
           </tr>
         </thead>
         <tbody>
             <tr *ngFor="let item of tabledata">
                 <td>{{ item.KODE_IKU}}</td>
-                <td>{{ item.NILAI_REALISASI | number }}</td>
-                <td>{{ item.INDICATOR | number }}</td>
+                <td>{{ item.NAMA_IKU}}</td>
+                <td>{{ item.TARGET | number }}</td>
                 <td>{{ item.REALISASI | number }}</td>
-                <td>{{ item.TARGET }}</td>
                 <td>{{ item.PENCAPAIAN | number }}</td>
               </tr>
         </tbody>
