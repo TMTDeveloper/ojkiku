@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import * as moment from "moment";
 import { BackendService } from "../../../@core/data/backend.service";
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import { Angular2Csv } from "angular2-csv/Angular2-csv";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
@@ -9,7 +9,6 @@ import { ToastrService } from "ngx-toastr";
   templateUrl: "./report.iku.component.html"
 })
 export class ReportIkuComponent {
-
   disableInput: boolean;
   tabledata: any;
 
@@ -34,14 +33,9 @@ export class ReportIkuComponent {
     ],
     periodeSelected: "",
     TahunSelected: moment().format("YYYY")
-  }
+  };
 
-  constructor(
-    public service: BackendService,
-    private toastr: ToastrService
-  ) {
-
-  }
+  constructor(public service: BackendService, private toastr: ToastrService) {}
 
   getReport() {
     this.service.getreq("ikureports").subscribe(res => {
@@ -50,35 +44,54 @@ export class ReportIkuComponent {
           return (
             item.TAHUN_REALISASI == this.formData.TahunSelected &&
             item.PERIODE == this.formData.periodeSelected
-          )
-        })
-        console.log(arr)
+          );
+        });
+        console.log(arr);
         if (arr[0] != null) {
-          this.tabledata = arr;
-          this.toastr.success("Get Data Success!")
+          let sortArr = arr.sort(function(a, b) {
+            return a.KODE_IKU > b.KODE_IKU
+              ? 1
+              : b.KODE_IKU > a.KODE_IKU
+                ? -1
+                : 0;
+          });
+          this.tabledata = sortArr;
+          this.toastr.success("Get Data Success!");
         } else {
           this.tabledata = [];
-          this.toastr.error("Belum Ada Data!")
+          this.toastr.error("Belum Ada Data!");
         }
       }
     });
   }
 
   generateCSV() {
-
-    let filename = "Report IKU " + this.formData.TahunSelected + " " + this.formData.periodeSelected
+    let filename =
+      "Report IKU " +
+      this.formData.TahunSelected +
+      " " +
+      this.formData.periodeSelected;
 
     let csvSetting = {
-      fieldSeparator: ',',
+      fieldSeparator: ",",
       quoteStrings: '"',
-      decimalseparator: '.',
+      decimalseparator: ".",
       showLabels: true,
       showTitle: true,
       useBom: true,
       noDownload: true,
-      headers: ["Kode IKU", "TAHUN_REALISASI", "PERIODE", "Nilai Realisasi", "Indikator", "Realisasi", "Target", "Pencapaian"]
-    }
+      headers: [
+        "Kode IKU",
+        "TAHUN_REALISASI",
+        "PERIODE",
+        "Nilai Realisasi",
+        "Indikator",
+        "Realisasi",
+        "Target",
+        "Pencapaian"
+      ]
+    };
     new Angular2Csv(this.tabledata, filename, csvSetting);
-    console.log("Generate CSV")
+    console.log("Generate CSV");
   }
 }
