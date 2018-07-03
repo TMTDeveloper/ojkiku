@@ -24,7 +24,7 @@
     <div class="col-sm-auto">
       <div class="form-group">
         <button type="submit" class="btn btn-success" (click)="getReport()" [disabled]="!formData.TahunSelected||!formData.periodeSelected">Get Data</button>
-        <button type="submit" class="btn btn-success" (click)="generateCSV()" [disabled]="!tabledata">Download</button>
+        <button type="submit" class="btn btn-success" (click)="generateXLSX()" [disabled]="!tabledata">Download</button>
       </div>
     </div>
   </nb-card-body>
@@ -32,7 +32,7 @@
 
 <nb-card>
   <nb-card-body>
-    <div class="holdertable">
+    <div class="ikureportable">
       <table class="table table-striped table-hover">
         <thead>
           <tr>

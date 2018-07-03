@@ -3,6 +3,7 @@ import * as moment from "moment";
 import { BackendService } from "../../../@core/data/backend.service";
 import { Angular2Csv } from "angular2-csv/Angular2-csv";
 import { ToastrService } from "ngx-toastr";
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: "ngx-report-iku",
@@ -35,7 +36,7 @@ export class ReportIkuComponent {
     TahunSelected: moment().format("YYYY")
   };
 
-  constructor(public service: BackendService, private toastr: ToastrService) {}
+  constructor(public service: BackendService, private toastr: ToastrService) { }
 
   getReport() {
     this.service.getreq("ikureports").subscribe(res => {
@@ -48,7 +49,7 @@ export class ReportIkuComponent {
         });
         console.log(arr);
         if (arr[0] != null) {
-          let sortArr = arr.sort(function(a, b) {
+          let sortArr = arr.sort(function (a, b) {
             return a.KODE_IKU > b.KODE_IKU
               ? 1
               : b.KODE_IKU > a.KODE_IKU
@@ -63,6 +64,25 @@ export class ReportIkuComponent {
         }
       }
     });
+  }
+
+  generateXLSX() {
+    
+  /* starting from this data */
+var data = [
+  { name: "Barack Obama", pres: 44 },
+  { name: "Donald Trump", pres: 45 }
+];
+
+/* generate a worksheet */
+var ws = XLSX.utils.json_to_sheet(this.tabledata);
+
+/* add to workbook */
+var wb = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb, ws, "Presidents");
+
+/* write workbook and force a download */
+XLSX.writeFile(wb, "sheetjs.xlsx");
   }
 
   generateCSV() {
