@@ -67,22 +67,22 @@ export class ReportIkuComponent {
   }
 
   generateXLSX() {
-    
-  /* starting from this data */
-var data = [
-  { name: "Barack Obama", pres: 44 },
-  { name: "Donald Trump", pres: 45 }
-];
 
-/* generate a worksheet */
-var ws = XLSX.utils.json_to_sheet(this.tabledata);
+    let filename =
+      "Report IKU " +
+      this.formData.TahunSelected +
+      " " +
+      this.formData.periodeSelected + ".xlsx";
 
-/* add to workbook */
-var wb = XLSX.utils.book_new();
-XLSX.utils.book_append_sheet(wb, ws, "Presidents");
+    /* generate a worksheet */
+    var ws = XLSX.utils.json_to_sheet(this.tabledata);
 
-/* write workbook and force a download */
-XLSX.writeFile(wb, "sheetjs.xlsx");
+    /* add to workbook */
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Reports IKU");
+
+    /* write workbook and force a download */
+    XLSX.writeFile(wb, filename);
   }
 
   generateCSV() {
@@ -90,7 +90,7 @@ XLSX.writeFile(wb, "sheetjs.xlsx");
       "Report IKU " +
       this.formData.TahunSelected +
       " " +
-      this.formData.periodeSelected;
+      this.formData.periodeSelected + ".xlsx";
 
     let csvSetting = {
       fieldSeparator: ",",
