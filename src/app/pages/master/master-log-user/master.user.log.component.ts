@@ -24,7 +24,7 @@ export class MasterUserLogComponent {
   settings = {
     mode: "inline",
     sort: true,
-    hideSubHeader: true,
+    hideSubHeader: false,
     actions: {
       add: false,
       edit: false,
@@ -47,21 +47,21 @@ export class MasterUserLogComponent {
       USERNAME: {
         title: "Username",
         type: "string",
-        filter: false,
+        filter: true,
         editable: false,
         width: "30%"
       },
       NAMA: {
         title: "Nama",
         type: "string",
-        filter: false,
+        filter: true,
         editable: false,
         width: "30%"
       },
       DATETIME_LOGIN: {
         title: "Datetime Login",
         type: "string",
-        filter: false,
+        filter: true,
         editable: true,
         width: "30%",
       }

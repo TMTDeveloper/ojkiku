@@ -6,6 +6,7 @@ import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
 import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
+
 @Component({
   selector: "ngx-master-user-bank",
   templateUrl: "./master.user.bank.component.html"
@@ -61,7 +62,7 @@ export class MasterUserBankComponent {
       ID_USER: {
         title: "Id User",
         type: "string",
-        filter: false,
+        filter: true,
         editable: false,
         editor: {
           type: "list",
@@ -69,19 +70,12 @@ export class MasterUserBankComponent {
             list: this.userList
           }
         },
-        width: "30%"
-      },
-      USER_NAME: {
-        title: "Name",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%"
+        width: "70%"
       },
       FLAG_ACTIVE: {
         title: "Flag Active",
         type: "html",
-        width: "30%",
+        width: "20%",
         editor: {
           type: "list",
           config: {
@@ -135,19 +129,12 @@ export class MasterUserBankComponent {
             list: this.userList
           }
         },
-        width: "30%"
-      },
-      USER_NAME: {
-        title: "Name",
-        type: "number",
-        filter: false,
-        editable: false,
-        width: "30%"
+        width: "70%"
       },
       FLAG_ACTIVE: {
         title: "Flag Active",
         type: "html",
-        width: "30%",
+        width: "20%",
         editor: {
           type: "list",
           config: {

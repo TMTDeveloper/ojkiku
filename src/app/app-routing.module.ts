@@ -8,12 +8,10 @@ import {
   NbResetPasswordComponent
 } from "@nebular/auth";
 import { NgxLoginComponent } from "./@theme/components/auth/login/login.component";
-import { AuthGuard } from "./security/auth-guard.service";
 
 const routes: Routes = [
   {
     path: "pages",
-    canActivate: [AuthGuard],
     loadChildren: "app/pages/pages.module#PagesModule"
   },
   {

@@ -55,14 +55,14 @@ export class IkuComponent {
       KODE_IKU: {
         title: "Kode Iku",
         type: "string",
-        filter: false,
+        filter: true,
         editable: false,
         width: "30%"
       },
       DESKRIPSI: {
         title: "Description",
         type: "number",
-        filter: false,
+        filter: true,
         editable: true,
         width: "30%"
       },

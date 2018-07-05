@@ -55,21 +55,21 @@ export class MasterBankComponent {
       ID_BANK: {
         title: "Id Bank",
         type: "string",
-        filter: false,
+        filter: true,
         editable: false,
         width: "30%"
       },
       INISIAL: {
         title: "Inisial ",
         type: "number",
-        filter: false,
+        filter: true,
         editable: true,
         width: "30%"
       },
       DESCRIPTION: {
         title: "Description",
         type: "number",
-        filter: false,
+        filter: true,
         editable: true,
         width: "30%"
       },

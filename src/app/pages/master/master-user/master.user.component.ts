@@ -55,28 +55,28 @@ export class MasterUserComponent {
       ID_USER: {
         title: "Id User",
         type: "string",
-        filter: false,
+        filter: true,
         editable: false,
         width: "30%"
       },
       USER_NAME: {
         title: "Name",
         type: "number",
-        filter: false,
+        filter: true,
         editable: true,
         width: "30%"
       },
       TEAM: {
         title: "Team",
         type: "number",
-        filter: false,
+        filter: true,
         editable: true,
         width: "30%"
       },
       JABATAN: {
         title: "Jabatan",
         type: "number",
-        filter: false,
+        filter: true,
         editable: true,
         width: "30%"
       },

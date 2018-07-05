@@ -7,6 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
 import { IndicatorQualitativeModalComponent } from "./modal/indicator.qualitative.modal.component";
+import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
 
 @Component({
   selector: "ngx-indicator-qualitative",
@@ -16,6 +17,7 @@ export class IndicatorQualitativeComponent {
   @ViewChild("myForm") private myForm: NgForm;
 
   source: LocalDataSource = new LocalDataSource();
+  user: any;
 
   tabledata: any[] = [];
 
@@ -114,9 +116,40 @@ export class IndicatorQualitativeComponent {
   constructor(
     private modalService: NgbModal,
     private toastr: ToastrService,
-    public service: BackendService
+    public service: BackendService,
+    private authService: NbAuthService
   ) {
     this.loadData();
+    this.getUserInfo()
+    this.getUserBank()
+  }
+
+  getUserBank() {
+    if (this.user.ID_USER != "admin") {
+      this.service.getreq("mst_user_banks").toPromise().then(response => {
+        if (response != null) {
+          let arr = response.filter(item => {
+            return (
+              item.ID_USER == this.user.ID_USER
+            )
+          })
+          if (arr[0] != null) {
+            this.user.type = arr[0].ID_BANK
+            console.log(this.user)
+          }
+        }
+      })
+    } else {
+      this.user.type = "admin";
+    }
+  }
+
+  getUserInfo() {
+    this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
+      if (token.isValid()) {
+        this.user = token.getPayload(); // here we receive a payload from the token and assigne it to our `user` variable
+      }
+    });
   }
 
   showModal() {

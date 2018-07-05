@@ -7,6 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
 import { IndicatorQuantitativeModalComponent } from "./modal/indicator.quantitative.modal.component";
+import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
 
 @Component({
   selector: "ngx-indicator-quantitative",
@@ -22,6 +23,7 @@ export class IndicatorQuantitativeComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
+  user: any;
   tabledata: any[] = [];
 
   subscription: any;
@@ -124,13 +126,45 @@ export class IndicatorQuantitativeComponent {
   constructor(
     private modalService: NgbModal,
     private toastr: ToastrService,
-    public service: BackendService
+    public service: BackendService,
+    private authService: NbAuthService
   ) {
     this.loadData();
+    this.getUserInfo()
+    this.getUserBank()
   }
 
+  getUserBank() {
+    if (this.user.ID_USER != "admin") {
+      this.service.getreq("mst_user_banks").toPromise().then(response => {
+        if (response != null) {
+          let arr = response.filter(item => {
+            return (
+              item.ID_USER == this.user.ID_USER
+            )
+          })
+          if (arr[0] != null) {
+            this.user.type = arr[0].ID_BANK
+            console.log(this.user)
+          }
+        }
+      })
+    } else {
+      this.user.type = "admin";
+    }
+  }
+
+  getUserInfo() {
+    this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
+      if (token.isValid()) {
+        this.user = token.getPayload(); // here we receive a payload from the token and assigne it to our `user` variable
+      }
+    });
+  }
+
+
   async loadData() {
-    let respIku : any [];
+    let respIku: any[];
     await this.service.getreq("mst_ikus").toPromise().then(response => {
       if (response != null) {
         respIku = response;
@@ -206,12 +240,12 @@ export class IndicatorQuantitativeComponent {
 
   getData() {
     let defaultTitle = {
-      nilai1 : "Nilai 1",
-      nilai2 : "Nilai 2",
-      nilai3 : "Nilai 3"
+      nilai1: "Nilai 1",
+      nilai2: "Nilai 2",
+      nilai3: "Nilai 3"
     };
-    
-    
+
+
     this.service.getreq("trn_indicator_qns").subscribe(response => {
       if (response != null) {
         let res = response.filter(item => {
@@ -240,7 +274,7 @@ export class IndicatorQuantitativeComponent {
           if (res[0].INDIKATOR_2_DESC != "") {
             defaultTitle.nilai2 = res[0].INDIKATOR_2_DESC;
           }
-  
+
           if (res[0].INDIKATOR_3_DESC != "") {
             defaultTitle.nilai3 = res[0].INDIKATOR_3_DESC;
           }
@@ -471,11 +505,11 @@ export class IndicatorQuantitativeComponent {
           if (res[0].INDIKATOR_2_DESC != "") {
             Object.assign(this.settings, duaColumn)
           }
-  
+
           if (res[0].INDIKATOR_3_DESC != "") {
             Object.assign(this.settings, tigaColumn)
           }
-          
+
 
           this.service.getreq("mst_banks").subscribe(response => {
             if (response != null) {
@@ -528,15 +562,27 @@ export class IndicatorQuantitativeComponent {
                       indicatorDetail.push(detail);
                     }
                   });
-                  indicatorDetail = indicatorDetail.sort(function(a, b){return a.KODE_BANK - b.KODE_BANK});
-                  this.tabledata = indicatorDetail;
-                  this.formData.indicatorDetail = indicatorDetail;
-                  this.formData.indicatorId =
-                    "RBB" +
-                    this.formData.ikuSelected +
-                    this.formData.yearPeriode +
-                    this.formData.periodeSelected;
-                  this.source.load(this.tabledata);
+                  indicatorDetail = indicatorDetail.sort(function (a, b) { return a.KODE_BANK - b.KODE_BANK });
+
+                  if (this.user.type != "admin") {
+                    const dataBankFilter = indicatorDetail.filter(item => {
+                      return (
+                        item.KODE_BANK == this.user.type
+                      );
+                    });
+
+
+                    if (dataBankFilter[0] != null) {
+                      this.tabledata = dataBankFilter;
+                      this.formData.indicatorDetail = dataBankFilter;
+                      this.formData.indicatorId =
+                        "RBB" +
+                        this.formData.ikuSelected +
+                        this.formData.yearPeriode +
+                        this.formData.periodeSelected;
+                      this.source.load(this.tabledata);
+                    }
+                  }
                 }
               });
             }
