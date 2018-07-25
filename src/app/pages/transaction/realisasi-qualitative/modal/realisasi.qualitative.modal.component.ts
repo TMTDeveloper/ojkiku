@@ -20,6 +20,9 @@ export class RealisasiQualitativeModalComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
+
+  user: any;
+
   tabledata: any[] = [];
 
   settings = {
@@ -134,7 +137,7 @@ export class RealisasiQualitativeModalComponent {
               NO_DETAIL: Number,
               TIPE_DATA: String,
               JUDUL: String,
-              DESKRIPSI: "Belum Di isi",
+              DESKRIPSI: "",
               USER_CREATED: "admin",
               DATETIME_CREATED: moment().format(),
               USER_UPDATED: "admin",
@@ -165,7 +168,7 @@ export class RealisasiQualitativeModalComponent {
                   this.source.load(this.tabledata)
                   this.source.refresh();
                 } else {
-                  detail.DESKRIPSI = "Belum di isi"
+                  detail.DESKRIPSI = ""
                   realisasidetail.push(detail);
                   this.tabledata = realisasidetail;
                   this.source.load(this.tabledata)

@@ -95,8 +95,14 @@ export class RealisasiQualitativeComponent {
         filter: false,
         editable: true,
         width: "70%"
-
-      }
+      },
+      USER_CREATED: {
+        title: "Created By",
+        type: "string",
+        filter: false,
+        editable: false,
+        width: "25%"
+      },
     }
   };
 
@@ -225,9 +231,9 @@ export class RealisasiQualitativeComponent {
         NO_URUT: element.NO,
         STATUS: element.STATUS,
         KETERANGAN: element.KETERANGAN,
-        USER_CREATED: "admin",
+        USER_CREATED: this.user.USER_NAME,
         DATETIME_CREATED: moment().format(),
-        USER_UPDATED: "admin",
+        USER_UPDATED: this.user.USER_NAME,
         DATETIME_UPDATED: moment().format()
       }
       //console.log(header);
@@ -254,10 +260,10 @@ export class RealisasiQualitativeComponent {
       KODE_BANK: this.formData.bankSelected,
       NO_URUT: 1,
       STATUS: "blmselesai",
-      KETERANGAN: "Belum Di Isi",
-      USER_CREATED: "admin",
+      KETERANGAN: "",
+      USER_CREATED: this.user.USER_NAME,
       DATETIME_CREATED: moment().format(),
-      USER_UPDATED: "admin",
+      USER_UPDATED: this.user.USER_NAME,
       DATETIME_UPDATED: moment().format()
     };
     this.service.getreq("trn_realization_qls").subscribe(res => {
@@ -335,5 +341,6 @@ export class RealisasiQualitativeComponent {
   editConfirm(event) {
     //console.log(event.newData.RESULT1);
     event.confirm.resolve(event.newData);
+    console.log(event.newData);
   }
 }

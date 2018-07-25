@@ -130,6 +130,13 @@ export class RealisasiQuantitativeComponent {
         filter: false,
         editable: false,
         width: "30%"
+      },
+      USER_CREATED: {
+        title: "Created By",
+        type: "string",
+        filter: false,
+        editable: false,
+        width: "30%"
       }
     }
   };
@@ -418,6 +425,13 @@ export class RealisasiQuantitativeComponent {
             filter: false,
             editable: false,
             width: "30%"
+          },
+          USER_CREATED: {
+            title: "Created By",
+            type: "string",
+            filter: false,
+            editable: false,
+            width: "30%"
           }
         }
       };
@@ -558,6 +572,13 @@ export class RealisasiQuantitativeComponent {
           PENCAPAIAN: {
             title: "Pencapaian",
             type: "number",
+            filter: false,
+            editable: false,
+            width: "30%"
+          },
+          USER_CREATED: {
+            title: "Created By",
+            type: "string",
             filter: false,
             editable: false,
             width: "30%"
@@ -743,6 +764,13 @@ export class RealisasiQuantitativeComponent {
             filter: false,
             editable: false,
             width: "30%"
+          },
+          USER_CREATED: {
+            title: "Created By",
+            type: "string",
+            filter: false,
+            editable: false,
+            width: "30%"
           }
         }
       };
@@ -774,9 +802,9 @@ export class RealisasiQuantitativeComponent {
           RESULT2: "0%",
           RESULT3: "0%",
           PENCAPAIAN: "0",
-          USER_CREATED: "Admin",
+          USER_CREATED: this.user.USER_NAME,
           DATETIME_CREATED: moment().format(),
-          USER_UPDATED: "Admin",
+          USER_UPDATED: this.user.USER_NAME,
           DATETIME_UPDATED: moment().format(),
           DESC_BANK: element.DESCRIPTION,
           REMARK: "",
@@ -813,10 +841,13 @@ export class RealisasiQuantitativeComponent {
         })
 
         if (arrRealizationDtlData[0] != null) {
+          console.log('gua dari realisasidetaildata',arrRealizationDtlData[0])
           detail.NILAI_REALISASI_1 = arrRealizationDtlData[0].NILAI_REALISASI_1;
           detail.NILAI_REALISASI_2 = arrRealizationDtlData[0].NILAI_REALISASI_2;
           detail.NILAI_REALISASI_3 = arrRealizationDtlData[0].NILAI_REALISASI_3;
           detail.PENCAPAIAN = arrRealizationDtlData[0].PENCAPAIAN;
+          detail.USER_CREATED = arrRealizationDtlData[0].USER_CREATED;
+          detail.USER_UPDATED = arrRealizationDtlData[0].USER_UPDATED;
 
           if (arrRealizationDtlData[0].TARGET != null) {
             detail.TARGET = arrRealizationDtlData[0].TARGET;
@@ -971,6 +1002,13 @@ export class RealisasiQuantitativeComponent {
             filter: false,
             editable: false,
             width: "30%"
+          },
+          USER_CREATED: {
+            title: "Created By",
+            type: "string",
+            filter: false,
+            editable: false,
+            width: "30%"
           }
         }
       };
@@ -989,9 +1027,9 @@ export class RealisasiQuantitativeComponent {
       PERIODE: this.formData.periodeSelected,
       KODE_INDIKATOR: this.formData.indicatorId,
       //PENCAPAIAN: 1,
-      USER_CREATED: "Admin",
+      USER_CREATED: this.user.USER_NAME,
       DATETIME_CREATED: moment().format(),
-      USER_UPDATED: "Admin",
+      USER_UPDATED: this.user.USER_NAME,
       DATETIME_UPDATED: moment().format()
     };
 
@@ -1016,9 +1054,9 @@ export class RealisasiQuantitativeComponent {
         NILAI_REALISASI_2: element.NILAI_REALISASI_2,
         NILAI_REALISASI_3: element.NILAI_REALISASI_3,
         PENCAPAIAN: element.PENCAPAIAN.toString(),
-        USER_CREATED: "admin",
+        USER_CREATED: element.USER_CREATED,
         DATETIME_CREATED: moment().format(),
-        USER_UPDATED: "admin",
+        USER_UPDATED: this.user.USER_NAME,
         DATETIME_UPDATED: moment().format(),
         REMARK: element.REMARK,
         TARGET: element.TARGET

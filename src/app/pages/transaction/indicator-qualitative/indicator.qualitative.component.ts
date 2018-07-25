@@ -82,6 +82,13 @@ export class IndicatorQualitativeComponent {
         filter: false,
         editable: true,
         width: "70%"
+      },
+      USER_CREATED: {
+        title: "Created By",
+        type: "string",
+        filter: false,
+        editable: false,
+        width: "25%"
       }
     }
   };
@@ -166,6 +173,7 @@ export class IndicatorQualitativeComponent {
     this.activeModal.componentInstance.formData.ikuSelected = this.formData.ikuSelected;
     this.activeModal.componentInstance.formData.yearPeriode = this.formData.yearPeriode;
     this.activeModal.componentInstance.formData.periodeSelected = this.formData.periodeSelected;
+    this.activeModal.componentInstance.user = this.user;
     this.activeModal.result.then(
       async response => {
         //console.log(response);
@@ -231,7 +239,7 @@ export class IndicatorQualitativeComponent {
         if (arr[0] != null) {
         let indicatorQualitativeDetail = [];
          arr.forEach((element, ind) => {
-          element.NO_DETAIL = ind + 1
+          element.NO_DETAIL = ind + 1;
           indicatorQualitativeDetail.push(element)
           })
           this.tabledata = indicatorQualitativeDetail;

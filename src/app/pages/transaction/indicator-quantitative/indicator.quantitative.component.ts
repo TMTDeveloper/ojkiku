@@ -84,6 +84,13 @@ export class IndicatorQuantitativeComponent {
           }
         }
       },
+      USER_CREATED: {
+        title: "Created By",
+        type: "string",
+        filter: false,
+        editable: false,
+        width: "25%"
+      }
     }
   };
 
@@ -334,6 +341,13 @@ export class IndicatorQuantitativeComponent {
                       .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                   }
                 }
+              },
+              USER_CREATED: {
+                title: "Created By",
+                type: "string",
+                filter: false,
+                editable: false,
+                width: "25%"
               }
             }
           };
@@ -409,6 +423,13 @@ export class IndicatorQuantitativeComponent {
                   }
                 }
               },
+              USER_CREATED: {
+                title: "Created By",
+                type: "string",
+                filter: false,
+                editable: false,
+                width: "25%"
+              }
             }
           };
           let tigaColumn = {
@@ -498,9 +519,17 @@ export class IndicatorQuantitativeComponent {
                       .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                   }
                 }
+              },
+              USER_CREATED: {
+                title: "Created By",
+                type: "string",
+                filter: false,
+                editable: false,
+                width: "25%"
               }
             }
           };
+
 
           if (res[0].INDIKATOR_2_DESC != "") {
             Object.assign(this.settings, duaColumn)
@@ -526,6 +555,8 @@ export class IndicatorQuantitativeComponent {
                         item.KODE_BANK == element.ID_BANK
                       );
                     });
+
+                    
                     if (arr[0] == null) {
                       console.log(arr);
                       let detail = {
@@ -536,9 +567,9 @@ export class IndicatorQuantitativeComponent {
                         NILAI_INDICATOR_1: 0,
                         NILAI_INDICATOR_2: 0,
                         NILAI_INDICATOR_3: 0,
-                        USER_CREATED: "Admin",
+                        USER_CREATED: this.user.USER_NAME,
                         DATETIME_CREATED: moment().format(),
-                        USER_UPDATED: "Admin",
+                        USER_UPDATED: this.user.USER_NAME,
                         DATETIME_UPDATED: moment().format(),
                         DESC_BANK: element.DESCRIPTION
                       };
@@ -553,9 +584,9 @@ export class IndicatorQuantitativeComponent {
                         NILAI_INDICATOR_1: arr[0].NILAI_INDICATOR_1,
                         NILAI_INDICATOR_2: arr[0].NILAI_INDICATOR_2,
                         NILAI_INDICATOR_3: arr[0].NILAI_INDICATOR_3,
-                        USER_CREATED: "Admin",
+                        USER_CREATED: arr[0].USER_CREATED,
                         DATETIME_CREATED: moment().format(),
-                        USER_UPDATED: "Admin",
+                        USER_UPDATED: this.user.USER_NAME,
                         DATETIME_UPDATED: moment().format(),
                         DESC_BANK: element.DESCRIPTION
                       };
@@ -564,13 +595,15 @@ export class IndicatorQuantitativeComponent {
                   });
                   indicatorDetail = indicatorDetail.sort(function (a, b) { return a.KODE_BANK - b.KODE_BANK });
 
+                  console.log(this.user)
+
                   if (this.user.type != "admin") {
                     const dataBankFilter = indicatorDetail.filter(item => {
                       return (
                         item.KODE_BANK == this.user.type
                       );
                     });
-
+                    console.log('gue ada disini nih')
 
                     if (dataBankFilter[0] != null) {
                       this.tabledata = dataBankFilter;
@@ -582,6 +615,15 @@ export class IndicatorQuantitativeComponent {
                         this.formData.periodeSelected;
                       this.source.load(this.tabledata);
                     }
+                  } else {
+                    this.tabledata = indicatorDetail;
+                    this.formData.indicatorDetail = indicatorDetail;
+                    this.formData.indicatorId =
+                      "RBB" +
+                      this.formData.ikuSelected +
+                      this.formData.yearPeriode +
+                      this.formData.periodeSelected;
+                    this.source.load(this.tabledata);
                   }
                 }
               });
@@ -607,9 +649,9 @@ export class IndicatorQuantitativeComponent {
       REALISASI_1_DESC: this.formData.realisasi1,
       REALISASI_2_DESC: this.formData.realisasi2,
       REALISASI_3_DESC: this.formData.realisasi3,
-      USER_CREATED: "Admin",
+      USER_CREATED: this.user.USER_NAME,
       DATETIME_CREATED: moment().format(),
-      USER_UPDATED: "Admin",
+      USER_UPDATED: this.user.USER_NAME,
       DATETIME_UPDATED: moment().format()
     };
     this.service.postreq("trn_indicator_qns/crud", header).subscribe(

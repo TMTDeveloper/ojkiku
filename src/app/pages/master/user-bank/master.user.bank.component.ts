@@ -151,6 +151,7 @@ export class MasterUserBankComponent {
     public service: BackendService
   ) {
     this.loadData();
+    
   }
   loadData() {
     this.service.getreq("mst_user_banks").subscribe(response => {
@@ -167,12 +168,14 @@ export class MasterUserBankComponent {
                   ? (this.tabledata[index].USER_NAME = element.USER_NAME)
                   : null;
               });
+              
               this.userList.push({
                 value: element.ID_USER,
                 title: element.ID_USER + " " + element.USER_NAME
               });
             });
             this.source.load(this.tabledata);
+            
             console.log(this.userList);
             this.settings = this.settingsTemplate;
             console.log(JSON.stringify(response));
@@ -182,12 +185,14 @@ export class MasterUserBankComponent {
                 this.bankData = response;
                 this.formData.bank = this.bankData[0].ID_BANK;
                 console.log(JSON.stringify(response));
+                this.reload()
               }
             });
           }
         });
       }
     });
+    
   }
 
   submit(event) {
@@ -208,6 +213,7 @@ export class MasterUserBankComponent {
       }
     });
   }
+
   addData(event) {
     console.log(event.newData);
     let data = {
@@ -242,10 +248,13 @@ export class MasterUserBankComponent {
         console.log(response);
         event.confirm.resolve(data);
         this.toastr.success("Data Saved!");
+        this.reload();
       });
+      this.reload();
     } else {
       event.confirm.reject();
       this.toastr.error("Data Already Exist!");
+      this.reload();
     }
   }
 

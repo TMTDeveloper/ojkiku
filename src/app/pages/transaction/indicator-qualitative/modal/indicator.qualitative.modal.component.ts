@@ -11,6 +11,8 @@ import { ToastrService } from "ngx-toastr";
   templateUrl: "./indicator.qualitative.modal.component.html"
 })
 export class IndicatorQualitativeModalComponent {
+  user : any;
+
   formData = {
     periode: [
       {
@@ -61,6 +63,12 @@ export class IndicatorQualitativeModalComponent {
   ) {}
 
 
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    
+  }
+
   saveData() {
     this.service.getreq("trn_indicator_qls").subscribe(response => {
       if (response != null) {
@@ -84,9 +92,9 @@ export class IndicatorQualitativeModalComponent {
           NO_DETAIL: this.formData.noDetail,
           TIPE_DATA: this.formData.tipeDataSelected,
           DESKRIPSI: this.formData.descriptionIndicator,
-          USER_CREATED: "Admin",
+          USER_CREATED: this.user.USER_NAME,
           DATETIME_CREATED: moment().format(),
-          USER_UPDATED: "Admin",
+          USER_UPDATED: this.user.USER_NAME,
           DATETIME_UPDATED: moment().format()
         };
         this.service.postreq("trn_indicator_qls/crud", header).subscribe(response => {
