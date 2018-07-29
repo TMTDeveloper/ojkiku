@@ -98,11 +98,18 @@ export class ReportMokaComponent {
         editable: true,
         width: "20%",
       },
-      USER_REALIZATION: {
+      UPDATEBY_USER: {
         title: "Updated By",
         type: "string",
         filter: false,
         editable: true,
+        width: "10%",
+      },
+      USER_REALIZATION: {
+        title: "Updated",
+        type: "string",
+        filter: false,
+        editable: false,
         width: "10%",
       },
     }
@@ -180,15 +187,16 @@ export class ReportMokaComponent {
         let detail = {
           NO: 1,
           KODE_BANK: 0,
-          TIPE_DOKUMEN: "kosong",
-          ID_BANK: "kosong",
-          START_DATE: "kosong",
-          TARGET_DATE: "kosong",
-          REALIZATION_DATE: "kosong",
-          USER_REALIZATION: "Kosong",
-          KETERANGAN: "Belum di isi",
+          TIPE_DOKUMEN: "",
+          ID_BANK: "",
+          START_DATE: "",
+          TARGET_DATE: "",
+          REALIZATION_DATE: "",
+          USER_REALIZATION: "",
+          KETERANGAN: "",
           YEAR: 0,
-          WARNA: ""
+          WARNA: "",
+          UPDATEBY_USER: ""
         };
 
         detail.NO = index + 1;
@@ -219,12 +227,10 @@ export class ReportMokaComponent {
         if (arrs[0] != null) {
           if (arrs[0].REALIZATION_DATE != null) {
             detail.REALIZATION_DATE = moment(arrs[0].REALIZATION_DATE).format("DD/MM/YYYY");
-          } else {
-            detail.REALIZATION_DATE = "kosong"
-          }
+            detail.UPDATEBY_USER = arrs[0].UPDATEBY_USER
+          } 
 
-
-
+    
           if (moment(detail.REALIZATION_DATE, "DD/MM/YY").isSame(moment(detail.TARGET_DATE, "DD/MM/YY")) == true) {
             detail.WARNA = "0"
           } else if (moment(detail.REALIZATION_DATE, "DD/MM/YY").isSameOrBefore(moment(detail.TARGET_DATE, "DD/MM/YY").add(3, 'd')) == true) {
@@ -232,8 +238,6 @@ export class ReportMokaComponent {
           } else if (moment(detail.REALIZATION_DATE, "DD/MM/YY").isSameOrAfter(moment(detail.TARGET_DATE, "DD/MM/YY").add(5, 'd')) == true) {
             detail.WARNA = "5"
           } 
-
-          console.log(detail.WARNA)
 
           detail.KETERANGAN = arrs[0].KETERANGAN;
           detail.USER_REALIZATION = arrs[0].USER_REALIZATION;
@@ -263,10 +267,11 @@ export class ReportMokaComponent {
         USER_REALIZATION: "admin",
         REALIZATION_DATE: element.REALIZATION_DATE,
         USER_UPDATED: "admin",
-        DATE_UPDATED: moment().format()
+        DATE_UPDATED: moment().format(),
+        UPDATEBY_USER: element.UPDATEBY_USER
       }
 
-      if (element.REALIZATION_DATE == "kosong") {
+      if (element.REALIZATION_DATE == "") {
         header.REALIZATION_DATE = null
       } else {
         header.REALIZATION_DATE = moment(this.dateReformat(element.REALIZATION_DATE)).format()

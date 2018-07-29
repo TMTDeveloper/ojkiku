@@ -112,11 +112,18 @@ export class MokaRealisasiComponent {
         editable: true,
         width: "20%",
       },
-      USER_REALIZATION: {
+      UPDATEBY_USER: {
         title: "Updated By",
         type: "string",
         filter: false,
         editable: true,
+        width: "10%",
+      },
+      USER_REALIZATION: {
+        title: "Updated",
+        type: "string",
+        filter: false,
+        editable: false,
         width: "10%",
       },
     }
@@ -230,14 +237,15 @@ export class MokaRealisasiComponent {
         let detail = {
           NO: 1,
           KODE_BANK: 0,
-          TIPE_DOKUMEN: "kosong",
-          ID_BANK: "kosong",
-          START_DATE: "kosong",
-          TARGET_DATE: "kosong",
-          REALIZATION_DATE: "kosong",
-          USER_REALIZATION: "Kosong",
+          TIPE_DOKUMEN: "",
+          ID_BANK: "",
+          START_DATE: "",
+          TARGET_DATE: "",
+          REALIZATION_DATE: "",
+          USER_REALIZATION: "",
           KETERANGAN: "",
-          YEAR: 0
+          YEAR: 0,
+          UPDATEBY_USER: "",
         };
 
         detail.NO = index + 1;
@@ -268,9 +276,8 @@ export class MokaRealisasiComponent {
         if (arrs[0] != null) {
           if(arrs[0].REALIZATION_DATE != null) {
             detail.REALIZATION_DATE = moment(arrs[0].REALIZATION_DATE).format("DD/MM/YYYY");
-          } else {
-            detail.REALIZATION_DATE = "kosong"
-          }
+            detail.UPDATEBY_USER = arrs[0].UPDATEBY_USER
+              } 
           
           detail.KETERANGAN = arrs[0].KETERANGAN;
           detail.USER_REALIZATION = arrs[0].USER_REALIZATION;
@@ -302,7 +309,8 @@ export class MokaRealisasiComponent {
         USER_REALIZATION: "admin",
         REALIZATION_DATE: element.REALIZATION_DATE,
         USER_UPDATED: "admin",
-        DATE_UPDATED: moment().format()
+        DATE_UPDATED: moment().format(),
+        UPDATEBY_USER: element.UPDATEBY_USER
       }
 
       if(element.REALIZATION_DATE == "kosong"){
@@ -331,20 +339,20 @@ export class MokaRealisasiComponent {
   }
 
   submit(event) {
-    this.tabledata.forEach((element, ind) => {
-      if (element.KODE_IKU == event.newData.KODE_IKU) {
-        element.KODE_IKU = event.newData.KODE_IKU;
-        element.DESKRIPSI = event.newData.DESKRIPSI;
-        element.TIPE_IKU = event.newData.TIPE_IKU;
-        this.service
-          .patchreq("mst_ikus", this.tabledata[ind])
-          .subscribe(response => {
-            console.log(JSON.stringify(response));
-            event.confirm.resolve(event.newData);
-            this.toastr.success("Data Updated!");
-          });
-      }
-    });
+    // this.tabledata.forEach((element, ind) => {
+    //   if (element.KODE_IKU == event.newData.KODE_IKU) {
+    //     element.KODE_IKU = event.newData.KODE_IKU;
+    //     element.DESKRIPSI = event.newData.DESKRIPSI;
+    //     element.TIPE_IKU = event.newData.TIPE_IKU;
+    //     this.service
+    //       .patchreq("mst_ikus", this.tabledata[ind])
+    //       .subscribe(response => {
+    //         console.log(JSON.stringify(response));
+    //         event.confirm.resolve(event.newData);
+    //         this.toastr.success("Data Updated!");
+    //       });
+    //   }
+    // });
   }
 
   dateReformat(value) {
