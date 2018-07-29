@@ -7,31 +7,38 @@ import { MasterUserComponent } from "./master-user/master.user.component";
 import { MasterUserLogComponent } from "./master-log-user/master.user.log.component";
 import { MasterUserBankComponent } from "./user-bank/master.user.bank.component";
 import { IkuComponent } from "./iku/iku.component";
+import { DocumentComponent } from "./document/document.component";
+
+
 const routes: Routes = [
   {
     path: "",
     component: MasterComponent,
     children: [
       {
-        path: "master-bank",
-        component: MasterBankComponent
-      },
-      {
         path: "master-user",
         component: MasterUserComponent
-      },
-      {
-        path: "master-log-user",
-        component: MasterUserLogComponent
       },
       {
         path: "user-bank",
         component: MasterUserBankComponent
       },
       {
+        path: "master-bank",
+        component: MasterBankComponent
+      },
+      {
         path: "iku",
         component: IkuComponent
-      }
+      },
+      {
+        path: "document",
+        component: DocumentComponent
+      },
+      {
+        path: "master-log-user",
+        component: MasterUserLogComponent
+      },
     ]
   }
 ];
@@ -48,5 +55,6 @@ export const routedComponents = [
   MasterUserComponent,
   MasterUserLogComponent,
   MasterUserBankComponent,
-  IkuComponent
+  IkuComponent,
+  DocumentComponent
 ];

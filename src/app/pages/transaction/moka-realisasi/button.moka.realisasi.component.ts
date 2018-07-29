@@ -1,35 +1,34 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { ViewCell } from 'ng2-smart-table';
-
+import * as moment from "moment";
+import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   template: `
-  <div class="input-group">
-  <input class="form-control" placeholder="yyyy-mm-dd" name="d1" [(ngModel)]="formData.startDate" ngbDatepicker #d1="ngbDatepicker">
-  <div class="input-group-append">
-    <button class="btn btn-outline-secondary" (click)="d1.toggle()" type="button">
-      <img src="assets/images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
-    </button>
-  </div>
-</div>
+    <input class="form-control"  ngbDatepicker (dateSelect)="onDateSelect($event)" (click)="d.toggle()" [(ngModel)]="this.date" #d="ngbDatepicker">
   `,
 })
 export class MokaRealisasiDatePicker implements OnInit {
 
-  public renderValue;
+  public date;
 
   @Input() value;
 
   constructor() {  }
 
   ngOnInit() {
-    this.renderValue = this.value;
+    this.date = moment(this.value).format("DD/MM/YYYY");
+    console.log(this.value)
+    console.log(this.date)
   }
 
-  example() {
-    alert(this.renderValue);
+  onDateSelect(){
+    console.log('woi1')
   }
 
+  submit(){
+    console.log('woi')
+  }
 
 }

@@ -1,21 +1,77 @@
-<!-- <nb-card>
-  <nb-card-header>
-    View Report
-  </nb-card-header>
-
+<nb-card>
+  <nb-card-header>MOKA Realisasi</nb-card-header>
   <nb-card-body>
-    <div class="holdertable">
-      <ng2-smart-table [settings]="settings" [source]="source">
-      </ng2-smart-table>
+    <div class="row">
+      <div class="col-sm-4">
+
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Tahun
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-8">
+            <input class="form-control" [(ngModel)]="formData.years">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Dokumen
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-8">
+            <select name="risk_level" class="form-control" [(ngModel)]="formData.documentSelected">
+              <option *ngFor="let data of formData.documentData" value="{{data.DOC_NAME}}">{{ data.DOC_NAME }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Bank
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-8">
+            <select name="risk_level" class="form-control" [(ngModel)]="formData.bankSelected">
+              <option *ngFor="let data of formData.bankData" value="{{data.ID_BANK}}">{{data.DESCRIPTION}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
 
-
+    <div class="form-group row">
+      <div class="col-sm-auto">
+        <button type=" button " class="btn btn-success" [disabled]="!formData.documentSelected||!formData.bankSelected" 
+        (click)="getData()">Get Data</button>
+      </div>
+    </div>
 
   </nb-card-body>
-</nb-card> -->
+</nb-card>
 
 <nb-card>
   <nb-card-body>
-    On Progress
+    <div class="ikureportable">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Tipe Dokumen</th>
+            <th>Tahun</th>
+            <th>Keterangan</th>
+            <th>Start Date</th>
+            <th>Target Date</th>
+            <th>Realization Date</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of tabledata" [ngClass]="{'table-success': item.WARNA == 0, 'table-warning': item.WARNA == 3, 'table-danger': item.WARNA > 3}">
+                <td >{{ item.TIPE_DOKUMEN }}</td>
+                <td>{{ item.YEAR }}</td>
+                <td>{{ item.KETERANGAN }}</td>
+                <td >{{ item.START_DATE }}</td>
+                <td>{{ item.TARGET_DATE }}</td>
+                <td >{{ item.REALIZATION_DATE }}</td>
+              </tr>
+        </tbody>
+      </table>
+    </div>
   </nb-card-body>
 </nb-card>

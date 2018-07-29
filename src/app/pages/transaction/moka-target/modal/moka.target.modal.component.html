@@ -16,7 +16,7 @@
           </label>
           <div class="col-sm-8">
             <select name="risk_level" class="form-control" [(ngModel)]="formData.documentSelected">
-              <option *ngFor="let data of formData.documentData" value="{{data.id}}">{{ data.desc }}</option>
+              <option *ngFor="let data of formData.documentData" value="{{data.DOC_NAME}}">{{ data.DOC_NAME }}</option>
             </select>
           </div>
         </div>

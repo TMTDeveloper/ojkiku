@@ -7,6 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
 import { MokaRealisasiDatePicker } from "./button.moka.realisasi.component";
+import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
 
 @Component({
   selector: "ngx-moka-realisasi",
@@ -19,6 +20,8 @@ import { MokaRealisasiDatePicker } from "./button.moka.realisasi.component";
 
 export class MokaRealisasiComponent {
   @ViewChild("myForm") private myForm: NgForm;
+
+  user: any;
 
   source: LocalDataSource = new LocalDataSource();
 
@@ -64,7 +67,7 @@ export class MokaRealisasiComponent {
         type: "number",
         filter: false,
         editable: false,
-        width: "2%"
+        width: "1%"
       },
       TIPE_DOKUMEN: {
         title: "Tipe Dokumen",
@@ -107,7 +110,7 @@ export class MokaRealisasiComponent {
         type: "string",
         filter: false,
         editable: true,
-        width: "25%",
+        width: "20%",
       },
       USER_REALIZATION: {
         title: "Updated By",
@@ -120,16 +123,7 @@ export class MokaRealisasiComponent {
   };
 
   formData = {
-    documentData: [
-      {
-        id: "RBB",
-        desc: "RBB"
-      },
-      {
-        id: "Lain-lain",
-        desc: "Lain-lain"
-      }
-    ],
+    documentData: [],
     documentSelected: "",
     bankSelected: "",
     years: moment().format("YYYY"),
@@ -141,15 +135,61 @@ export class MokaRealisasiComponent {
   constructor(
     private modalService: NgbModal,
     private toastr: ToastrService,
-    public service: BackendService
+    public service: BackendService,
+    private authService: NbAuthService
   ) {
     this.loadData();
+    this.getUserInfo()
+    this.getUserBank()
   }
 
   loadData() {
     this.service.getreq("mst_banks").subscribe(response => {
       if (response != null) {
         this.formData.bankData = response;
+      }
+    });
+    this.service.getreq("mst_documents").subscribe(response => {
+      if (response != null) {
+        let documentFilter = response.filter(item => {
+          return (
+            item.FLAG == 'Y'
+          )
+        });
+        if (documentFilter[0] != null){
+          this.formData.documentData = documentFilter
+        }
+      }
+    });
+  }
+
+  getUserBank() {
+    if (this.user.ID_USER != "admin") {
+      this.service.getreq("mst_user_banks").toPromise().then(response => {
+        if (response != null) {
+          let arr = response.filter(item => {
+            return (
+              item.ID_USER == this.user.ID_USER
+            )
+          });
+          if (arr[0] != null) {
+            this.user.type = arr[0].ID_BANK
+          }
+
+          this.formData.bankData = this.formData.bankData.filter(item => {
+            return (item.ID_BANK == this.user.type)
+          })
+        }
+      })
+    } else {
+      this.user.type = "admin";
+    }
+  }
+
+  getUserInfo() {
+    this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
+      if (token.isValid()) {
+        this.user = token.getPayload(); // here we receive a payload from the token and assigne it to our `user` variable
       }
     });
   }
@@ -180,7 +220,6 @@ export class MokaRealisasiComponent {
     });
 
 
-
     
 
     if (arrMonaTargetData[0] != null) {
@@ -197,7 +236,7 @@ export class MokaRealisasiComponent {
           TARGET_DATE: "kosong",
           REALIZATION_DATE: "kosong",
           USER_REALIZATION: "Kosong",
-          KETERANGAN: "Belum di isi",
+          KETERANGAN: "",
           YEAR: 0
         };
 

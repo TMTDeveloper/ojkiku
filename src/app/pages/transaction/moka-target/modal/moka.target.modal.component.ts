@@ -18,16 +18,7 @@ import { BackendService } from "../../../../@core/data/backend.service";
 
 export class MokaTargetModalComponent {
   formData = {
-    documentData: [
-      {
-        id: "RBB",
-        desc: "RBB"
-      },
-      {
-        id: "Lain-lain",
-        desc: "Lain-lain"
-      }
-    ],
+    documentData: [],
     documentSelected: "",
     bankSelected: "",
     startDate: "",
@@ -50,7 +41,7 @@ export class MokaTargetModalComponent {
   addNewData() {
     
     let header = {
-      YEAR: this.formData.year,
+      YEAR: moment(this.dateReformat(this.formData.startDate)).format("YYYY"),
       ID_BANK: this.formData.bankSelected,
       TIPE_DOKUMEN: this.formData.documentSelected,
       KETERANGAN: this.formData.keterangan,
@@ -61,7 +52,6 @@ export class MokaTargetModalComponent {
       USER_UPDATED: "admin",
       DATE_UPDATED: moment().format(),
     }
-    console.log(header)
     this.service.postreq("trn_monas/crud", header).subscribe(response => {
       if (response != null) {
         this.toastr.success("Data Added!")
