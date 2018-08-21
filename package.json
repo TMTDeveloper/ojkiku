@@ -44,6 +44,7 @@
     "@ng-bootstrap/ng-bootstrap": "1.0.0",
     "angular2-csv": "^0.2.5",
     "bootstrap": "4.0.0",
+    "chart.js": "^2.7.2",
     "classlist.js": "1.1.20150312",
     "core-js": "2.5.1",
     "hoek": "^5.0.3",

@@ -6,7 +6,7 @@ import { Http, Headers, RequestOptions } from "@angular/http";
 export class BackendService {
   // baseurlxpay:string='http://202.158.20.141:5001/xpay-service/api/'
 
-  baseurl: string = "http://35.197.155.149/api/";
+  baseurl: string = "http://192.168.100.50/api/";
 
   constructor(public http: Http) {}
 
