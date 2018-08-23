@@ -22,6 +22,8 @@ import { Chart } from 'chart.js';
 
 export class MokaChartComponent implements OnInit {
 
+  chartLabel = [];
+
   chart = [];
 
   source: LocalDataSource = new LocalDataSource();
@@ -50,13 +52,13 @@ export class MokaChartComponent implements OnInit {
     this.getUserBank()
   }
 
-  loadData() {
-    this.service.getreq("mst_banks").subscribe(response => {
+  async loadData() {
+    await this.service.getreq("mst_banks").toPromise().then(response => {
       if (response != null) {
         this.formData.bankData = response;
       }
     });
-    this.service.getreq("mst_documents").subscribe(response => {
+    await this.service.getreq("mst_documents").toPromise().then(response => {
       if (response != null) {
         let documentFilter = response.filter(item => {
           return (
@@ -68,6 +70,14 @@ export class MokaChartComponent implements OnInit {
         }
       }
     });
+
+    await this.formData.documentData.forEach(element => {
+      console.log(element.DOC_NAME)
+
+      this.chartLabel.push(element.DOC_NAME)
+      
+    });
+    console.log(this.chartLabel)
   }
 
   getUserBank() {
@@ -106,25 +116,21 @@ export class MokaChartComponent implements OnInit {
     this.chart = new Chart('canvas', {
       type: 'bar',
       data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          labels: this.chartLabel,
           datasets: [{
-              label: '# of Votes',
-              data: [12, 19, 3, 5, 2, 3],
+              label: '# of Documents',
+              data: [12, 19, 3, 5],
               backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
                   'rgba(54, 162, 235, 0.2)',
                   'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
+                  'rgba(75, 192, 192, 0.2)'
               ],
               borderColor: [
                   'rgba(255,99,132,1)',
                   'rgba(54, 162, 235, 1)',
                   'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
+                  'rgba(75, 192, 192, 1)'
               ],
               borderWidth: 1
           }]

@@ -2,6 +2,22 @@
   <nb-card-header>MOKA Chart</nb-card-header>
   <nb-card-body>
    
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Dokumen
+        <font color="red">*</font>
+      </label>
+      <div class="col-sm-4">
+        <select name="risk_level" class="form-control" [(ngModel)]="formData.documentSelected">
+          <option *ngFor="let data of formData.documentData" value="{{data.DOC_NAME}}">{{ data.DOC_NAME }}</option>
+        </select>
+      </div>
+    </div>
+  
+  </nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-body>
+   
       <canvas id="canvas" width="800" height="200">{{ chart }}</canvas>
   
   </nb-card-body>
