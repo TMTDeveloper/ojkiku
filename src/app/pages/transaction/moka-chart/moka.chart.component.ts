@@ -22,13 +22,10 @@ import { Chart } from 'chart.js';
 
 export class MokaChartComponent implements OnInit {
 
-  chartLabel = [];
+  chartLabel : any;
+  chartData : any;
 
   chart = [];
-
-  source: LocalDataSource = new LocalDataSource();
-
-  tabledata: any[] = [];
 
   user: any;
 
@@ -42,8 +39,6 @@ export class MokaChartComponent implements OnInit {
   };
 
   constructor(
-    private modalService: NgbModal,
-    private toastr: ToastrService,
     public service: BackendService,
     private authService: NbAuthService
   ) {
@@ -70,14 +65,6 @@ export class MokaChartComponent implements OnInit {
         }
       }
     });
-
-    await this.formData.documentData.forEach(element => {
-      console.log(element.DOC_NAME)
-
-      this.chartLabel.push(element.DOC_NAME)
-      
-    });
-    console.log(this.chartLabel)
   }
 
   getUserBank() {
@@ -112,14 +99,22 @@ export class MokaChartComponent implements OnInit {
   }
 
 
-  ngOnInit() {
+ async ngOnInit() {
+  await this.service.getreq("trn_mona_realizations/totaldocument").toPromise().then(response => {
+    if (response != null) {
+      console.log(response.result);
+      this.chartLabel = response.result.labelList;
+      this.chartData = response.result.dataList;
+    }
+  });
+
     this.chart = new Chart('canvas', {
       type: 'bar',
       data: {
           labels: this.chartLabel,
           datasets: [{
               label: '# of Documents',
-              data: [12, 19, 3, 5],
+              data: this.chartData,
               backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
                   'rgba(54, 162, 235, 0.2)',
