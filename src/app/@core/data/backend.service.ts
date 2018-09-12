@@ -6,8 +6,8 @@ import { Http, Headers, RequestOptions } from "@angular/http";
 export class BackendService {
   // baseurlxpay:string='http://202.158.20.141:5001/xpay-service/api/'
 
-  baseurl: string = "http://localhost:8888/api/";
-
+  baseurl: string = "http://localhost:8080/api/";
+  moni: boolean = false;
   constructor(public http: Http) {}
 
   getreq(url: string) {

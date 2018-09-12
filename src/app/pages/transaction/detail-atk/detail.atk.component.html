@@ -1,0 +1,49 @@
+<nb-card>
+  <nb-card-header>Order ATK</nb-card-header>
+  <nb-card-body>
+    <!-- <div class="row">
+      <div class="col-sm-8">
+
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Tahun
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-2">
+            <input class="form-control" [(ngModel)]="formData.yearPeriode">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Tahun
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-2">
+            <input class="form-control" [(ngModel)]="formData.yearPeriode">
+          </div>
+        </div>
+      </div>
+
+    </div> -->
+
+    <!-- <div class="form-group row">
+      <div class="col-sm-auto">
+        <button type=" button " class="btn btn-success" [disabled]="!formData.ikuSelected||!formData.yearPeriode||!formData.periodeSelected"
+          (click)="generateDetail()">Get Data</button>
+      </div>
+      <div class="col-sm-auto">
+        <button type=" button " class="btn btn-success" (click)="showModal()">Add Data</button>
+    </div>
+    
+    </div> -->
+
+    <div class="form-group">
+      <ng2-smart-table [settings]="settings" [source]="source" (create)="create($event)" (edit)="create($event)">
+      </ng2-smart-table>
+    </div>
+    <div class="form-group row">
+      <div class="col-sm-auto">
+        <button type=" button " class="btn btn-success " (click)="updateData()">Submit</button>
+      </div>
+
+    </div>
+  </nb-card-body>
+</nb-card>

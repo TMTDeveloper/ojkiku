@@ -4,14 +4,14 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 import { Component, Inject } from "@angular/core";
-import { CanActivate,Router } from "@angular/router";
+import { CanActivate, Router } from "@angular/router";
 import { NB_AUTH_OPTIONS, NbAuthSocialLink } from "@nebular/auth/auth.options";
 import { getDeepFromObject } from "@nebular/auth/helpers";
 import { NbAuthResult } from "@nebular/auth/services/auth-result";
 import { NbAuthService } from "@nebular/auth/services/auth.service";
-import { tap } from 'rxjs/operators/tap';
-
-
+import { tap } from "rxjs/operators/tap";
+import { UserService } from "../../../../@core/data/users.service";
+import { CookieService } from "ngx-cookie-service";
 
 @Component({
   selector: "ngx-login",
@@ -99,7 +99,9 @@ export class NgxLoginComponent {
   constructor(
     protected service: NbAuthService,
     @Inject(NB_AUTH_OPTIONS) protected config = {},
-    protected router: Router
+    protected router: Router,
+    public backend: UserService,
+    private cookie: CookieService
   ) {
     this.redirectDelay = this.getConfigValue("forms.login.redirectDelay");
     this.showMessages = this.getConfigValue("forms.login.showMessages");
@@ -123,6 +125,14 @@ export class NgxLoginComponent {
 
         const redirect = result.getRedirect();
         if (redirect) {
+          console.log(this.router.url);
+          if (this.router.url == "/moni") {
+            this.cookie.deleteAll();
+            this.cookie.set("Type", "moni");
+          }else{
+            this.cookie.deleteAll();
+            this.cookie.set("Type", "mona");
+          }
           setTimeout(() => {
             return this.router.navigateByUrl(redirect);
           }, this.redirectDelay);
@@ -136,18 +146,15 @@ export class NgxLoginComponent {
 }
 
 export class AuthGuard implements CanActivate {
-
-  constructor(private authService: NbAuthService, private router: Router) {
-  }
+  constructor(private authService: NbAuthService, private router: Router) {}
 
   canActivate() {
-    return this.authService.isAuthenticated()
-      .pipe(
-        tap(authenticated => {
-          if (!authenticated) {
-            this.router.navigate(['auth/login']);
-          }
-        }),
-      );
+    return this.authService.isAuthenticated().pipe(
+      tap(authenticated => {
+        if (!authenticated) {
+          this.router.navigate(["auth/login"]);
+        }
+      })
+    );
   }
 }

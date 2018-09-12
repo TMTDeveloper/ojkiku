@@ -1,0 +1,84 @@
+<nb-card>
+  <nb-card-header>Beli Barang</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Jenis Barang
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-6">
+            <select name="risk_level" class="form-control" [(ngModel)]="formData.barang">
+              <option *ngFor="let data of barang" value="{{data.KD_BARANG}}">{{data.KD_BARANG+"
+                "+data.NM_BARANG}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Merk Barang
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-6">
+            <select name="risk_level" class="form-control" [(ngModel)]="formData.merk">
+              <option *ngFor="let data of merk" value="{{data.KD_MERK}}">{{data.KD_MERK+"
+                "+data.NM_MERK}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Serial Number
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-6">
+            <input class="form-control" [(ngModel)]="formData.serialNumber">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Quantity
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-6">
+            <input class="form-control" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',',precision:'0' }" [(ngModel)]="formData.qty">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Status
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-6">
+            <select name="risk_level" class="form-control" [(ngModel)]="formData.status" [disabled]="!formData.peruntukkan">
+              <option value="Baru">Baru</option>
+              <option value="Bekas">Bekas</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Tanggal Beli
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-6">
+            <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="dateAssignment" required></my-date-picker>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Harga Satuan
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-6">
+            <input class="form-control" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',',precision:'0' }"[(ngModel)]="formData.harga">
+          </div>
+        </div>
+  
+      </div>
+
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-auto">
+        <button type=" button " class="btn btn-success " 
+          (click)="updateData()">Submit</button>
+      </div>
+
+    </div>
+  </nb-card-body>
+</nb-card>

@@ -6,9 +6,10 @@ import { MasterBankComponent } from "./master-bank/master.bank.component";
 import { MasterUserComponent } from "./master-user/master.user.component";
 import { MasterUserLogComponent } from "./master-log-user/master.user.log.component";
 import { MasterUserBankComponent } from "./user-bank/master.user.bank.component";
+import { MasterBarangComponent } from "./master-barang/master.barang.component";
+import { MasterMerkComponent } from "./master-merk/master.merk.component";
 import { IkuComponent } from "./iku/iku.component";
 import { DocumentComponent } from "./document/document.component";
-
 
 const routes: Routes = [
   {
@@ -39,6 +40,14 @@ const routes: Routes = [
         path: "master-log-user",
         component: MasterUserLogComponent
       },
+      {
+        path: "master-barang",
+        component: MasterBarangComponent
+      },
+      {
+        path: "master-merk",
+        component: MasterMerkComponent
+      }
     ]
   }
 ];
@@ -55,6 +64,8 @@ export const routedComponents = [
   MasterUserComponent,
   MasterUserLogComponent,
   MasterUserBankComponent,
+  MasterBarangComponent,
+  MasterMerkComponent,
   IkuComponent,
   DocumentComponent
 ];

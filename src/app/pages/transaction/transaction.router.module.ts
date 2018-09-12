@@ -15,7 +15,12 @@ import { IndicatorStrategicComponent } from "./indicator-strategic/indicator.str
 import { RealisasiStrategicComponent } from "./realisasi-strategic/realisasi.strategic.component";
 import { IndicatorStrategicModalComponent } from "./indicator-strategic/modal/indicator.strategic.modal.component";
 import { MokaChartComponent } from "./moka-chart/moka.chart.component";
-
+import { AssignmentBarangComponent } from "./assignment-barang/assignment.barang.component";
+import { BeliBarangComponent } from "./beli-barang/beli.barang.component";
+import { DetailAtkComponent } from "./detail-atk/detail.atk.component";
+import { DetailAtkModalComponent } from "./detail-atk/modal/detail.atk.modal.component";
+import { ReportAtkComponent } from "./report-atk/report.atk.component";
+import { ReportAtkModalComponent } from "./report-atk/modal/report.atk.modal.component";
 const routes: Routes = [
   {
     path: "",
@@ -44,7 +49,7 @@ const routes: Routes = [
       {
         path: "realisasi-strategic",
         component: RealisasiStrategicComponent
-      },      
+      },
       {
         path: "moka-target",
         component: MokaTargetComponent
@@ -56,6 +61,22 @@ const routes: Routes = [
       {
         path: "moka-chart",
         component: MokaChartComponent
+      },
+      {
+        path: "assignment-barang",
+        component: AssignmentBarangComponent
+      },
+      {
+        path: "beli-barang",
+        component: BeliBarangComponent
+      },
+      {
+        path: "detail-atk",
+        component: DetailAtkComponent
+      },
+      {
+        path: "report-atk",
+        component: ReportAtkComponent
       }
     ]
   }
@@ -81,6 +102,12 @@ export const routedComponents = [
   RealisasiQualitativeModalComponent,
   IndicatorStrategicComponent,
   IndicatorStrategicModalComponent,
+  AssignmentBarangComponent,
+  DetailAtkComponent,
+  BeliBarangComponent,
+  ReportAtkModalComponent,
+  ReportAtkComponent,
+  DetailAtkModalComponent,
   RealisasiStrategicComponent,
   MokaChartComponent
 ];

@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { MENU_ITEM_USER } from "./pages-menu";
-import { MENU_ITEM_ADMIN } from "./pages-menu";
+import { MENU_ITEM_ADMIN, MENU_MONI } from "./pages-menu";
 import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
-
+import { ActivatedRoute } from "@angular/router";
+import { UserService } from "../@core/data/users.service";
+import { CookieService } from "ngx-cookie-service";
 @Component({
   selector: "ngx-pages",
   template: `
@@ -13,14 +15,16 @@ import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
   `
 })
 export class PagesComponent implements OnInit {
-
   user: any;
-  menu : any;
+  menu: any;
 
   constructor(
     private authService: NbAuthService,
+    private activeRoute: ActivatedRoute,
+    public backend: UserService,
+    private cookie: CookieService
   ) {
-    this.getUserInfo()
+    this.getUserInfo();
   }
 
   getUserInfo() {
@@ -32,16 +36,16 @@ export class PagesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('ini menu')
-    console.log(this.user)
-    if(this.user.TEAM != "admin"){
-      this.menu = MENU_ITEM_USER
+    console.log("ini menu");
+    console.log(this.user);
+    if (this.cookie.get("Type") == "moni") {
+      this.menu = MENU_MONI;
     } else {
-      this.menu = MENU_ITEM_ADMIN 
+      if (this.user.TEAM != "admin") {
+        this.menu = MENU_ITEM_USER;
+      } else {
+        this.menu = MENU_ITEM_ADMIN;
+      }
     }
   }
-
-  
-  
-  
 }

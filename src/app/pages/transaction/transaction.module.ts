@@ -19,8 +19,10 @@ import { MokaTargetModalComponent } from "./moka-target/modal/moka.target.modal.
 import { RealisasiQualitativeModalComponent } from "./realisasi-qualitative/modal/realisasi.qualitative.modal.component";
 import { IndicatorStrategicModalComponent } from "./indicator-strategic/modal/indicator.strategic.modal.component";
 import { MokaChartComponent } from "./moka-chart/moka.chart.component";
-
-
+import { MyDatePickerModule } from "mydatepicker";
+import { OrderModule } from "ngx-order-pipe";
+import { DetailAtkModalComponent } from "./detail-atk/modal/detail.atk.modal.component";
+import { ReportAtkModalComponent } from "./report-atk/modal/report.atk.modal.component";
 
 @NgModule({
   imports: [
@@ -28,9 +30,15 @@ import { MokaChartComponent } from "./moka-chart/moka.chart.component";
     Ng2SmartTableModule,
     TransactionRouterModule,
     CurrencyMaskModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MyDatePickerModule,
+    OrderModule
   ],
-  declarations: [...routedComponents, ButtonRenderComponent, MokaRealisasiDatePicker],
+  declarations: [
+    ...routedComponents,
+    ButtonRenderComponent,
+    MokaRealisasiDatePicker
+  ],
   entryComponents: [
     MokaTargetModalComponent,
     RealisasiQualitativeModalComponent,
@@ -39,10 +47,10 @@ import { MokaChartComponent } from "./moka-chart/moka.chart.component";
     ButtonRenderComponent,
     MokaRealisasiDatePicker,
     IndicatorStrategicModalComponent,
-    MokaChartComponent
+    DetailAtkModalComponent,
+    MokaChartComponent,
+    ReportAtkModalComponent
   ],
-  providers: [
-    BackendService,
-  ]
+  providers: [BackendService]
 })
-export class TransactionModule { }
+export class TransactionModule {}

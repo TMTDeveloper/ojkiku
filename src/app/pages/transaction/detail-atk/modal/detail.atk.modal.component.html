@@ -1,0 +1,50 @@
+<div class="modal-header">
+  <h4 class="modal-title">Input New Data</h4>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="col-sm-8">
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Jenis Barang
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-6">
+            <select name="risk_level" class="form-control" [(ngModel)]="formData.barang">
+              <option *ngFor="let data of barang" value="{{data.KD_BARANG}}">{{data.KD_BARANG+"
+                "+data.NM_BARANG}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Merk Barang
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-6">
+            <select name="risk_level" class="form-control" [(ngModel)]="formData.merk">
+              <option *ngFor="let data of merk" value="{{data.KD_MERK}}">{{data.KD_MERK+"
+                "+data.NM_MERK}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Quantity Order
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-6">
+            <input class="form-control" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',',precision:'0' }" [(ngModel)]="formData.qty">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-auto">
+      <div class="form-group">
+        <button type="submit" class="btn btn-success" (click)="saveData()">Submit</button>
+        <button type="submit" class="btn btn-danger" (click)="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>

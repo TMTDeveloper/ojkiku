@@ -172,6 +172,51 @@ export const MENU_ITEM_USER: NbMenuItem[] = [
   }
 ];
 
+export const MENU_MONI: NbMenuItem[] = [
+  {
+    title: "Dashboard",
+    icon: "nb-home",
+    link: "/pages/dashboard",
+    home: true
+  },
+  {
+    title: "Master",
+    icon: "nb-locked",
+    children: [
+      {
+        title: "Barang",
+        link: "/pages/master/master-barang"
+      },
+      {
+        title: "Merk",
+        link: "/pages/master/master-merk"
+      }
+    ]
+  },
+  {
+    title: "Transaction MONI",
+    icon: "nb-compose",
+    children: [
+      {
+        title: "Assignment Barang",
+        link: "/pages/transaction/assignment-barang"
+      },
+      {
+        title: "Beli Barang",
+        link: "/pages/transaction/beli-barang"
+      },
+      {
+        title: "Detail Atk",
+        link: "/pages/transaction/detail-atk"
+      },
+      {
+        title: "Report Atk",
+        link: "/pages/transaction/report-atk"
+      }
+    ]
+  }
+];
+
 // {
 //   title: 'FEATURES',
 //   group: true,

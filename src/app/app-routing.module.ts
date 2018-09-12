@@ -10,6 +10,7 @@ import {
 import { NgxLoginComponent } from "./@theme/components/auth/login/login.component";
 
 const routes: Routes = [
+
   {
     path: "pages",
     loadChildren: "app/pages/pages.module#PagesModule"
@@ -44,6 +45,37 @@ const routes: Routes = [
       }
     ]
   },
+  {
+    path: "moni",
+    component: NbAuthComponent,
+    children: [
+      {
+        path: "",
+        component: NgxLoginComponent
+      },
+      {
+        path: "login",
+        component: NgxLoginComponent
+      },
+      {
+        path: "register",
+        component: NbRegisterComponent
+      },
+      {
+        path: "logout",
+        component: NbLogoutComponent
+      },
+      {
+        path: "request-password",
+        component: NbRequestPasswordComponent
+      },
+      {
+        path: "reset-password",
+        component: NbResetPasswordComponent
+      }
+    ]
+  },
+  { path: "moni", redirectTo: "moni" },
   { path: "", redirectTo: "auth", pathMatch: "full" },
   { path: "**", redirectTo: "auth" }
 ];
@@ -53,7 +85,7 @@ const config: ExtraOptions = {
 };
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, config)],
+  imports: [RouterModule.forRoot(routes,config)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
