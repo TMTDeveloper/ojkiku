@@ -16,15 +16,16 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { CoreModule } from "./@core/core.module";
 import { NgxLoginComponent } from "./@theme/components/auth/login/login.component";
+import { NgxLoginMoniComponent } from "./@theme/components/auth/login-moni/login.moni.component";
 import { ThemeModule } from "./@theme/theme.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { NB_AUTH_TOKEN_CLASS, NbAuthJWTToken } from "@nebular/auth";
 import { AuthGuard } from "./security/auth-guard.service";
-import { CookieService } from 'ngx-cookie-service';
+import { CookieService } from "ngx-cookie-service";
 
 @NgModule({
-  declarations: [AppComponent, NgxLoginComponent],
+  declarations: [AppComponent, NgxLoginComponent, NgxLoginMoniComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -36,7 +37,8 @@ import { CookieService } from 'ngx-cookie-service';
     CoreModule.forRoot()
   ],
   bootstrap: [AppComponent],
-  providers: [CookieService,
+  providers: [
+    CookieService,
     {
       provide: APP_BASE_HREF,
       useValue: "/"

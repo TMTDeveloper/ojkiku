@@ -8,7 +8,7 @@ import {
   NbResetPasswordComponent
 } from "@nebular/auth";
 import { NgxLoginComponent } from "./@theme/components/auth/login/login.component";
-
+import { NgxLoginMoniComponent } from "./@theme/components/auth/login-moni/login.moni.component";
 const routes: Routes = [
 
   {
@@ -51,32 +51,14 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        component: NgxLoginComponent
+        component: NgxLoginMoniComponent
       },
       {
         path: "login",
-        component: NgxLoginComponent
+        component: NgxLoginMoniComponent
       },
-      {
-        path: "register",
-        component: NbRegisterComponent
-      },
-      {
-        path: "logout",
-        component: NbLogoutComponent
-      },
-      {
-        path: "request-password",
-        component: NbRequestPasswordComponent
-      },
-      {
-        path: "reset-password",
-        component: NbResetPasswordComponent
-      }
     ]
   },
-  { path: "moni", redirectTo: "moni" },
-  { path: "", redirectTo: "auth", pathMatch: "full" },
   { path: "**", redirectTo: "auth" }
 ];
 
