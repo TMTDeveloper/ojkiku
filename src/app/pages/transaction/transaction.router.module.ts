@@ -21,6 +21,8 @@ import { DetailAtkComponent } from "./detail-atk/detail.atk.component";
 import { DetailAtkModalComponent } from "./detail-atk/modal/detail.atk.modal.component";
 import { ReportAtkComponent } from "./report-atk/report.atk.component";
 import { ReportAtkModalComponent } from "./report-atk/modal/report.atk.modal.component";
+import { ReportAssignmentComponent } from "./report-assignment/report.assignment.component";
+import { ReportBeliComponent } from "./report-beli/report.beli.component";
 const routes: Routes = [
   {
     path: "",
@@ -77,6 +79,14 @@ const routes: Routes = [
       {
         path: "report-atk",
         component: ReportAtkComponent
+      },
+      {
+        path: "report-assignment",
+        component: ReportAssignmentComponent
+      },
+      {
+        path: "report-beli",
+        component: ReportBeliComponent
       }
     ]
   }
@@ -109,5 +119,7 @@ export const routedComponents = [
   ReportAtkComponent,
   DetailAtkModalComponent,
   RealisasiStrategicComponent,
-  MokaChartComponent
+  MokaChartComponent,
+  ReportAssignmentComponent,
+  ReportBeliComponent
 ];

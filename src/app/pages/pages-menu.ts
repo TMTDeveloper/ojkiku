@@ -214,6 +214,20 @@ export const MENU_MONI: NbMenuItem[] = [
         link: "/pages/transaction/report-atk"
       }
     ]
+  },
+  {
+    title: "Report MONI",
+    icon: "nb-compose",
+    children: [
+      {
+        title: "Report Assignment",
+        link: "/pages/transaction/report-assignment"
+      },
+      {
+        title: "Report Beli",
+        link: "/pages/transaction/report-beli"
+      }
+    ]
   }
 ];
 

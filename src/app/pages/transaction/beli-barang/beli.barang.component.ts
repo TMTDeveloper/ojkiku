@@ -157,7 +157,7 @@ export class BeliBarangComponent {
       STATUS: this.formData.status.toUpperCase(),
       TANGGAL_BELI: this.dateAssignment.jsdate,
       HARGA_UNIT: this.formData.harga,
-      USER_TRANSACTION: this.user.USER_NAME,
+      USER_TRANSACTION: this.user.ID_USER,
       DATE_TIME_TRANSACTION: moment().format()
     };
     console.log(this.dateAssignment);

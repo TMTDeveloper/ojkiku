@@ -1,0 +1,99 @@
+<nb-card>
+  <nb-card-header>Report Beli Barang</nb-card-header>
+  <nb-card-body>
+    <!-- <div class="row">
+      <div class="col-sm-8">
+
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Tahun
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-2">
+            <input class="form-control" [(ngModel)]="formData.yearPeriode">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Tahun
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-2">
+            <input class="form-control" [(ngModel)]="formData.yearPeriode">
+          </div>
+        </div>
+      </div>
+
+    </div> -->
+
+    <!-- <div class="form-group row">
+      <div class="col-sm-auto">
+        <button type=" button " class="btn btn-success" [disabled]="!formData.ikuSelected||!formData.yearPeriode||!formData.periodeSelected"
+          (click)="generateDetail()">Get Data</button>
+      </div>
+      <div class="col-sm-auto">
+        <button type=" button " class="btn btn-success" (click)="showModal()">Add Data</button>
+    </div>
+    
+    </div> -->
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Tanggal Pesan
+        <font color="red">*</font>
+      </label>
+      <div class="col-sm-6">
+        <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="dateAssignment" required (inputFieldChanged)="onInputFieldChanged($event)"></my-date-picker>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Nama Pegawai
+        <font color="red">*</font>
+      </label>
+      <div class="col-sm-6">
+        <select name="risk_level" class="form-control" [(ngModel)]="formData.team" (change)="refreshData()">
+          <option *ngFor="let data of team | orderBy " value="{{data}}">{{data}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="print_report" id="print_tab1">
+      <font size="4">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th width="100px" style="text-align:center">Kode Beli Barang</th>
+              <th width="100px" style="text-align:center">Kode Barang</th>
+              <th width="200px" style="text-align:center">Nama Barang</th>
+              <th width="200px" style="text-align:center">Kode Merk</th>
+              <th width="100px" style="text-align:center">Nama Merk</th>
+              <th width="100px" style="text-align:center">Serial Number</th>
+              <th width="100px" style="text-align:center">Quantity</th>
+              <th width="100px" style="text-align:center">Status</th>
+              <th width="200px" style="text-align:center">Harga Unit</th>
+              <th width="150px" style="text-align:center">Tanggal Beli</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of dataReport">
+              <td>{{ item.KD_BELI }}</td>
+              <td>{{ item.KD_BARANG }}</td>
+              <td>{{ item.NM_BARANG }}</td>
+              <td>{{ item.KD_MERK}}</td>
+              <td>{{ item.NM_MERK}}</td>
+              <td>{{ item.SERIAL_NUMBER}}</td>
+              <td>{{ item.QTY_BELI}}</td>
+              <td>{{ item.STATUS}}</td>
+              <td>{{ item.HARGA_UNIT}}</td>
+              <td>{{ item.TANGGAL_BELI}}</td>
+            </tr>
+          </tbody>
+
+        </table>
+      </font>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-auto">
+        <button type=" button " class="btn btn-success " (click)="printPdf('print_tab1')" >Print</button>
+      </div>
+    </div>
+
+  </nb-card-body>
+</nb-card>
