@@ -10,7 +10,7 @@ import { MasterBarangComponent } from "./master-barang/master.barang.component";
 import { MasterMerkComponent } from "./master-merk/master.merk.component";
 import { IkuComponent } from "./iku/iku.component";
 import { DocumentComponent } from "./document/document.component";
-
+import { MasterLogMoniComponent } from "./master-log-moni/master.log.moni.component";
 const routes: Routes = [
   {
     path: "",
@@ -47,6 +47,10 @@ const routes: Routes = [
       {
         path: "master-merk",
         component: MasterMerkComponent
+      },
+      {
+        path: "master-log-moni",
+        component: MasterLogMoniComponent
       }
     ]
   }
@@ -67,5 +71,6 @@ export const routedComponents = [
   MasterBarangComponent,
   MasterMerkComponent,
   IkuComponent,
-  DocumentComponent
+  DocumentComponent,
+  MasterLogMoniComponent
 ];

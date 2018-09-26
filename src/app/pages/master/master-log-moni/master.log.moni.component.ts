@@ -9,9 +9,9 @@ import { isNullOrUndefined } from "util";
 
 @Component({
   selector: "ngx-master-user-log",
-  templateUrl: "./master.user.log.component.html"
+  templateUrl: "./master.log.moni.component.html"
 })
-export class MasterUserLogComponent {
+export class MasterLogMoniComponent {
   @ViewChild("myForm")
   private myForm: NgForm;
 
@@ -85,7 +85,7 @@ export class MasterUserLogComponent {
       .then(response => {
         if (response != null) {
           let arr = response.filter(item => {
-            return item.COMPONENT == "MOKA";
+            return item.COMPONENT == "MONI";
           });
           console.log(response);
           if (arr != null) {

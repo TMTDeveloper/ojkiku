@@ -10,10 +10,10 @@ import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
 import { IMyDpOptions } from "mydatepicker";
 
 @Component({
-  selector: "ngx-indicator-assignment",
-  templateUrl: "./assignment.barang.component.html"
+  selector: "ngx-indicator-pinjam",
+  templateUrl: "./assignment.pinjam.component.html"
 })
-export class AssignmentBarangComponent {
+export class AssignmentPinjamComponent {
   @ViewChild("myForm")
   private myForm: NgForm;
 
@@ -145,7 +145,6 @@ export class AssignmentBarangComponent {
       }
     });
   }
-
   updateData() {
     this.service
       .getreq("t_assignments")
@@ -170,7 +169,7 @@ export class AssignmentBarangComponent {
           DATE_ASSIGN: moment().format(),
           USER_TRANSACTION: this.user.ID_USER,
           DATE_TIME_TRANSACTION: moment().format(),
-          TYPE_ASSIGN: "ASSIGN"
+          TYPE_ASSIGN: "PINJAM"
         };
         console.log(this.dateAssignment);
         console.log(data);
@@ -186,7 +185,6 @@ export class AssignmentBarangComponent {
         );
       });
   }
-
   generateCode() {
     let counter = this.assignments.length + 1;
     if (counter < 10) {

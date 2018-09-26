@@ -8,11 +8,12 @@ import { CanActivate, Router } from "@angular/router";
 import { NB_AUTH_OPTIONS, NbAuthSocialLink } from "@nebular/auth/auth.options";
 import { getDeepFromObject } from "@nebular/auth/helpers";
 import { NbAuthResult } from "@nebular/auth/services/auth-result";
-import { NbAuthService } from "@nebular/auth/services/auth.service";
+import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
 import { tap } from "rxjs/operators/tap";
 import { UserService } from "../../../../@core/data/users.service";
 import { CookieService } from "ngx-cookie-service";
-
+import { BackendService } from "../../../../@core/data/backend.service";
+import * as moment from "moment";
 @Component({
   selector: "ngx-login",
   template: `
@@ -95,13 +96,14 @@ export class NgxLoginMoniComponent {
   user: any = {};
   submitted: boolean = false;
   socialLinks: NbAuthSocialLink[] = [];
-
+  userget: any = {};
   constructor(
     protected service: NbAuthService,
     @Inject(NB_AUTH_OPTIONS) protected config = {},
     protected router: Router,
     public backend: UserService,
-    private cookie: CookieService
+    private cookie: CookieService,
+    public logservice: BackendService
   ) {
     this.redirectDelay = this.getConfigValue("forms.login.redirectDelay");
     this.showMessages = this.getConfigValue("forms.login.showMessages");
@@ -119,6 +121,7 @@ export class NgxLoginMoniComponent {
         this.submitted = false;
         if (result.isSuccess()) {
           this.messages = result.getMessages();
+          console.log(result);
         } else {
           this.errors = result.getErrors();
         }
@@ -129,10 +132,31 @@ export class NgxLoginMoniComponent {
           if (this.router.url == "/moni") {
             this.cookie.deleteAll();
             this.cookie.set("Type", "moni");
-          }else{
+          } else {
             this.cookie.deleteAll();
             this.cookie.set("Type", "mona");
           }
+          this.service.onTokenChange().subscribe((token: NbAuthJWTToken) => {
+            if (token.isValid()) {
+              this.userget = token.getPayload(); // here we receive a payload from the token and assigne it to our `user` variable
+              console.log(this.userget);
+              let data = {
+                USERNAME: this.userget.USER_NAME,
+                DATETIME_LOGIN: moment().format(),
+                COMPONENT: this.cookie.get("Type") == "moni" ? "MONI" : "MOKA",
+                USER_ID: this.userget.ID_USER
+              };
+              console.log(data);
+              this.logservice.postreq("LOGIN_LOGS", data).subscribe(
+                response => {
+                  console.log("masuksini");
+                },
+                error => {
+                  console.log(error);
+                }
+              );
+            }
+          });
           setTimeout(() => {
             return this.router.navigateByUrl(redirect);
           }, this.redirectDelay);

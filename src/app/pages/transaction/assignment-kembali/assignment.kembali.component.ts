@@ -10,10 +10,10 @@ import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
 import { IMyDpOptions } from "mydatepicker";
 
 @Component({
-  selector: "ngx-indicator-assignment",
-  templateUrl: "./assignment.barang.component.html"
+  selector: "ngx-indicator-kembali",
+  templateUrl: "./assignment.kembali.component.html"
 })
-export class AssignmentBarangComponent {
+export class AssignmentKembaliComponent {
   @ViewChild("myForm")
   private myForm: NgForm;
 
@@ -170,7 +170,7 @@ export class AssignmentBarangComponent {
           DATE_ASSIGN: moment().format(),
           USER_TRANSACTION: this.user.ID_USER,
           DATE_TIME_TRANSACTION: moment().format(),
-          TYPE_ASSIGN: "ASSIGN"
+          TYPE_ASSIGN: "KEMBALI"
         };
         console.log(this.dateAssignment);
         console.log(data);

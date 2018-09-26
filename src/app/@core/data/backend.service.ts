@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Http, Headers, RequestOptions } from "@angular/http";
-// import 'rxjs/add/operator/map';
-// import { Observable } from 'rxjs/Rx';
+import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Rx';
 @Injectable()
 export class BackendService {
   // baseurlxpay:string='http://202.158.20.141:5001/xpay-service/api/'
 
-  baseurl: string = "http://localhost:8888/api/";
+  baseurl: string = "http://10.201.6.68:8888/api/";
   moni: boolean = false;
   constructor(public http: Http) {}
 

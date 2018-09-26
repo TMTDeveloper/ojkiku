@@ -5,6 +5,8 @@ import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
 import { ActivatedRoute } from "@angular/router";
 import { UserService } from "../@core/data/users.service";
 import { CookieService } from "ngx-cookie-service";
+import { BackendService } from "../@core/data/backend.service";
+import * as moment from "moment";
 @Component({
   selector: "ngx-pages",
   template: `
@@ -22,7 +24,8 @@ export class PagesComponent implements OnInit {
     private authService: NbAuthService,
     private activeRoute: ActivatedRoute,
     public backend: UserService,
-    private cookie: CookieService
+    private cookie: CookieService,
+    public service: BackendService
   ) {
     this.getUserInfo();
   }
@@ -36,6 +39,16 @@ export class PagesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // let data = {
+    //   USERNAME: this.user.USER_NAME,
+    //   DATETIME_LOGIN: moment().format(),
+    //   COMPONENT: this.cookie.get("Type") == "moni" ? "MONI" : "MOKA"
+    // };
+
+    // this.service.postreq("LOGIN_LOGS", data).subscribe(response => {
+    //   console.log(response);
+    // });
+
     console.log("ini menu");
     console.log(this.user);
     if (this.cookie.get("Type") == "moni") {

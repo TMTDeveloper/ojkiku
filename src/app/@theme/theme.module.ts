@@ -25,7 +25,7 @@ import {
   HeaderComponent,
   SearchInputComponent,
   ThemeSettingsComponent,
-  ThemeSwitcherComponent
+  ThemeSwitcherComponent,
 } from "./components";
 import { CapitalizePipe, PluralPipe, RoundPipe, TimingPipe } from "./pipes";
 import {
@@ -37,7 +37,11 @@ import {
 import { DEFAULT_THEME } from "./styles/theme.default";
 import { COSMIC_THEME } from "./styles/theme.cosmic";
 
-const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
+const BASE_MODULES = [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule
+];
 
 const NB_MODULES = [
   NbCardModule,
@@ -65,7 +69,8 @@ const COMPONENTS = [
   OneColumnLayoutComponent,
   SampleLayoutComponent,
   ThreeColumnsLayoutComponent,
-  TwoColumnsLayoutComponent
+  TwoColumnsLayoutComponent,
+  
 ];
 
 const PIPES = [CapitalizePipe, PluralPipe, RoundPipe, TimingPipe];

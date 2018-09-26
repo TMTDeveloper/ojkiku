@@ -23,6 +23,10 @@ import { ReportAtkComponent } from "./report-atk/report.atk.component";
 import { ReportAtkModalComponent } from "./report-atk/modal/report.atk.modal.component";
 import { ReportAssignmentComponent } from "./report-assignment/report.assignment.component";
 import { ReportBeliComponent } from "./report-beli/report.beli.component";
+import { AssignmentPinjamComponent } from "./assignment-pinjam/assignment.pinjam.component";
+import { AssignmentKembaliComponent } from "./assignment-kembali/assignment.kembali.component";
+import { ReportPinjamComponent } from "./report-pinjam/report.pinjam.component";
+import { ReportKembaliComponent } from "./report-kembali/report.kembali.component";
 const routes: Routes = [
   {
     path: "",
@@ -87,7 +91,23 @@ const routes: Routes = [
       {
         path: "report-beli",
         component: ReportBeliComponent
-      }
+      },
+      {
+        path: "assignment-pinjam",
+        component: AssignmentPinjamComponent
+      },
+      {
+        path: "assignment-kembali",
+        component: AssignmentKembaliComponent
+      },
+      {
+        path: "report-pinjam",
+        component: ReportPinjamComponent
+      },
+      {
+        path: "report-kembali",
+        component: ReportKembaliComponent
+      },
     ]
   }
 ];
@@ -121,5 +141,9 @@ export const routedComponents = [
   RealisasiStrategicComponent,
   MokaChartComponent,
   ReportAssignmentComponent,
-  ReportBeliComponent
+  ReportBeliComponent,
+  AssignmentPinjamComponent,
+  AssignmentKembaliComponent,
+  ReportKembaliComponent,
+  ReportPinjamComponent
 ];

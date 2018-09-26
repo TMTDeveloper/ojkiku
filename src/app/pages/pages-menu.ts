@@ -190,6 +190,10 @@ export const MENU_MONI: NbMenuItem[] = [
       {
         title: "Merk",
         link: "/pages/master/master-merk"
+      },
+      {
+        title: "Log Moni",
+        link: "/pages/master/master-log-moni"
       }
     ]
   },
@@ -212,6 +216,14 @@ export const MENU_MONI: NbMenuItem[] = [
       {
         title: "Report Atk",
         link: "/pages/transaction/report-atk"
+      },
+      {
+        title: "Peminjaman Barang",
+        link: "/pages/transaction/assignment-pinjam"
+      },
+      {
+        title: "Pengembalian Barang",
+        link: "/pages/transaction/assignment-kembali"
       }
     ]
   },
@@ -222,6 +234,14 @@ export const MENU_MONI: NbMenuItem[] = [
       {
         title: "Report Assignment",
         link: "/pages/transaction/report-assignment"
+      },
+      {
+        title: "Report Pengembalian",
+        link: "/pages/transaction/report-kembali"
+      },
+      {
+        title: "Report Peminjaman",
+        link: "/pages/transaction/report-pinjam"
       },
       {
         title: "Report Beli",

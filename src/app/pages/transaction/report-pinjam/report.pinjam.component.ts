@@ -12,9 +12,9 @@ import * as jsPDF from "jspdf";
 import * as html2canvas from "html2canvas";
 @Component({
   selector: "ngx-report-assignment",
-  templateUrl: "./report.assignment.component.html"
+  templateUrl: "./report.pinjam.component.html"
 })
-export class ReportAssignmentComponent {
+export class ReportPinjamComponent {
   @ViewChild("myForm")
   private myForm: NgForm;
   public myDatePickerOptions: IMyDpOptions = {
@@ -173,7 +173,7 @@ export class ReportAssignmentComponent {
             );
           });
           let arr = response.filter(item => {
-            return item.TYPE_ASSIGN == "ASSIGN";
+            return item.TYPE_ASSIGN == "PINJAM";
           });
           if (arr != null) {
             this.dataFull = arr;

@@ -13,7 +13,8 @@ import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-
+import { HttpModule } from "@angular/http";
+import { BackendService } from "./@core/data/backend.service";
 import { CoreModule } from "./@core/core.module";
 import { NgxLoginComponent } from "./@theme/components/auth/login/login.component";
 import { NgxLoginMoniComponent } from "./@theme/components/auth/login-moni/login.moni.component";
@@ -29,12 +30,11 @@ import { CookieService } from "ngx-cookie-service";
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    HttpClientModule,
     AppRoutingModule,
-
     NgbModule.forRoot(),
     ThemeModule.forRoot(),
-    CoreModule.forRoot()
+    CoreModule.forRoot(),
+    HttpModule
   ],
   bootstrap: [AppComponent],
   providers: [
@@ -44,7 +44,8 @@ import { CookieService } from "ngx-cookie-service";
       useValue: "/"
     },
     { provide: NB_AUTH_TOKEN_CLASS, useValue: NbAuthJWTToken },
-    AuthGuard
+    AuthGuard,
+    BackendService
   ]
 })
 export class AppModule {}
