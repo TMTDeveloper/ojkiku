@@ -3,13 +3,13 @@ import * as moment from "moment";
 import { LocalDataSource } from "ng2-smart-table";
 import { BackendService } from "../../../@core/data/backend.service";
 import { ToastrService } from "ngx-toastr";
+import { isNull } from "util";
 
 @Component({
   selector: "ngx-report-moka",
   templateUrl: "./report.moka.component.html"
 })
 export class ReportMokaComponent {
-
   source: LocalDataSource = new LocalDataSource();
 
   tabledata: any[] = [];
@@ -82,36 +82,36 @@ export class ReportMokaComponent {
         type: "date",
         filter: false,
         editable: false,
-        width: "5%",
+        width: "5%"
       },
       REALIZATION_DATE: {
         title: "Realization Date",
         type: "string",
         filter: false,
         editable: true,
-        width: "15%",
+        width: "15%"
       },
       KETERANGAN: {
         title: "Keterangan",
         type: "string",
         filter: false,
         editable: true,
-        width: "20%",
+        width: "20%"
       },
       UPDATEBY_USER: {
         title: "Updated By",
         type: "string",
         filter: false,
         editable: true,
-        width: "10%",
+        width: "10%"
       },
       USER_REALIZATION: {
         title: "Updated",
         type: "string",
         filter: false,
         editable: false,
-        width: "10%",
-      },
+        width: "10%"
+      }
     }
   };
 
@@ -125,10 +125,7 @@ export class ReportMokaComponent {
     monaRealisasiData: []
   };
 
-  constructor(
-    public service: BackendService,
-    private toastr: ToastrService
-  ) {
+  constructor(public service: BackendService, private toastr: ToastrService) {
     this.loadData();
   }
 
@@ -141,35 +138,36 @@ export class ReportMokaComponent {
     this.service.getreq("mst_documents").subscribe(response => {
       if (response != null) {
         let documentFilter = response.filter(item => {
-          return (
-            item.FLAG == 'Y'
-          )
+          return item.FLAG == "Y";
         });
         if (documentFilter[0] != null) {
-          this.formData.documentData = documentFilter
+          this.formData.documentData = documentFilter;
         }
       }
     });
   }
 
-
-
-
   async getData() {
     let monaTargetData: any[];
     let monaRealisasi: any[];
 
-    await this.service.getreq("trn_monas").toPromise().then(resp => {
-      if (resp != null) {
-        monaTargetData = resp
-      }
-    });
+    await this.service
+      .getreq("trn_monas")
+      .toPromise()
+      .then(resp => {
+        if (resp != null) {
+          monaTargetData = resp;
+        }
+      });
 
-    await this.service.getreq("trn_mona_realizations").toPromise().then(res => {
-      if (res != null) {
-        monaRealisasi = res;
-      }
-    });
+    await this.service
+      .getreq("trn_mona_realizations")
+      .toPromise()
+      .then(res => {
+        if (res != null) {
+          monaRealisasi = res;
+        }
+      });
 
     let arrMonaTargetData = await monaTargetData.filter(items => {
       return (
@@ -180,7 +178,6 @@ export class ReportMokaComponent {
     });
 
     if (arrMonaTargetData[0] != null) {
-
       let monaTargetdetail = [];
 
       await arrMonaTargetData.forEach((element, index) => {
@@ -207,13 +204,11 @@ export class ReportMokaComponent {
         detail.TARGET_DATE = moment(element.TARGET_DATE).format("DD/MM/YYYY");
 
         let arrBank = this.formData.bankData.filter(item => {
-          return (
-            item.ID_BANK == element.ID_BANK
-          );
+          return item.ID_BANK == element.ID_BANK;
         });
 
         if (arrBank[0] != null) {
-          detail.ID_BANK = arrBank[0].DESCRIPTION
+          detail.ID_BANK = arrBank[0].DESCRIPTION;
         }
 
         let arrs = monaRealisasi.filter(items => {
@@ -224,41 +219,54 @@ export class ReportMokaComponent {
           );
         });
 
+        if (detail.REALIZATION_DATE === "") {
+          detail.WARNA = "1";
+        }
         if (arrs[0] != null) {
           if (arrs[0].REALIZATION_DATE != null) {
-            detail.REALIZATION_DATE = moment(arrs[0].REALIZATION_DATE).format("DD/MM/YYYY");
-            detail.UPDATEBY_USER = arrs[0].UPDATEBY_USER
-          } 
-
-    
-          if (moment(detail.REALIZATION_DATE, "DD/MM/YY").isSame(moment(detail.TARGET_DATE, "DD/MM/YY")) == true) {
-            detail.WARNA = "0"
-          } else if (moment(detail.REALIZATION_DATE, "DD/MM/YY").isSameOrBefore(moment(detail.TARGET_DATE, "DD/MM/YY").add(3, 'd')) == true) {
-            detail.WARNA = "3"
-          } else if (moment(detail.REALIZATION_DATE, "DD/MM/YY").isSameOrAfter(moment(detail.TARGET_DATE, "DD/MM/YY").add(5, 'd')) == true) {
-            detail.WARNA = "5"
-          } 
+            detail.REALIZATION_DATE = moment(arrs[0].REALIZATION_DATE).format(
+              "DD/MM/YYYY"
+            );
+            detail.UPDATEBY_USER = arrs[0].UPDATEBY_USER;
+          }
+       
+          if (
+            moment(detail.REALIZATION_DATE, "DD/MM/YYYY").isSame(
+              moment(detail.TARGET_DATE, "DD/MM/YYYY")
+            ) == true
+          ) {
+            detail.WARNA = "3"; //warning
+          } else if (
+            moment(detail.REALIZATION_DATE, "DD/MM/YYYY").isBefore(
+              moment(detail.TARGET_DATE, "DD/MM/YYYY")
+            ) == true
+          ) {
+            detail.WARNA = "0"; //success
+          } else if (
+            moment(detail.REALIZATION_DATE, "DD/MM/YYYY").isAfter(
+              moment(detail.TARGET_DATE, "DD/MM/YYYY")
+            ) == true
+          ) {
+            detail.WARNA = "5"; //merah
+          }
 
           detail.KETERANGAN = arrs[0].KETERANGAN;
           detail.USER_REALIZATION = arrs[0].USER_REALIZATION;
-          console.log(detail)
+          console.log(detail);
         }
 
         monaTargetdetail.push(detail);
       });
       this.formData.monaRealisasiData = monaTargetdetail;
       this.tabledata = monaTargetdetail;
-
-
     } else {
-      this.toastr.error("Data Not Found!")
-      this.tabledata = []
+      this.toastr.error("Data Not Found!");
+      this.tabledata = [];
     }
   }
 
-
   updateData() {
-    this.tabledata.forEach((element) => {
+    this.tabledata.forEach(element => {
       let header = {
         ID_BANK: element.KODE_BANK,
         YEAR: element.YEAR,
@@ -269,12 +277,14 @@ export class ReportMokaComponent {
         USER_UPDATED: "admin",
         DATE_UPDATED: moment().format(),
         UPDATEBY_USER: element.UPDATEBY_USER
-      }
+      };
 
       if (element.REALIZATION_DATE == "") {
-        header.REALIZATION_DATE = null
+        header.REALIZATION_DATE = null;
       } else {
-        header.REALIZATION_DATE = moment(this.dateReformat(element.REALIZATION_DATE)).format()
+        header.REALIZATION_DATE = moment(
+          this.dateReformat(element.REALIZATION_DATE)
+        ).format();
       }
       this.service.postreq("trn_mona_realizations/crud", header).subscribe(
         response => {
@@ -282,16 +292,14 @@ export class ReportMokaComponent {
           this.toastr.success("Data Saved!");
         },
         error => {
-          this.toastr.error("Error, Cek kembali data!")
+          this.toastr.error("Error, Cek kembali data!");
           console.log(error);
         }
-      )
-    })
-
+      );
+    });
   }
 
   editConfirm(event) {
-
     console.log(event.newData);
     event.confirm.resolve(event.newData);
   }
@@ -315,9 +323,9 @@ export class ReportMokaComponent {
 
   dateReformat(value) {
     let str = value.split("/");
-    return str[2] + "-" + str[1] + "-" + str[0]
+    return str[2] + "-" + str[1] + "-" + str[0];
   }
-
-
-
+  stringify(table) {
+    return JSON.stringify(table);
+  }
 }

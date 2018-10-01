@@ -148,32 +148,40 @@ export class BeliBarangComponent {
   }
 
   updateData() {
-    let data = {
-      KD_BELI: this.generateCode(),
-      KD_BARANG: this.formData.barang,
-      KD_MERK: this.formData.merk,
-      SERIAL_NUMBER: this.formData.serialNumber,
-      QTY_BELI: this.formData.qty,
-      STATUS: this.formData.status.toUpperCase(),
-      TANGGAL_BELI: this.dateAssignment.jsdate,
-      HARGA_UNIT: this.formData.harga,
-      USER_TRANSACTION: this.user.ID_USER,
-      DATE_TIME_TRANSACTION: moment().format()
-    };
-    console.log(this.dateAssignment);
-    console.log(data);
-    console.log(this.assignments);
-    this.service.postreq("t_beli_barangs", data).subscribe(
-      response => {
-        this.toastr.success("Data Saved!");
-      },
-      error => {
-        this.toastr.error("Data Error!");
-        console.log(error);
-      }
-    );
-
-
+    this.service
+      .getreq("t_beli_barangs")
+      .toPromise()
+      .then(response => {
+        if (response != null) {
+          this.assignments = response;
+        }
+      })
+      .then(() => {
+        let data = {
+          KD_BELI: this.generateCode(),
+          KD_BARANG: this.formData.barang,
+          KD_MERK: this.formData.merk,
+          SERIAL_NUMBER: this.formData.serialNumber,
+          QTY_BELI: this.formData.qty,
+          STATUS: this.formData.status.toUpperCase(),
+          TANGGAL_BELI: this.dateAssignment.jsdate,
+          HARGA_UNIT: this.formData.harga,
+          USER_TRANSACTION: this.user.ID_USER,
+          DATE_TIME_TRANSACTION: moment().format()
+        };
+        console.log(this.dateAssignment);
+        console.log(data);
+        console.log(this.assignments);
+        this.service.postreq("t_beli_barangs", data).subscribe(
+          response => {
+            this.toastr.success("Data Saved!");
+          },
+          error => {
+            this.toastr.error("Data Error!");
+            console.log(error);
+          }
+        );
+      });
   }
 
   generateCode() {
@@ -186,6 +194,4 @@ export class BeliBarangComponent {
       return "KD" + counter.toString();
     }
   }
-
-
 }

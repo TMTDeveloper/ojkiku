@@ -156,7 +156,7 @@ export class NgxLoginMoniComponent {
                 }
               );
             }
-          });
+          }).unsubscribe();;
           setTimeout(() => {
             return this.router.navigateByUrl(redirect);
           }, this.redirectDelay);

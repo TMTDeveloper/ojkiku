@@ -135,27 +135,31 @@ export class NgxLoginComponent {
             this.cookie.deleteAll();
             this.cookie.set("Type", "mona");
           }
-          this.service.onTokenChange().subscribe((token: NbAuthJWTToken) => {
-            if (token.isValid()) {
-              this.userget = token.getPayload(); // here we receive a payload from the token and assigne it to our `user` variable
-              console.log("herewego");
-              let data = {
-                USERNAME: this.userget.USER_NAME,
-                DATETIME_LOGIN: moment().format(),
-                COMPONENT: this.cookie.get("Type") == "moni" ? "MONI" : "MOKA",
-                USER_ID: this.userget.ID_USER
-              };
-              console.log(data);
-              this.logservice.postreq("LOGIN_LOGS", data).subscribe(
-                response => {
-                  console.log("masuksini");
-                },
-                error => {
-                  console.log(error);
-                }
-              );
-            }
-          });
+          this.service
+            .onTokenChange()
+            .subscribe((token: NbAuthJWTToken) => {
+              if (token.isValid()) {
+                this.userget = token.getPayload(); // here we receive a payload from the token and assigne it to our `user` variable
+                console.log("herewego");
+                let data = {
+                  USERNAME: this.userget.USER_NAME,
+                  DATETIME_LOGIN: moment().format(),
+                  COMPONENT:
+                    this.cookie.get("Type") == "moni" ? "MONI" : "MOKA",
+                  USER_ID: this.userget.ID_USER
+                };
+                console.log(data);
+                this.logservice.postreq("LOGIN_LOGS", data).subscribe(
+                  response => {
+                    console.log("masuksini");
+                  },
+                  error => {
+                    console.log(error);
+                  }
+                );
+              }
+            })
+            .unsubscribe();
           setTimeout(() => {
             return this.router.navigateByUrl(redirect);
           }, this.redirectDelay);

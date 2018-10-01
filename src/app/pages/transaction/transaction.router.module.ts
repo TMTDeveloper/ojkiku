@@ -27,6 +27,7 @@ import { AssignmentPinjamComponent } from "./assignment-pinjam/assignment.pinjam
 import { AssignmentKembaliComponent } from "./assignment-kembali/assignment.kembali.component";
 import { ReportPinjamComponent } from "./report-pinjam/report.pinjam.component";
 import { ReportKembaliComponent } from "./report-kembali/report.kembali.component";
+import { ReportInvComponent } from "./report-inv/report.inv.component";
 const routes: Routes = [
   {
     path: "",
@@ -108,6 +109,10 @@ const routes: Routes = [
         path: "report-kembali",
         component: ReportKembaliComponent
       },
+      {
+        path: "report-inv",
+        component: ReportInvComponent
+      }
     ]
   }
 ];
@@ -145,5 +150,6 @@ export const routedComponents = [
   AssignmentPinjamComponent,
   AssignmentKembaliComponent,
   ReportKembaliComponent,
-  ReportPinjamComponent
+  ReportPinjamComponent,
+  ReportInvComponent
 ];

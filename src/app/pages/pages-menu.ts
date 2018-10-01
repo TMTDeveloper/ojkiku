@@ -92,10 +92,6 @@ export const MENU_ITEM_ADMIN: NbMenuItem[] = [
       {
         title: "Realisasi MOKA",
         link: "/pages/transaction/moka-realisasi"
-      },
-      {
-        title: "Chart MOKA",
-        link: "/pages/transaction/moka-chart"
       }
     ]
   }
@@ -163,10 +159,6 @@ export const MENU_ITEM_USER: NbMenuItem[] = [
       {
         title: "Realisasi MOKA",
         link: "/pages/transaction/moka-realisasi"
-      },
-      {
-        title: "Chart MOKA",
-        link: "/pages/transaction/moka-chart"
       }
     ]
   }
@@ -210,12 +202,8 @@ export const MENU_MONI: NbMenuItem[] = [
         link: "/pages/transaction/beli-barang"
       },
       {
-        title: "Detail Atk",
+        title: "Order Atk",
         link: "/pages/transaction/detail-atk"
-      },
-      {
-        title: "Report Atk",
-        link: "/pages/transaction/report-atk"
       },
       {
         title: "Peminjaman Barang",
@@ -246,6 +234,14 @@ export const MENU_MONI: NbMenuItem[] = [
       {
         title: "Report Beli",
         link: "/pages/transaction/report-beli"
+      },
+      {
+        title: "Report Atk",
+        link: "/pages/transaction/report-atk"
+      },
+      {
+        title: "Report Inventory",
+        link: "/pages/transaction/report-inv"
       }
     ]
   }

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Rx';
 export class BackendService {
   // baseurlxpay:string='http://202.158.20.141:5001/xpay-service/api/'
 
-  baseurl: string = "http://10.201.6.68:8888/api/";
+  baseurl: string = "http://10.201.6.68:8889/api/";
   moni: boolean = false;
   constructor(public http: Http) {}
 

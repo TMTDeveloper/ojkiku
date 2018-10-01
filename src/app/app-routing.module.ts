@@ -16,16 +16,16 @@ const routes: Routes = [
     loadChildren: "app/pages/pages.module#PagesModule"
   },
   {
-    path: "auth",
+    path: "moni",
     component: NbAuthComponent,
     children: [
       {
         path: "",
-        component: NgxLoginComponent
+        component: NgxLoginMoniComponent
       },
       {
         path: "login",
-        component: NgxLoginComponent
+        component: NgxLoginMoniComponent
       },
       {
         path: "register",
@@ -45,21 +45,21 @@ const routes: Routes = [
       }
     ]
   },
-  {
-    path: "moni",
-    component: NbAuthComponent,
-    children: [
-      {
-        path: "",
-        component: NgxLoginMoniComponent
-      },
-      {
-        path: "login",
-        component: NgxLoginMoniComponent
-      },
-    ]
-  },
-  { path: "**", redirectTo: "auth" }
+  // {
+  //   path: "moni",
+  //   component: NbAuthComponent,
+  //   children: [
+  //     {
+  //       path: "",
+  //       component: NgxLoginMoniComponent
+  //     },
+  //     {
+  //       path: "login",
+  //       component: NgxLoginMoniComponent
+  //     },
+  //   ]
+  // },
+  { path: "**", redirectTo: "moni" }
 ];
 
 const config: ExtraOptions = {
