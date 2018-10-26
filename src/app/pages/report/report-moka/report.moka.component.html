@@ -63,7 +63,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of tabledata" [ngClass]="{'table-success': item.WARNA == 0, 'table-warning': item.WARNA == 3, 'table-danger': item.WARNA > 3,'table-info':item.WARNA==1}">
+          <tr *ngFor="let item of tabledata" [ngClass]="{'table-success': item.WARNA == 3, 'table-warning': item.WARNA == 0, 'table-danger': item.WARNA > 3,'table-info':item.WARNA==1}">
             <td>{{ item.TIPE_DOKUMEN }}</td>
             <td>{{ item.YEAR }}</td>
             <td>{{ item.KETERANGAN }}</td>

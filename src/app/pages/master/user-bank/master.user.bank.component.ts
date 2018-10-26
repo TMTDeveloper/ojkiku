@@ -12,7 +12,8 @@ import { isNullOrUndefined } from "util";
   templateUrl: "./master.user.bank.component.html"
 })
 export class MasterUserBankComponent {
-  @ViewChild("myForm") private myForm: NgForm;
+  @ViewChild("myForm")
+  private myForm: NgForm;
 
   source: LocalDataSource = new LocalDataSource();
 
@@ -151,9 +152,8 @@ export class MasterUserBankComponent {
     public service: BackendService
   ) {
     this.loadData();
-    
   }
-  loadData() {
+  loadData(bank?) {
     this.service.getreq("mst_user_banks").subscribe(response => {
       if (response != null) {
         this.tabledata = response;
@@ -168,14 +168,14 @@ export class MasterUserBankComponent {
                   ? (this.tabledata[index].USER_NAME = element.USER_NAME)
                   : null;
               });
-              
+
               this.userList.push({
                 value: element.ID_USER,
                 title: element.ID_USER + " " + element.USER_NAME
               });
             });
             this.source.load(this.tabledata);
-            
+
             console.log(this.userList);
             this.settings = this.settingsTemplate;
             console.log(JSON.stringify(response));
@@ -183,16 +183,16 @@ export class MasterUserBankComponent {
             this.service.getreq("mst_banks").subscribe(response => {
               if (response != null) {
                 this.bankData = response;
-                this.formData.bank = this.bankData[0].ID_BANK;
+                this.formData.bank =
+                  bank != null ? bank : this.bankData[0].ID_BANK;
                 console.log(JSON.stringify(response));
-                this.reload()
+                this.reload();
               }
             });
           }
         });
       }
     });
-    
   }
 
   submit(event) {
@@ -213,7 +213,10 @@ export class MasterUserBankComponent {
       }
     });
   }
-
+  reload() {
+    console.log("masuksini");
+    this.source.addFilter({ field: "ID_BANK", search: this.formData.bank });
+  }
   addData(event) {
     console.log(event.newData);
     let data = {
@@ -228,14 +231,7 @@ export class MasterUserBankComponent {
       USER_UPDATED: "Admin",
       DATETIME_UPDATED: moment().format()
     };
-    console.log(
-      this.tabledata.filter(item => {
-        return (
-          item.ID_USER == event.newData.ID_USER &&
-          item.ID_BANK == this.formData.bank
-        );
-      })[0]
-    );
+
     if (
       this.tabledata.filter(item => {
         return (
@@ -246,22 +242,19 @@ export class MasterUserBankComponent {
     ) {
       this.service.postreq("mst_user_banks", data).subscribe(response => {
         console.log(response);
-        event.confirm.resolve(data);
-        this.toastr.success("Data Saved!");
-        this.reload();
+        if (response != null) {
+          this.source.reset();
+          this.reload();
+          this.toastr.success("Data Saved!");
+          console.log(this.formData);
+          event.confirm.resolve(data);
+          this.source.load([{}]);
+          this.loadData(data.ID_BANK);
+        }
       });
-      this.reload();
     } else {
       event.confirm.reject();
       this.toastr.error("Data Already Exist!");
-      this.reload();
     }
-  }
-
-  reload() {
-    this.source.setFilter(
-      [{ field: "ID_BANK", search: this.formData.bank }],
-      true
-    );
   }
 }

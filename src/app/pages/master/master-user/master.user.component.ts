@@ -57,7 +57,7 @@ export class MasterUserComponent {
         type: "string",
         filter: true,
         editable: false,
-        width: "30%"
+        width: "10%"
       },
       USER_NAME: {
         title: "Name",
@@ -71,10 +71,17 @@ export class MasterUserComponent {
         type: "number",
         filter: true,
         editable: true,
-        width: "30%"
+        width: "10%"
       },
       JABATAN: {
         title: "Jabatan",
+        type: "number",
+        filter: true,
+        editable: true,
+        width: "30%"
+      },
+      EMAIL: {
+        title: "Email",
         type: "number",
         filter: true,
         editable: true,
@@ -133,6 +140,7 @@ export class MasterUserComponent {
       PASSWORD: event.newData.PASSWORD,
       TEAM: event.newData.TEAM,
       JABATAN: event.newData.JABATAN,
+      EMAIIL:event.newData.EMAIL,
       USER_CREATED: "Admin",
       DATETIME_CREATED: moment().format(),
       USER_UPDATED: "Admin",

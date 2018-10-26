@@ -16,7 +16,7 @@ const routes: Routes = [
     loadChildren: "app/pages/pages.module#PagesModule"
   },
   {
-    path: "moni",
+    path: "auth",
     component: NbAuthComponent,
     children: [
       {
@@ -59,7 +59,7 @@ const routes: Routes = [
   //     },
   //   ]
   // },
-  { path: "**", redirectTo: "moni" }
+  { path: "**", redirectTo: "auth" }
 ];
 
 const config: ExtraOptions = {

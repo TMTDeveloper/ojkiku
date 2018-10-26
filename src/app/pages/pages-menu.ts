@@ -92,6 +92,10 @@ export const MENU_ITEM_ADMIN: NbMenuItem[] = [
       {
         title: "Realisasi MOKA",
         link: "/pages/transaction/moka-realisasi"
+      },
+      {
+        title: "Chart MOKA",
+        link: "/pages/transaction/moka-chart"
       }
     ]
   }
@@ -159,6 +163,10 @@ export const MENU_ITEM_USER: NbMenuItem[] = [
       {
         title: "Realisasi MOKA",
         link: "/pages/transaction/moka-realisasi"
+      },
+      {
+        title: "Chart MOKA",
+        link: "/pages/transaction/moka-chart"
       }
     ]
   }

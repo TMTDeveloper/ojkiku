@@ -14,7 +14,7 @@ import { CurrencyMaskModule } from "ng2-currency-mask";
 import { IndicatorQuantitativeModalComponent } from "./indicator-quantitative/modal/indicator.quantitative.modal.component";
 import { IndicatorQualitativeModalComponent } from "./indicator-qualitative/modal/indicator.qualitative.modal.component";
 import { ButtonRenderComponent } from "./realisasi-qualitative/button.realisasi.quantitative.component";
-import { MokaRealisasiDatePicker } from "./moka-realisasi/button.moka.realisasi.component";
+import { CustomEditorComponent } from "./moka-realisasi/CustomEditorComponent";
 import { MokaTargetModalComponent } from "./moka-target/modal/moka.target.modal.component";
 import { RealisasiQualitativeModalComponent } from "./realisasi-qualitative/modal/realisasi.qualitative.modal.component";
 import { IndicatorStrategicModalComponent } from "./indicator-strategic/modal/indicator.strategic.modal.component";
@@ -37,7 +37,7 @@ import { ReportAtkModalComponent } from "./report-atk/modal/report.atk.modal.com
   declarations: [
     ...routedComponents,
     ButtonRenderComponent,
-    MokaRealisasiDatePicker
+    CustomEditorComponent
   ],
   entryComponents: [
     MokaTargetModalComponent,
@@ -45,7 +45,7 @@ import { ReportAtkModalComponent } from "./report-atk/modal/report.atk.modal.com
     IndicatorQuantitativeModalComponent,
     IndicatorQualitativeModalComponent,
     ButtonRenderComponent,
-    MokaRealisasiDatePicker,
+    CustomEditorComponent,
     IndicatorStrategicModalComponent,
     DetailAtkModalComponent,
     MokaChartComponent,

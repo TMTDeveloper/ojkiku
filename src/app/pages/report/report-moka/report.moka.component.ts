@@ -229,7 +229,7 @@ export class ReportMokaComponent {
             );
             detail.UPDATEBY_USER = arrs[0].UPDATEBY_USER;
           }
-       
+          console.log(detail.REALIZATION_DATE);
           if (
             moment(detail.REALIZATION_DATE, "DD/MM/YYYY").isSame(
               moment(detail.TARGET_DATE, "DD/MM/YYYY")

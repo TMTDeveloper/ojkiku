@@ -6,20 +6,23 @@ import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
 import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
-import { MokaRealisasiDatePicker } from "./button.moka.realisasi.component";
 import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
+import { CustomEditorComponent } from "./CustomEditorComponent";
 
 @Component({
   selector: "ngx-moka-realisasi",
   templateUrl: "./moka.realisasi.component.html",
-  styles: [`
-  input:disabled {
-    background-color: rgba(211,211,211, 0.6);
- }`]
+  styles: [
+    `
+      input:disabled {
+        background-color: rgba(211, 211, 211, 0.6);
+      }
+    `
+  ]
 })
-
 export class MokaRealisasiComponent {
-  @ViewChild("myForm") private myForm: NgForm;
+  @ViewChild("myForm")
+  private myForm: NgForm;
 
   user: any;
 
@@ -40,7 +43,7 @@ export class MokaRealisasiComponent {
       editButtonContent: '<i class="nb-edit"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
-      confirmSave: false
+      confirmSave: true
     },
     delete: {
       deleteButtonContent: '<i class="nb-trash"></i>',
@@ -95,7 +98,7 @@ export class MokaRealisasiComponent {
         type: "date",
         filter: false,
         editable: false,
-        width: "5%",
+        width: "5%"
       },
       REALIZATION_DATE: {
         title: "Realization Date",
@@ -103,6 +106,10 @@ export class MokaRealisasiComponent {
         filter: false,
         editable: true,
         width: "15%",
+        editor: {
+          type: "custom",
+          component: CustomEditorComponent
+        }
         //renderComponent: MokaRealisasiDatePicker
       },
       KETERANGAN: {
@@ -110,22 +117,22 @@ export class MokaRealisasiComponent {
         type: "string",
         filter: false,
         editable: true,
-        width: "20%",
+        width: "20%"
       },
       UPDATEBY_USER: {
         title: "Updated By",
         type: "string",
         filter: false,
-        editable: true,
-        width: "10%",
+        editable: false,
+        width: "10%"
       },
       USER_REALIZATION: {
         title: "Updated",
         type: "string",
         filter: false,
         editable: false,
-        width: "10%",
-      },
+        width: "10%"
+      }
     }
   };
 
@@ -146,8 +153,8 @@ export class MokaRealisasiComponent {
     private authService: NbAuthService
   ) {
     this.loadData();
-    this.getUserInfo()
-    this.getUserBank()
+    this.getUserInfo();
+    this.getUserBank();
   }
 
   loadData() {
@@ -159,12 +166,10 @@ export class MokaRealisasiComponent {
     this.service.getreq("mst_documents").subscribe(response => {
       if (response != null) {
         let documentFilter = response.filter(item => {
-          return (
-            item.FLAG == 'Y'
-          )
+          return item.FLAG == "Y";
         });
-        if (documentFilter[0] != null){
-          this.formData.documentData = documentFilter
+        if (documentFilter[0] != null) {
+          this.formData.documentData = documentFilter;
         }
       }
     });
@@ -172,22 +177,35 @@ export class MokaRealisasiComponent {
 
   getUserBank() {
     if (this.user.ID_USER != "admin") {
-      this.service.getreq("mst_user_banks").toPromise().then(response => {
-        if (response != null) {
-          let arr = response.filter(item => {
-            return (
-              item.ID_USER == this.user.ID_USER
-            )
-          });
-          if (arr[0] != null) {
-            this.user.type = arr[0].ID_BANK
+      this.service
+        .getreq("mst_user_banks")
+        .toPromise()
+        .then(response => {
+          if (response != null) {
+            let arr = response.filter(item => {
+              return item.ID_USER == this.user.ID_USER;
+            });
+            console.log(arr);
+            if (arr[0] != null) {
+              this.user.type = arr[0].ID_BANK;
+            }
+            console.log(this.user.type);
+            this.formData.bankData = this.formData.bankData.filter(item => {
+              return item.ID_BANK == this.user.type;
+            });
+            this.formData.bankData.unshift({
+              DATETIME_CREATED: "",
+              DATETIME_UPDATED: "",
+              DESCRIPTION: "",
+              FLAG_ACTIVE: "",
+              ID_BANK: "",
+              INISIAL: "",
+              USER_CREATED: "",
+              USER_UPDATED: ""
+            });
+            console.log(this.formData.bankData);
           }
-
-          this.formData.bankData = this.formData.bankData.filter(item => {
-            return (item.ID_BANK == this.user.type)
-          })
-        }
-      })
+        });
     } else {
       this.user.type = "admin";
     }
@@ -201,22 +219,28 @@ export class MokaRealisasiComponent {
     });
   }
 
-
   async getData() {
+    console.log(this.formData);
     let monaTargetData: any[];
     let monaRealisasi: any[];
 
-    await this.service.getreq("trn_monas").toPromise().then(resp => {
-      if (resp != null) {
-        monaTargetData = resp
-      }
-    });
+    await this.service
+      .getreq("trn_monas")
+      .toPromise()
+      .then(resp => {
+        if (resp != null) {
+          monaTargetData = resp;
+        }
+      });
 
-    await this.service.getreq("trn_mona_realizations").toPromise().then(res => {
-      if (res != null) {
-        monaRealisasi = res;
-      }
-    });
+    await this.service
+      .getreq("trn_mona_realizations")
+      .toPromise()
+      .then(res => {
+        if (res != null) {
+          monaRealisasi = res;
+        }
+      });
 
     let arrMonaTargetData = await monaTargetData.filter(items => {
       return (
@@ -226,11 +250,7 @@ export class MokaRealisasiComponent {
       );
     });
 
-
-    
-
     if (arrMonaTargetData[0] != null) {
-
       let monaTargetdetail = [];
 
       await arrMonaTargetData.forEach((element, index) => {
@@ -245,7 +265,7 @@ export class MokaRealisasiComponent {
           USER_REALIZATION: "",
           KETERANGAN: "",
           YEAR: 0,
-          UPDATEBY_USER: "",
+          UPDATEBY_USER: ""
         };
 
         detail.NO = index + 1;
@@ -256,13 +276,11 @@ export class MokaRealisasiComponent {
         detail.TARGET_DATE = moment(element.TARGET_DATE).format("DD/MM/YYYY");
 
         let arrBank = this.formData.bankData.filter(item => {
-          return (
-            item.ID_BANK == element.ID_BANK
-          );
+          return item.ID_BANK == element.ID_BANK;
         });
 
         if (arrBank[0] != null) {
-          detail.ID_BANK = arrBank[0].DESCRIPTION
+          detail.ID_BANK = arrBank[0].DESCRIPTION;
         }
 
         let arrs = monaRealisasi.filter(items => {
@@ -274,14 +292,16 @@ export class MokaRealisasiComponent {
         });
 
         if (arrs[0] != null) {
-          if(arrs[0].REALIZATION_DATE != null) {
-            detail.REALIZATION_DATE = moment(arrs[0].REALIZATION_DATE).format("DD/MM/YYYY");
-            detail.UPDATEBY_USER = arrs[0].UPDATEBY_USER
-              } 
-          
+          if (arrs[0].REALIZATION_DATE != null) {
+            detail.REALIZATION_DATE = moment(arrs[0].REALIZATION_DATE).format(
+              "DD/MM/YYYY"
+            );
+            detail.UPDATEBY_USER = arrs[0].UPDATEBY_USER;
+          }
+
           detail.KETERANGAN = arrs[0].KETERANGAN;
           detail.USER_REALIZATION = arrs[0].USER_REALIZATION;
-          console.log(detail)
+          console.log(detail);
         }
         monaTargetdetail.push(detail);
       });
@@ -289,18 +309,16 @@ export class MokaRealisasiComponent {
       this.tabledata = monaTargetdetail;
       this.source.load(this.tabledata);
       this.source.refresh();
-
     } else {
-      this.toastr.error("Data Not Found!")
-      this.tabledata = []
+      this.toastr.error("Data Not Found!");
+      this.tabledata = [];
       this.source.load(this.tabledata);
       this.source.refresh();
     }
   }
 
-
   updateData() {
-    this.tabledata.forEach((element) => {
+    this.tabledata.forEach(element => {
       let header = {
         ID_BANK: element.KODE_BANK,
         YEAR: element.YEAR,
@@ -311,12 +329,14 @@ export class MokaRealisasiComponent {
         USER_UPDATED: "admin",
         DATE_UPDATED: moment().format(),
         UPDATEBY_USER: element.UPDATEBY_USER
-      }
+      };
 
-      if(element.REALIZATION_DATE == "kosong"){
-        header.REALIZATION_DATE = null
+      if (element.REALIZATION_DATE == "kosong") {
+        header.REALIZATION_DATE = null;
       } else {
-        header.REALIZATION_DATE = moment(this.dateReformat(element.REALIZATION_DATE)).format()
+        header.REALIZATION_DATE = moment(
+          this.dateReformat(element.REALIZATION_DATE)
+        ).format();
       }
       this.service.postreq("trn_mona_realizations/crud", header).subscribe(
         response => {
@@ -324,16 +344,14 @@ export class MokaRealisasiComponent {
           this.toastr.success("Data Saved!");
         },
         error => {
-          this.toastr.error("Error, Cek kembali data!")
+          this.toastr.error("Error, Cek kembali data!");
           console.log(error);
         }
-      )
-    })
-    
+      );
+    });
   }
 
   editConfirm(event) {
-
     console.log(event.newData);
     event.confirm.resolve(event.newData);
   }
@@ -353,12 +371,13 @@ export class MokaRealisasiComponent {
     //       });
     //   }
     // });
+    console.log(event.newData);
+    event.newData.UPDATEBY_USER=this.user.USER_NAME
+    event.confirm.resolve(event.newData);
   }
 
   dateReformat(value) {
     let str = value.split("/");
-    return str[2] + "-" + str[1] + "-" + str[0]
+    return str[2] + "-" + str[1] + "-" + str[0];
   }
-
 }
-
