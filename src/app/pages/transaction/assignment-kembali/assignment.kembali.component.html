@@ -4,12 +4,23 @@
     <div class="row">
       <div class="col-sm-8">
         <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Kategori
+            <font color="red">*</font>
+          </label>
+          <div class="col-sm-6">
+            <select name="risk_level" class="form-control" [(ngModel)]="formData.kategori" (change)="refreshOption()">
+              <option value="1">ATK</option>
+              <option value="2">NON-ATK</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
           <label class="col-sm-2 col-form-label">Jenis Barang
             <font color="red">*</font>
           </label>
           <div class="col-sm-6">
             <select name="risk_level" class="form-control" [(ngModel)]="formData.barang">
-              <option *ngFor="let data of barang" value="{{data.KD_BARANG}}">{{data.KD_BARANG+"
+              <option *ngFor="let data of barangFiltered" value="{{data.KD_BARANG}}">{{data.KD_BARANG+"
                 "+data.NM_BARANG}}</option>
             </select>
           </div>
@@ -30,7 +41,7 @@
             <font color="red">*</font>
           </label>
           <div class="col-sm-6">
-            <input class="form-control" [(ngModel)]="formData.serialNumber">
+            <input class="form-control" [(ngModel)]="formData.serialNumber" [disabled]="formData.kategori=='1'">
           </div>
         </div>
         <div class="form-group row">
@@ -38,7 +49,8 @@
             <font color="red">*</font>
           </label>
           <div class="col-sm-6">
-            <input class="form-control" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',',precision:'0' }" [(ngModel)]="formData.qty">
+            <input class="form-control" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',',precision:'0' }"
+              [(ngModel)]="formData.qty">
           </div>
         </div>
         <div class="demo-radio col-sm-12">
@@ -106,8 +118,7 @@
 
     <div class="form-group row">
       <div class="col-sm-auto">
-        <button type=" button " class="btn btn-success " 
-          (click)="updateData()">Submit</button>
+        <button type=" button " class="btn btn-success " (click)="updateData()">Submit</button>
       </div>
 
     </div>

@@ -38,8 +38,19 @@
       <label class="col-sm-2 col-form-label">Tanggal Pesan
         <font color="red">*</font>
       </label>
-      <div class="col-sm-6">
-        <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="dateAssignment" required (inputFieldChanged)="onInputFieldChanged($event)"></my-date-picker>
+      <div class="col-sm-6 row">
+        <label class="col-sm-1 col-form-label">From
+        </label>
+        <div class="col-sm-3">
+          <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="dateAssignment" required
+            (inputFieldChanged)="onInputFieldChanged($event)"></my-date-picker>
+        </div>
+        <label class="col-sm-1 col-form-label">To
+        </label>
+        <div class="col-sm-3">
+          <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="dateAssignment2" required
+            (inputFieldChanged)="onInputFieldChanged($event)" ></my-date-picker>
+        </div>
       </div>
     </div>
     <div class="form-group row">
@@ -96,9 +107,9 @@
     </div>
 
     <div class="form-group row">
-  
+
       <div class="col-sm-auto">
-        <button type=" button " class="btn btn-success " (click)="printPdf('print_tab1')" >Print</button>
+        <button type=" button " class="btn btn-success " (click)="printPdf('print_tab1')">Print</button>
       </div>
     </div>
 

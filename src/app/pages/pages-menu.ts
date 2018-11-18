@@ -255,6 +255,36 @@ export const MENU_MONI: NbMenuItem[] = [
   }
 ];
 
+export const MENU_MONI_USER: NbMenuItem[] = [
+  {
+    title: "Dashboard",
+    icon: "nb-home",
+    link: "/pages/dashboard",
+    home: true
+  },
+
+  {
+    title: "Transaction MONI",
+    icon: "nb-compose",
+    children: [
+      {
+        title: "Order Atk",
+        link: "/pages/transaction/detail-atk"
+      }
+    ]
+  },
+  {
+    title: "Report MONI",
+    icon: "nb-compose",
+    children: [
+      {
+        title: "Report Atk",
+        link: "/pages/transaction/report-atk"
+      }
+    ]
+  }
+];
+
 // {
 //   title: 'FEATURES',
 //   group: true,

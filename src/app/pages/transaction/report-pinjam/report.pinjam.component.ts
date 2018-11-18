@@ -26,7 +26,8 @@ export class ReportPinjamComponent {
   approved: boolean = true;
   print: boolean = true;
   tabledata: any[] = [];
-  dateAssignment: any = { jsdate: moment().format() };
+  dateAssignment: any =null;
+  dateAssignment2: any = null;
   subscription: any;
   activeModal: any;
   selected: any = {};
@@ -209,14 +210,53 @@ export class ReportPinjamComponent {
   refreshData() {
     console.log(this.dataFull);
     console.log(this.findName(this.formData.team));
-    console.log(this.dateAssignment.jsdate);
-    this.dataReport = this.dataFull.filter(item => {
-      return (
-        item.USER_ID == this.findName(this.formData.team) &&
-        item.DATE_ASSIGN ==
-          moment(this.dateAssignment.jsdate).format("DD-MM-YYYY")
-      );
-    });
+
+    if (
+      this.dateAssignment2 == null &&
+      this.dateAssignment != null &&
+      this.formData.team == ""
+    ) {
+      this.dataReport = this.dataFull.filter(item => {
+        return (
+          item.USER_ID == this.findName(this.formData.team) &&
+          item.DATE_ASSIGN ==
+            moment(this.dateAssignment.jsdate).format("DD-MM-YYYY")
+        );
+      });
+    } else if (
+      this.dateAssignment2 == null &&
+      this.dateAssignment == null &&
+      this.formData.team != ""
+    ) {
+      this.dataReport = this.dataFull.filter(item => {
+        return item.USER_ID == this.findName(this.formData.team);
+      });
+    } else if (
+      this.dateAssignment2 != null &&
+      this.dateAssignment != null &&
+      this.formData.team != ""
+    ) {
+      this.dataReport = this.dataFull.filter(item => {
+        return (
+          item.USER_ID == this.findName(this.formData.team) &&
+          moment(item.DATE_ASSIGN,"DD-MM-YYYY").isBetween(
+            moment(this.dateAssignment.jsdate, "DD-MM-YYYY"),
+            moment(this.dateAssignment2.jsdate, "DD-MM-YYYY")
+          )
+        );
+      });
+    } else if (
+      this.dateAssignment2 != null &&
+      this.dateAssignment != null &&
+      this.formData.team == ""
+    ) {
+      this.dataReport = this.dataFull.filter(item => {
+        return moment(item.DATE_ASSIGN,"DD-MM-YYYY").isBetween(
+          moment(this.dateAssignment.jsdate, "DD-MM-YYYY"),
+          moment(this.dateAssignment2.jsdate, "DD-MM-YYYY")
+        );
+      });
+    }
     console.log(this.dataReport);
   }
   getOrder() {

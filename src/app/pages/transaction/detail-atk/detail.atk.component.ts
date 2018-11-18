@@ -114,6 +114,7 @@ export class DetailAtkComponent {
     yearPeriode: moment().format("YYYY")
   };
   barang: any[] = [];
+  barangFiltered: any[] = [];
   merk: any[] = [];
   order: any[] = [];
   constructor(
@@ -146,7 +147,12 @@ export class DetailAtkComponent {
       .toPromise()
       .then(response => {
         if (response != null) {
+          response.push({
+            KD_BARANG: "",
+            NM_BARANG: ""
+          });
           this.barang = response;
+          this.barangFiltered = response;
         }
       });
   }
@@ -189,6 +195,7 @@ export class DetailAtkComponent {
     this.activeModal.componentInstance.formData.USER_TRANSACTION = this.user.ID_USER;
     this.activeModal.componentInstance.merk = this.merk;
     this.activeModal.componentInstance.barang = this.barang;
+    this.activeModal.componentInstance.barangFiltered = this.barang;
 
     this.activeModal.result.then(
       async response => {

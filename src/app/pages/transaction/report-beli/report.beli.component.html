@@ -34,21 +34,44 @@
     </div>
     
     </div> -->
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Tanggal Pesan
+    <div class="form-group row" id="tes">
+      <label class="col-sm-2 col-form-label" id="tes">Tanggal Pesan
         <font color="red">*</font>
       </label>
-      <div class="col-sm-6">
-        <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="dateAssignment" required (inputFieldChanged)="onInputFieldChanged($event)"></my-date-picker>
+      <div class="col-sm-6 row">
+        <label class="col-sm-1 col-form-label">From
+        </label>
+        <div class="col-sm-3">
+          <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="dateAssignment" required
+            (inputFieldChanged)="onInputFieldChanged($event)"></my-date-picker>
+        </div>
+        <label class="col-sm-1 col-form-label">To
+        </label>
+        <div class="col-sm-3">
+          <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="dateAssignment2" required
+            (inputFieldChanged)="onInputFieldChanged($event)"></my-date-picker>
+        </div>
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Nama Pegawai
+      <label class="col-sm-2 col-form-label">Nama Barang
         <font color="red">*</font>
       </label>
       <div class="col-sm-6">
-        <select name="risk_level" class="form-control" [(ngModel)]="formData.team" (change)="refreshData()">
-          <option *ngFor="let data of team | orderBy " value="{{data}}">{{data}}</option>
+        <select name="risk_level" class="form-control" [(ngModel)]="formData.barangSelected" (change)="refreshData()">
+          <option *ngFor="let data of barang | orderBy " value="{{data.KD_BARANG}}">{{data.KD_BARANG==''?"":data.KD_BARANG+"
+            "+"-"+" "+data.NM_BARANG}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Nama Merk
+        <font color="red">*</font>
+      </label>
+      <div class="col-sm-6">
+        <select name="risk_level" class="form-control" [(ngModel)]="formData.merkSelected" (change)="refreshData()">
+          <option *ngFor="let data of merk | orderBy " value="{{data.KD_MERK}}">{{data.KD_MERK==''?"":data.KD_MERK+"
+            "+"-"+" "+data.NM_MERK}}</option>
         </select>
       </div>
     </div>
@@ -91,7 +114,7 @@
 
     <div class="form-group row">
       <div class="col-sm-auto">
-        <button type=" button " class="btn btn-success " (click)="printPdf('print_tab1')" >Print</button>
+        <button type=" button " class="btn btn-success " (click)="printPdf('print_tab1')">Print</button>
       </div>
     </div>
 

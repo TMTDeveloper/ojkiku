@@ -7,7 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
 import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
-import { IMyDpOptions, IMyDateModel,IMyInputFieldChanged } from "mydatepicker";
+import { IMyDpOptions, IMyDateModel, IMyInputFieldChanged } from "mydatepicker";
 import * as jsPDF from "jspdf";
 import * as html2canvas from "html2canvas";
 @Component({
@@ -26,7 +26,8 @@ export class ReportBeliComponent {
   approved: boolean = true;
   print: boolean = true;
   tabledata: any[] = [];
-  dateAssignment: any = { jsdate: moment().format() };
+  dateAssignment: any = null;
+  dateAssignment2: any = null;
   subscription: any;
   activeModal: any;
   selected: any = {};
@@ -128,7 +129,9 @@ export class ReportBeliComponent {
     ikuSelected: "",
     indicatorQualitativeData: [],
     yearPeriode: moment().format("YYYY"),
-    team: ""
+    team: "",
+    barangSelected: "",
+    merkSelected: ""
   };
   barang: any[] = [];
   merk: any[] = [];
@@ -146,11 +149,19 @@ export class ReportBeliComponent {
     this.getUserInfo();
     this.getUsers();
     this.getDataReport();
+    this.getBarang();
+    this.getMerk();
   }
 
-
   onInputFieldChanged(event: IMyInputFieldChanged) {
-    console.log('onInputFieldChanged(): Value: ', event.value, ' - dateFormat: ', event.dateFormat, ' - valid: ', event.valid);
+    console.log(
+      "onInputFieldChanged(): Value: ",
+      event.value,
+      " - dateFormat: ",
+      event.dateFormat,
+      " - valid: ",
+      event.valid
+    );
     this.refreshData();
   }
 
@@ -198,14 +209,54 @@ export class ReportBeliComponent {
   refreshData() {
     console.log(this.dataFull);
     console.log(this.findName(this.formData.team));
-    console.log(moment(this.dateAssignment.jsdate).format("DD-MM-YYYY"));
-    this.dataReport = this.dataFull.filter(item => {
-      return (
-        item.ID_USER == this.findName(this.formData.team) &&
-        item.TANGGAL_BELI ==
+
+    if (
+      this.dateAssignment2 == null &&
+      this.dateAssignment != null &&
+      (this.formData.barangSelected == "" && this.formData.merkSelected == "")
+    ) {
+      this.dataReport = this.dataFull.filter(item => {
+        return (
+          item.TANGGAL_BELI ==
           moment(this.dateAssignment.jsdate).format("DD-MM-YYYY")
-      );
-    });
+        );
+      });
+    } else if (this.dateAssignment2 == null && this.dateAssignment == null) {
+      this.dataReport = this.dataFull.filter(item => {
+        return this.formData.barangSelected == "" ||
+          this.formData.merkSelected == ""
+          ? item.KD_BARANG == this.formData.barangSelected ||
+              item.KD_MERK == this.formData.merkSelected
+          : item.KD_BARANG == this.formData.barangSelected &&
+              item.KD_MERK == this.formData.merkSelected;
+      });
+    } else if (
+      this.dateAssignment2 != null &&
+      this.dateAssignment != null &&
+      (this.formData.barangSelected != "" && this.formData.merkSelected != "")
+    ) {
+      this.dataReport = this.dataFull.filter(item => {
+        return (
+          item.KD_BARANG == this.formData.barangSelected &&
+          item.KD_MERK == this.formData.merkSelected &&
+          moment(item.TANGGAL_BELI,"DD-MM-YYYY").isBetween(
+            moment(this.dateAssignment.jsdate, "DD-MM-YYYY"),
+            moment(this.dateAssignment2.jsdate, "DD-MM-YYYY")
+          )
+        );
+      });
+    } else if (
+      this.dateAssignment2 != null &&
+      this.dateAssignment != null &&
+      (this.formData.barangSelected == "" && this.formData.merkSelected == "")
+    ) {
+      this.dataReport = this.dataFull.filter(item => {
+        return moment(item.TANGGAL_BELI,"DD-MM-YYYY").isBetween(
+          moment(this.dateAssignment.jsdate, "DD-MM-YYYY"),
+          moment(this.dateAssignment2.jsdate, "DD-MM-YYYY")
+        );
+      });
+    }
     console.log(this.dataReport);
   }
   getOrder() {
@@ -248,6 +299,13 @@ export class ReportBeliComponent {
       .toPromise()
       .then(response => {
         if (response != null) {
+          response.push({
+            KD_BARANG: "",
+            NM_BARANG: "",
+            FLAG_ACTIVE: "",
+            USER_UPDATE: "",
+            DATETIME_UPDATE: ""
+          });
           this.barang = response;
         }
       });
@@ -259,6 +317,13 @@ export class ReportBeliComponent {
       .toPromise()
       .then(response => {
         if (response != null) {
+          response.push({
+            KD_MERK: "",
+            NM_MERK: "",
+            FLAG_ACTIVE: "",
+            USER_UPDATE: "",
+            DATETIME_UPDATE: ""
+          });
           this.merk = response;
         }
       });

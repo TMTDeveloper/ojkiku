@@ -67,10 +67,36 @@ export class MasterBarangComponent {
         editable: true,
         width: "40%"
       },
+      TYPE: {
+        title: "Tipe",
+        type: "string",
+        width: "15%",
+        filterFunction: (cell?: any, search?: any) => {
+          if (search == "ATK" && cell == "1") {
+            return true;
+          } else if (search == "NON-ATK" && cell == "2") {
+            return false;
+          } else {
+            return false;
+          }
+        },
+        valuePrepareFunction: value => {
+          return value == "1" ? "ATK" : "NON-ATK";
+        },
+        editor: {
+          type: "list",
+          config: {
+            list: [
+              { value: "1", title: "ATK" },
+              { value: "2", title: "NON-ATK" }
+            ]
+          }
+        }
+      },
       FLAG_ACTIVE: {
         title: "Flag Active",
         type: "html",
-        width: "20%",
+        width: "5%",
         editor: {
           type: "list",
           config: {
@@ -103,11 +129,13 @@ export class MasterBarangComponent {
       if (element.KD_BARANG == event.newData.KD_BARANG) {
         element.NM_BARANG = event.newData.NM_BARANG;
         element.FLAG_ACTIVE = event.newData.FLAG_ACTIVE;
-        this.service.patchreq("m_barangs", event.newData).subscribe(response => {
-          console.log(JSON.stringify(response));
-          event.confirm.resolve(event.newData);
-          this.toastr.success("Data Updated!");
-        });
+        this.service
+          .patchreq("m_barangs", event.newData)
+          .subscribe(response => {
+            console.log(JSON.stringify(response));
+            event.confirm.resolve(event.newData);
+            this.toastr.success("Data Updated!");
+          });
       }
     });
   }

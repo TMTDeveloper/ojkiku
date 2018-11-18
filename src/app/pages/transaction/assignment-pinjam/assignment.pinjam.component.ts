@@ -40,7 +40,8 @@ export class AssignmentPinjamComponent {
     status: "",
     peruntukkan: true,
     keterangan: "",
-    qty: 0
+    qty: 0,
+    kategori: ""
   };
 
   dateAssignment: any;
@@ -50,6 +51,8 @@ export class AssignmentPinjamComponent {
   barang: any[] = [];
   merk: any[] = [];
   assignments: any[] = [];
+  barangFiltered: any[] = [];
+
 
   constructor(
     private modalService: NgbModal,
@@ -95,6 +98,15 @@ export class AssignmentPinjamComponent {
     }
   }
 
+  refreshOption() {
+    this.barangFiltered = this.barang.filter(item => {
+      return this.formData.kategori == "1"
+        ? item.TYPE == "1" || item.NM_BARANG == ""
+        : item.TYPE == "2" || item.NM_BARANG == "";
+    });
+  }
+
+
   getUsers() {
     this.service
       .getreq("mst_users")
@@ -122,7 +134,12 @@ export class AssignmentPinjamComponent {
       .toPromise()
       .then(response => {
         if (response != null) {
+          response.push({
+            KD_BARANG: "",
+            NM_BARANG: ""
+          });
           this.barang = response;
+          this.barangFiltered = response;
         }
       });
   }

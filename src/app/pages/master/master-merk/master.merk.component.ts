@@ -70,7 +70,7 @@ export class MasterMerkComponent {
       FLAG_ACTIVE: {
         title: "Flag Active",
         type: "html",
-        width: "20%",
+        width: "5%",
         editor: {
           type: "list",
           config: {

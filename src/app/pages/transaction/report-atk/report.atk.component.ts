@@ -8,7 +8,9 @@ import { BackendService } from "../../../@core/data/backend.service";
 import { isNullOrUndefined } from "util";
 import { ReportAtkModalComponent } from "./modal/report.atk.modal.component";
 import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
-import { IMyDpOptions } from "mydatepicker";
+import { IMyDpOptions, IMyInputFieldChanged } from "mydatepicker";
+import * as jsPDF from "jspdf";
+import * as html2canvas from "html2canvas";
 @Component({
   selector: "ngx-report-atk",
   templateUrl: "./report.atk.component.html"
@@ -21,14 +23,19 @@ export class ReportAtkComponent {
     dateFormat: "dd-mm-yyyy"
   };
   source: LocalDataSource = new LocalDataSource();
+  sourceChild: LocalDataSource = new LocalDataSource();
   user: any;
   approved: boolean = true;
   print: boolean = true;
   tabledata: any[] = [];
-  dateAssignment: any = { jsdate: moment().format() };
+  tabledataFull: any[] = [];
+  dateAssignment: any = null;
+  dateAssignment2: any = null;
   subscription: any;
   activeModal: any;
   selected: any = {};
+  childArr: any[] = [];
+
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -172,10 +179,138 @@ export class ReportAtkComponent {
   }
 
   refreshData() {
-    this.source.setFilter([
-      { field: "DATE_ORDER", search: this.dateAssignment.jsdate },
-      { field: "USER_ID", search: this.findName(this.formData.team) }
-    ]);
+    // console.log(this.formData);
+    // console.log(this.dateAssignment);
+    // if (
+    //   this.dateAssignment2 == null &&
+    //   this.dateAssignment != null &&
+    //   this.formData.team == ""
+    // ) {
+    //   this.source.setFilter([
+    //     {
+    //       field: "DATE_ORDER",
+    //       search: moment().format("DD-MM-YYYY"),
+    //       filter: (cell?: any, search?: string) => {
+    //         return (
+    //           moment(cell).format("DD-MM-YYYY") ==
+    //           moment(this.dateAssignment.jsdate).format("DD-MM-YYYY")
+    //         );
+    //       }
+    //     }
+    //   ]);
+    // } else if (
+    //   this.dateAssignment2 == null &&
+    //   this.dateAssignment == null &&
+    //   this.formData.team != ""
+    // ) {
+    //   this.source.setFilter([
+    //     {
+    //       field: "USER_ID",
+    //       search: this.findName(this.formData.team)
+    //     }
+    //   ]);
+    // } else if (
+    //   this.dateAssignment2 != null &&
+    //   this.dateAssignment != null &&
+    //   this.formData.team != ""
+    // ) {
+    //   this.source.setFilter([
+    //     {
+    //       field: "DATE_ORDER",
+    //       search: moment().format("DD-MM-YYYY"),
+    //       filter: (cell?: any, search?: string) => {
+    //         return moment(cell, "DD-MM-YYYY").isBetween(
+    //           moment(this.dateAssignment.jsdate, "DD-MM-YYYY"),
+    //           moment(this.dateAssignment2.jsdate, "DD-MM-YYYY")
+    //         );
+    //       }
+    //     },
+    //     {
+    //       field: "USER_ID",
+    //       search: this.findName(this.formData.team)
+    //     }
+    //   ]);
+    // } else if (
+    //   this.dateAssignment2 != null &&
+    //   this.dateAssignment != null &&
+    //   this.formData.team == ""
+    // ) {
+    //   console.log("masuk sini");
+    //   this.source.setFilter([
+    //     {
+    //       field: "DATE_ORDER",
+    //       search: moment(this.dateAssignment.jsdate, "DD-MM-YYYY"),
+    //       filter: function(cell?: any, search?: string): boolean {
+    //         console.log(
+    //           moment(cell, "DD-MM-YYYY").isBetween(
+    //             moment(this.dateAssignment.jsdate, "DD-MM-YYYY"),
+    //             moment(this.dateAssignment2.jsdate, "DD-MM-YYYY")
+    //           )
+    //         );
+    //         return moment(cell, "DD-MM-YYYY").isBetween(
+    //           moment(this.dateAssignment.jsdate, "DD-MM-YYYY"),
+    //           moment(this.dateAssignment2.jsdate, "DD-MM-YYYY")
+    //         );
+    //       }
+    //     }
+    //   ]);
+    // }
+
+    console.log(this.findName(this.formData.team));
+
+    if (
+      this.dateAssignment2 == null &&
+      this.dateAssignment != null &&
+      this.formData.team == ""
+    ) {
+      this.tabledata = this.tabledataFull.filter(item => {
+        return (
+          item.USER_ID == this.findName(this.formData.team) &&
+          item.DATE_ORDER ==
+            moment(this.dateAssignment.jsdate).format("DD-MM-YYYY")
+        );
+      });
+      this.source.load(this.tabledata);
+    } else if (
+      this.dateAssignment2 == null &&
+      this.dateAssignment == null &&
+      this.formData.team != ""
+    ) {
+      this.tabledata = this.tabledataFull.filter(item => {
+        return item.USER_ID == this.findName(this.formData.team);
+      });
+      this.source.load(this.tabledata);
+    } else if (
+      this.dateAssignment2 != null &&
+      this.dateAssignment != null &&
+      this.formData.team != ""
+    ) {
+      this.tabledata = this.tabledataFull.filter(item => {
+        return (
+          item.USER_ID == this.findName(this.formData.team) &&
+          moment(item.DATE_ORDER).isBetween(
+            moment(this.dateAssignment.jsdate, "DD-MM-YYYY"),
+            moment(this.dateAssignment2.jsdate, "DD-MM-YYYY")
+          )
+        );
+      });
+      this.source.load(this.tabledata);
+    } else if (
+      this.dateAssignment2 != null &&
+      this.dateAssignment != null &&
+      this.formData.team == ""
+    ) {
+      this.tabledata = this.tabledataFull.filter(item => {
+        return moment(item.DATE_ORDER).isBetween(
+          moment(this.dateAssignment.jsdate, "DD-MM-YYYY"),
+          moment(this.dateAssignment2.jsdate, "DD-MM-YYYY")
+        );
+      });
+
+      this.source.empty();
+      this.source.load(this.tabledata);
+    }
+    console.log(this.tabledata);
   }
   getOrder() {
     this.service
@@ -204,6 +339,7 @@ export class ReportAtkComponent {
               });
 
               this.tabledata = this.order;
+              this.tabledataFull = this.order;
               this.source.load(this.tabledata);
               this.refreshData();
             }
@@ -272,6 +408,30 @@ export class ReportAtkComponent {
     }
   }
 
+  generateChild(event) {
+    let arr = this.orderDt.filter(item => {
+      return item.KD_ORDER == event.data.KD_ORDER;
+    });
+
+    if (arr != null) {
+      arr.forEach(element => {
+        let arrBarang = this.barang.filter(item => {
+          return item.KD_BARANG == element.KD_BARANG;
+        });
+        if (arrBarang != null) {
+          element.NM_BARANG = arrBarang[0].NM_BARANG;
+        }
+        let arrMerk = this.merk.filter(item => {
+          return item.KD_MERK == element.KD_MERK;
+        });
+        if (arrMerk != null) {
+          element.NM_MERK = arrMerk[0].NM_MERK;
+        }
+      });
+      this.childArr = arr;
+    }
+  }
+
   async loadData() {
     let respIku: any[];
     await this.service
@@ -297,9 +457,19 @@ export class ReportAtkComponent {
     console.log("woi");
     console.log(this.selected);
     this.selected = event.data;
+    this.generateChild(event);
     if (event.data.STATUS_ORDER != "APPROVED") {
+      console.log("masuksini");
       this.print = true;
+      this.approved = false;
+    } else {
+      this.print = false;
+      this.approved = true;
     }
+  }
+
+  onInputFieldChanged(event: IMyInputFieldChanged) {
+    this.refreshData();
   }
 
   approve() {
@@ -318,7 +488,7 @@ export class ReportAtkComponent {
       this.service.patchreq("t_order_hds", data).subscribe(
         response => {
           console.log(response);
-          this.refreshData();
+          this.source.refresh();
           this.toastr.success("Data Updated!");
         },
         error => {
@@ -415,5 +585,17 @@ export class ReportAtkComponent {
       console.log(safeI);
     }
     return result;
+  }
+
+  printPdf() {
+    this.activeModal = this.modalService.open(ReportAtkModalComponent, {
+      windowClass: "xlModal",
+      container: "nb-layout",
+      backdrop: "static"
+    });
+    this.activeModal.componentInstance.dataParent = this.selected;
+    this.activeModal.componentInstance.print = true;
+    this.activeModal.componentInstance.dataSource = this.childArr;
+    console.log(this.childArr);
   }
 }

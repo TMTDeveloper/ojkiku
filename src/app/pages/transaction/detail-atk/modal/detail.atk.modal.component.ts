@@ -20,11 +20,13 @@ export class DetailAtkModalComponent {
     NO_SR: 0,
     NM_BARANG: "",
     NM_MERK: "",
-    USER_TRANSACTION: ""
+    USER_TRANSACTION: "",
+    kategori: ""
   };
 
   merk: any[] = [];
   barang: any[] = [];
+  barangFiltered: any[] = [];
   event: any;
   source: LocalDataSource = new LocalDataSource();
   constructor(
@@ -36,6 +38,13 @@ export class DetailAtkModalComponent {
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
+  }
+  refreshOption() {
+    this.barangFiltered = this.barang.filter(item => {
+      return this.formData.kategori == "1"
+        ? item.TYPE == "1" || item.NM_BARANG == ""
+        : item.TYPE == "2" || item.NM_BARANG == "";
+    });
   }
 
   saveData() {

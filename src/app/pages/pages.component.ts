@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { MENU_ITEM_USER } from "./pages-menu";
-import { MENU_ITEM_ADMIN, MENU_MONI } from "./pages-menu";
+import { MENU_ITEM_ADMIN, MENU_MONI, MENU_MONI_USER } from "./pages-menu";
 import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
 import { ActivatedRoute } from "@angular/router";
 import { UserService } from "../@core/data/users.service";
@@ -49,10 +49,12 @@ export class PagesComponent implements OnInit {
     //   console.log(response);
     // });
 
-    console.log("ini menu");
-    console.log(this.user);
     if (this.cookie.get("Type") == "moni") {
-      this.menu = MENU_MONI;
+      if (this.user.TEAM == "admin") {
+        this.menu = MENU_MONI;
+      } else {
+        this.menu = MENU_MONI_USER;
+      }
     } else {
       if (this.user.TEAM != "admin") {
         this.menu = MENU_ITEM_USER;

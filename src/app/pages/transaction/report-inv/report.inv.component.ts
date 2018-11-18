@@ -213,6 +213,7 @@ export class ReportInvComponent {
     //   );
     // });
     // console.log(this.dataReport);
+    console.log(this.formData)
     this.dataReport = this.dataFull.filter(item => {
       return this.formData.barangSelected == "" ||
         this.formData.merkSelected == ""

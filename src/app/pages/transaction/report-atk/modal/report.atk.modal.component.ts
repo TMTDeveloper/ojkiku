@@ -5,7 +5,8 @@ import { NgForm } from "@angular/forms";
 import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { BackendService } from "../../../../@core/data/backend.service";
 import { ToastrService } from "ngx-toastr";
-
+import * as jsPDF from "jspdf";
+import * as html2canvas from "html2canvas";
 @Component({
   selector: "ngx-report-atk-modal",
   templateUrl: "./report.atk.modal.component.html"
@@ -26,9 +27,11 @@ export class ReportAtkModalComponent {
   merk: any[] = [];
   barang: any[] = [];
   event: any;
+  print: boolean = false;
   source: LocalDataSource = new LocalDataSource();
   tabledata: any[] = [];
   dataSource: any[] = [];
+  dataParent: any[] = [];
   subscription: any;
   settings = {
     add: {
@@ -105,6 +108,10 @@ export class ReportAtkModalComponent {
     this.source.load(this.dataSource);
   }
 
+  formatMom(param) {
+    return moment(param).format("DD-MM-YYYY");
+  }
+
   saveData() {
     let data = {
       KD_ORDER: "",
@@ -125,6 +132,43 @@ export class ReportAtkModalComponent {
 
   refreshSelected(event) {
     // this.selectedData = event.data;
+  }
+
+  printPdf() {
+    let element = <HTMLScriptElement>document.getElementById("print_tab1");
+
+    console.log(element);
+    let element2 = <HTMLScriptElement>document.getElementById("print_tab1");
+    html2canvas(element, {
+      useCORS: true
+    }).then((canvas: any) => {
+      var widthEl1 = canvas.width;
+      var height = canvas.height;
+      var doc = new jsPDF({
+        orientation: "landscape",
+        unit: "mm",
+        format: [Math.floor(widthEl1 * 0.264583) + 5, 210]
+      });
+      doc.addImage(canvas.toDataURL("image/PNG"), "PNG", 2, 2);
+      doc.save(`Report-${Date.now()}.pdf`);
+      // var imgData = canvas.toDataURL("image/png");
+      // let orientation = element.id == "print_tab1" ? "portrait" : "landscape";
+      // html2canvas(element2, { userCORS: true }).then((canvas2: any) => {
+      //   var doc = new jsPDF({
+      //     orientation: "landscape",
+      //     unit: "mm",
+      //     format: [Math.floor(widthEl1 * 0.264583) + 5, 210]
+      //   });
+      //   doc.addImage(canvas.toDataURL("image/PNG"), "PNG", 2, 2);
+      //   doc.addImage(
+      //     canvas2.toDataURL("image/PNG"),
+      //     "PNG",
+      //     2,
+      //     Math.floor(height * 0.264583) + 10
+      //   );
+      //   doc.save(`Report-${Date.now()}.pdf`);
+      // });
+    });
   }
 
   closeModal() {

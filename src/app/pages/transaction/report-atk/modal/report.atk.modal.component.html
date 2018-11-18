@@ -5,8 +5,58 @@
   </button>
 </div>
 <div class="modal-body">
-    <div class="form-group">
-        <ng2-smart-table [settings]="settings" [source]="source">
-        </ng2-smart-table>
-      </div>
+  <div *ngIf="!print" class="form-group">
+    <ng2-smart-table [settings]="settings" [source]="source">
+    </ng2-smart-table>
   </div>
+
+  <div *ngIf="print" class="print_report" id="print_tab1">
+    <font size="4">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th width="100px" style="text-align:center">Kode Order</th>
+            <th width="100px" style="text-align:center">User ID</th>
+            <th width="200px" style="text-align:center">Status Order</th>
+            <th width="200px" style="text-align:center">Tanggal Order</th>
+            <th width="100px" style="text-align:center">Total Item</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ dataParent.KD_ORDER }}</td>
+            <td>{{ dataParent.USER_ID }}</td>
+            <td>{{ dataParent.STATUS_ORDER }}</td>
+            <td>{{formatMom(dataParent.DATE_ORDER)}}</td>
+            <td>{{ dataParent.TOTAL_ITEM}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </font>
+    <font size="4">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th width="50px" style="text-align:center">No</th>
+            <th width="100px" style="text-align:center">Nama Barang</th>
+            <th width="200px" style="text-align:center">Nama Merk</th>
+            <th width="100px" style="text-align:center">Qty Order</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of dataSource">
+            <td>{{ item.NO_SR }}</td>
+            <td>{{ item.NM_BARANG }}</td>
+            <td>{{ item.NM_MERK }}</td>
+            <td>{{item.QTY}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </font>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-auto">
+      <button type=" button " class="btn btn-success " (click)="printPdf()">Print</button>
+    </div>
+  </div>
+</div>

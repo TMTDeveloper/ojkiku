@@ -41,7 +41,8 @@ export class BeliBarangComponent {
     peruntukkan: true,
     keterangan: "",
     qty: 0,
-    harga: 0
+    harga: 0,
+    kategori: ""
   };
 
   dateAssignment: any;
@@ -51,7 +52,7 @@ export class BeliBarangComponent {
   barang: any[] = [];
   merk: any[] = [];
   assignments: any[] = [];
-
+  barangFiltered: any[] = [];
   constructor(
     private modalService: NgbModal,
     private toastr: ToastrService,
@@ -96,6 +97,14 @@ export class BeliBarangComponent {
     }
   }
 
+  refreshOption() {
+    this.barangFiltered = this.barang.filter(item => {
+      return this.formData.kategori == "1"
+        ? item.TYPE == "1" || item.NM_BARANG == ""
+        : item.TYPE == "2" || item.NM_BARANG == "";
+    });
+  }
+
   getUsers() {
     this.service
       .getreq("mst_users")
@@ -123,7 +132,12 @@ export class BeliBarangComponent {
       .toPromise()
       .then(response => {
         if (response != null) {
+          response.push({
+            KD_BARANG: "",
+            NM_BARANG: ""
+          });
           this.barang = response;
+          this.barangFiltered = response;
         }
       });
   }
