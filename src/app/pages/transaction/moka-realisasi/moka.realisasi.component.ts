@@ -241,14 +241,52 @@ export class MokaRealisasiComponent {
           monaRealisasi = res;
         }
       });
+    let arrMonaTargetData = [];
 
-    let arrMonaTargetData = await monaTargetData.filter(items => {
-      return (
-        items.ID_BANK == this.formData.bankSelected &&
-        items.TIPE_DOKUMEN == this.formData.documentSelected &&
-        items.YEAR == this.formData.years
-      );
-    });
+    if (
+      this.formData.bankSelected == "" &&
+      this.formData.documentSelected == ""
+    ) {
+      arrMonaTargetData = await monaTargetData.filter(items => {
+        return items.YEAR == this.formData.years;
+      });
+    } else if (
+      this.formData.bankSelected != "" &&
+      this.formData.documentSelected == ""
+    ) {
+      arrMonaTargetData = await monaTargetData.filter(items => {
+        return (
+          items.ID_BANK == this.formData.bankSelected &&
+          items.YEAR == this.formData.years
+        );
+      });
+    } else if (
+      this.formData.bankSelected == "" &&
+      this.formData.documentSelected != ""
+    ) {
+      arrMonaTargetData = await monaTargetData.filter(items => {
+        return (
+          items.TIPE_DOKUMEN == this.formData.documentSelected &&
+          items.YEAR == this.formData.years
+        );
+      });
+    } else if (
+      this.formData.bankSelected != "" &&
+      this.formData.documentSelected != ""
+    ) {
+      arrMonaTargetData = await monaTargetData.filter(items => {
+        return (
+          items.ID_BANK == this.formData.bankSelected &&
+          items.TIPE_DOKUMEN == this.formData.documentSelected &&
+          items.YEAR == this.formData.years
+        );
+      });
+    }
+
+    // y n n
+    // y t n
+    // y n i
+    // y t i
 
     if (arrMonaTargetData[0] != null) {
       let monaTargetdetail = [];
@@ -372,7 +410,7 @@ export class MokaRealisasiComponent {
     //   }
     // });
     console.log(event.newData);
-    event.newData.UPDATEBY_USER=this.user.USER_NAME
+    event.newData.UPDATEBY_USER = this.user.USER_NAME;
     event.confirm.resolve(event.newData);
   }
 
